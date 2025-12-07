@@ -54,6 +54,16 @@ Before submitting a Pull Request, please ensure all quality checks pass:
 pytest
 ```
 
+### Run Tests with Coverage
+```bash
+pytest --cov=src/raztint --cov-report=html --cov-report=term
+```
+
+This will:
+- Run all tests
+- Generate coverage report in terminal
+- Create an HTML report in `htmlcov/` directory (open `htmlcov/index.html` in browser)
+
 ### Run Linting
 ```bash
 ruff check .
@@ -72,7 +82,7 @@ mypy .
 ### Run All Checks
 You can run all checks in sequence:
 ```bash
-ruff check . && black --check . && mypy . && pytest
+ruff check . && black --check . && mypy . && pytest --cov=src/raztint --cov-report=term
 ```
 
 ## Code Style

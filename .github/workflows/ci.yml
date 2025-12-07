@@ -41,5 +41,15 @@ jobs:
       - name: Run Type Checking (Mypy)
         run: mypy .
 
-      - name: Run Tests (Pytest)
-        run: pytest
+      - name: Run Tests with Coverage (Pytest)
+        run: pytest --cov=src/raztint --cov-report=xml --cov-report=term
+
+      - name: Upload Coverage to Codecov
+        if: matrix.os == 'ubuntu-latest'
+        uses: codecov/codecov-action@v4
+        with:
+          files: ./coverage.xml
+          fail_ci_if_error: false
+          token: ${{ secrets.CODECOV_TOKEN }}
+          flags: unittests
+          name: codecov-umbrella

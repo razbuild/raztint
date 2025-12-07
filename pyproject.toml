@@ -49,12 +49,12 @@ Issues = "https://github.com/razbuild/raztint/issues"
 Changelog = "https://github.com/razbuild/raztint/releases"
 
 [project.optional-dependencies]
-test = ["pytest"]
+test = ["pytest", "pytest-cov"]
 lint = ["ruff"]
 formatter = ["black"]
 typecheck = ["mypy"]
-coverage = ["coverage"]
-dev = ["pytest", "ruff", "black", "mypy", "coverage"]
+coverage = ["coverage", "pytest-cov"]
+dev = ["pytest", "pytest-cov", "ruff", "black", "mypy", "coverage"]
 
 [build-system]
 requires = ["hatchling"]
