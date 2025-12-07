@@ -4,7 +4,7 @@
 
 A zero-dependency Python library for ANSI coloring and smart CLI icons with automatic environment detection.
 
-| UniCode | Nerd Font |
+| Unicode | Nerd Font |
 |---------|-----------|
 | ![Alt1](https://raw.githubusercontent.com/razbuild/raztint/master/assets/unicode.png) | ![Alt2](https://raw.githubusercontent.com/razbuild/raztint/main/assets/nerdfont.png) |
 
