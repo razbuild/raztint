@@ -3,6 +3,7 @@
 ![GitHub License](https://img.shields.io/github/license/razbuild/raztint?logoSize=auto&color=blue&cacheSeconds=3600)
 ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/razbuild/raztint/ci.yml?branch=master&event=push&logoSize=auto&cacheSeconds=3600)
 ![Codecov (with branch)](https://img.shields.io/codecov/c/github/razbuild/raztint/master?logoSize=auto&cacheSeconds=3600)
+![Python Version from PEP 621 TOML](https://img.shields.io/python/required-version-toml?tomlFilePath=https%3A%2F%2Fraw.githubusercontent.com%2Frazbuild%2Fraztint%2Fmaster%2Fpyproject.toml&logoSize=auto&cacheSeconds=3600)
 
 ---
 
