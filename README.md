@@ -2,6 +2,7 @@
 
 ![GitHub License](https://img.shields.io/github/license/razbuild/raztint?logoSize=auto&color=blue&cacheSeconds=3600)
 ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/razbuild/raztint/ci.yml?branch=master&event=push&logoSize=auto&cacheSeconds=3600)
+![Codecov](https://img.shields.io/codecov/c/github/razbuild/raztint?logoSize=auto&cacheSeconds=3600)
 
 ---
 
