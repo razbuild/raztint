@@ -34,7 +34,7 @@ jobs:
         run: ruff check src tests
 
       - name: Mypy
-        run: mypy src/raztint/raztint
+        run: mypy src/raztint/raztint.py
 
   test:
     name: Test (${{ matrix.os }})
