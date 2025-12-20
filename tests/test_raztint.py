@@ -84,7 +84,7 @@ class TestColorizer:
             with mock.patch.object(RazTint, "_has_nerd_fonts", return_value=False):
                 raztint = RazTint()
                 assert raztint.icon_mode == "std"
-                assert "✓" in raztint.ok()
+                assert "[✓]" in raztint.ok()
 
     @mock.patch("os.name", "nt")
     @mock.patch("sys.platform", "win32")
@@ -94,14 +94,14 @@ class TestColorizer:
             with mock.patch.object(RazTint, "_has_nerd_fonts", return_value=False):
                 raztint = RazTint()
                 assert raztint.icon_mode == "std"
-                assert "✓" in raztint.ok()
+                assert "[✓]" in raztint.ok()
 
     def test_icon_mode_force_nerd(self):
         """Test forcing nerd fonts via environment variable."""
         with mock.patch.dict(os.environ, {"RAZTINT_USE_NERD_ICONS": "1"}):
             raztint = RazTint()
             assert raztint.icon_mode == "nerd"
-            assert "󰄬" in raztint.ok()
+            assert "[󰄬]" in raztint.ok()
 
     def test_icon_render_std(self):
         """Test specific output for Standard mode."""
@@ -109,10 +109,10 @@ class TestColorizer:
         raztint.icon_mode = "std"
         raztint.set_color(False)
 
-        assert raztint.ok() == "✓"
-        assert raztint.err() == "✗"
-        assert raztint.warn() == "!"
-        assert raztint.info() == "i"
+        assert raztint.ok() == "[✓]"
+        assert raztint.err() == "[✗]"
+        assert raztint.warn() == "[!]"
+        assert raztint.info() == "[i]"
 
     def test_icon_mode_ascii_fallback(self):
         """Test fallback to ASCII if encoding fails."""

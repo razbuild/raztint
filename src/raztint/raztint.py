@@ -2,7 +2,9 @@ import os
 import sys
 from collections.abc import Callable
 from functools import lru_cache
-from typing import ClassVar
+
+from raztint.colors import COLORS
+from raztint.icons import ICONS
 
 
 class RazTint:
@@ -12,39 +14,8 @@ class RazTint:
     with support for Nerd Fonts, Unicode, and ASCII fallbacks.
     """
 
-    COLORS: ClassVar[dict[str, str]] = {
-        "BLACK": "30",
-        "RED": "31",
-        "GREEN": "32",
-        "YELLOW": "33",
-        "BLUE": "34",
-        "MAGENTA": "35",
-        "CYAN": "36",
-        "WHITE": "37",
-        "GRAY": "90",
-    }
-
-    ICONS: ClassVar[dict[str, dict[str, str]]] = {
-        "ok": {"nerd": "󰄬", "std": "✓", "ascii": "[OK]", "color": "GREEN"},
-        "err": {"nerd": "󰅖", "std": "✗", "ascii": "[ERR]", "color": "RED"},
-        "warn": {"nerd": "󰈅", "std": "!", "ascii": "[WARN]", "color": "YELLOW"},
-        "info": {"nerd": "󰙎", "std": "i", "ascii": "[INFO]", "color": "BLUE"},
-    }
-
-    ok: Callable[[], str]
-    err: Callable[[], str]
-    warn: Callable[[], str]
-    info: Callable[[], str]
-
-    black: Callable[[str], str]
-    red: Callable[[str], str]
-    green: Callable[[str], str]
-    yellow: Callable[[str], str]
-    blue: Callable[[str], str]
-    magenta: Callable[[str], str]
-    cyan: Callable[[str], str]
-    white: Callable[[str], str]
-    gray: Callable[[str], str]
+    COLORS = COLORS
+    ICONS = ICONS
 
     def __init__(self) -> None:
         self.use_color: bool = self._supports_color()
@@ -121,7 +92,7 @@ class RazTint:
     def _get_icon_mode(cls) -> str:
         encoding = getattr(sys.stdout, "encoding", None) or "utf-8"
         try:
-            "󰄬".encode(encoding)
+            "[󰄬]".encode(encoding)
         except Exception:
             return "ascii"
 

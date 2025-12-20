@@ -58,7 +58,7 @@ jobs:
 
       - name: Run tests
         run: |
-          coverage run --source=src/raztint -m pytest
+          coverage run --source=raztint -m pytest
           coverage xml
           coverage report -m
         env:
