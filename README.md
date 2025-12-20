@@ -12,9 +12,10 @@
 
 A zero-dependency Python library for ANSI coloring and smart CLI icons with automatic environment detection.
 
-| Unicode | Nerd Font |
-|---------|-----------|
-| ![Alt1](https://raw.githubusercontent.com/razbuild/raztint/master/assets/unicode.png) | ![Alt2](https://raw.githubusercontent.com/razbuild/raztint/main/assets/nerdfont.png) |
+| ASCII Icons | Nerd Font Icons | Unicode Icons |
+|------------|----------------|---------------|
+| ![ASCII](https://raw.githubusercontent.com/razbuild/raztint/master/assets/ascii.png) | ![Nerd Font](https://raw.githubusercontent.com/razbuild/raztint/master/assets/nerdfont.png) | ![Unicode](https://raw.githubusercontent.com/razbuild/raztint/master/assets/unicode.png) |
+ٰ
 
 ---
 
@@ -159,8 +160,8 @@ RazTint attempts to make your CLI look as good as possible by detecting the font
 
 | Mode | ok | err | warn | info | Condition |
 |------|----|-----|------|------|-----------|
-| Nerd |󰄬 | 󰅖 | 󰈅 | 󰙎 | Detected Nerd Font via Env/Registry |
-| Std | ✓ | ✗ | ! | i | UTF-8 supported, no Nerd Font |
+| Nerd |[󰄬] | [󰅖] | [󰈅] | [󰙎] | Detected Nerd Font via Env/Registry |
+| Std | [✓] | [✗] | [!] | [i] | UTF-8 supported, no Nerd Font |
 | ASCII | [OK] | [ERR] | [WARN] | [INFO] | Fallback |
 
 > Note: Icons may not render correctly in GitHub preview depending on your browser font.
