@@ -15,7 +15,6 @@ A zero-dependency Python library for ANSI coloring and smart CLI icons with auto
 | ASCII Icons | Nerd Font Icons | Unicode Icons |
 |------------|----------------|---------------|
 | ![ASCII](https://raw.githubusercontent.com/razbuild/raztint/master/assets/ascci.png) | ![Nerd Font](https://raw.githubusercontent.com/razbuild/raztint/master/assets/nerdfont.png) | ![Unicode](https://raw.githubusercontent.com/razbuild/raztint/master/assets/unicode.png) |
-ٰ
 
 ---
 
