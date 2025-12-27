@@ -1,10 +1,10 @@
 ![Logo](https://raw.githubusercontent.com/razbuild/raztint/master/assets/logo.png)
 
-![GitHub License](https://img.shields.io/github/license/razbuild/raztint?logoSize=auto&color=blue&cacheSeconds=3600)
-![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/razbuild/raztint/ci.yml?branch=master&event=push&logoSize=auto&cacheSeconds=3600)
-![Codecov (with branch)](https://img.shields.io/codecov/c/github/razbuild/raztint/master?logoSize=auto&cacheSeconds=3600)
-![PyPI version](https://img.shields.io/pypi/v/raztint?logo=pypi&logoColor=white)
-![Python Version from PEP 621 TOML](https://img.shields.io/python/required-version-toml?tomlFilePath=https%3A%2F%2Fraw.githubusercontent.com%2Frazbuild%2Fraztint%2Fmaster%2Fpyproject.toml&logoSize=auto&cacheSeconds=3600)
+![GitHub License](https://img.shields.io/github/license/razbuild/raztint?logoColor=ffffff&logoSize=auto&label=License&labelColor=1b1b1b&color=ab0000&cacheSeconds=3600)
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/razbuild/raztint/ci.yml?branch=master&event=push&logo=githubactions&logoColor=ffffff&logoSize=auto&label=Build&labelColor=1b1b1b&color=0054e1&cacheSeconds=3600)
+![Codecov](https://img.shields.io/codecov/c/github/razbuild/raztint?logo=codecov&logoColor=ffffff&logoSize=auto&label=Coverage&labelColor=1b1b1b&color=ffc500&cacheSeconds=3600)
+![PyPI - Version](https://img.shields.io/pypi/v/raztint?pypiBaseUrl=https%3A%2F%2Fpypi.org&logo=pypi&logoColor=ffffff&logoSize=auto&label=PyPi&labelColor=1b1b1b&color=0054e1&cacheSeconds=3600)
+![Python Version from PEP 621 TOML](https://img.shields.io/python/required-version-toml?tomlFilePath=https%3A%2F%2Fraw.githubusercontent.com%2Frazbuild%2Fraztint%2Fmaster%2Fpyproject.toml&logo=python&logoColor=ffffff&logoSize=auto&label=Python&labelColor=1b1b1b&color=ab0000&cacheSeconds=3600)
 
 ---
 
