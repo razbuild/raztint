@@ -12,8 +12,8 @@
 
 A zero-dependency Python library for ANSI coloring and smart CLI icons with automatic environment detection.
 
-| ASCII Icons | Nerd Font Icons | Unicode Icons |
-|------------|----------------|---------------|
+| ASCII Icons                                                                          | Nerd Font Icons                                                                             | Unicode Icons                                                                            |
+|--------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------|
 | ![ASCII](https://raw.githubusercontent.com/razbuild/raztint/master/assets/ascci.png) | ![Nerd Font](https://raw.githubusercontent.com/razbuild/raztint/master/assets/nerdfont.png) | ![Unicode](https://raw.githubusercontent.com/razbuild/raztint/master/assets/unicode.png) |
 
 ---
@@ -157,11 +157,11 @@ print(info(), "For your information")
 ### Icon Modes
 RazTint attempts to make your CLI look as good as possible by detecting the font capabilities of the terminal.
 
-| Mode | ok | err | warn | info | Condition |
-|------|----|-----|------|------|-----------|
-| Nerd |[󰄬] | [󰅖] | [󰈅] | [󰙎] | Detected Nerd Font via Env/Registry |
-| Std | [✓] | [✗] | [!] | [i] | UTF-8 supported, no Nerd Font |
-| ASCII | [OK] | [ERR] | [WARN] | [INFO] | Fallback |
+| Mode  | ok   | err   | warn   | info   | Condition                           |
+|-------|------|-------|--------|--------|-------------------------------------|
+| Nerd  | [󰄬] | [󰅖]  | [󰈅]   | [󰙎]   | Detected Nerd Font via Env/Registry |
+| Std   | [✓]  | [✗]   | [!]    | [i]    | UTF-8 supported, no Nerd Font       |
+| ASCII | [OK] | [ERR] | [WARN] | [INFO] | Fallback                            |
 
 > Note: Icons may not render correctly in GitHub preview depending on your browser font.
 
@@ -195,13 +195,13 @@ RazTint determines the best available icon and color mode using the following ru
 
 You can control **RazTint** behavior using environment variables. This is useful for CI/CD pipelines or user overrides.
 
-| Environment Variable | Value | Description |
-|----------------------|-------|-------------|
-| `NO_COLOR` | any | Disables all color output (standard specification). |
-| `RAZTINT_NO_COLOR` | any | Specific override to disable RazTint colors. |
-| `RAZTINT_FORCE_COLOR` | `1`, `true`, `yes`, `on` | Forces color output even if not a TTY. |
-| `RAZTINT_USE_NERD_ICONS` | `1`, `true`, `yes`, `on` | Forces the use of Nerd Font icons. |
-| `RAZTINT_NO_NERD_ICONS` | `1`, `true`, `yes`, `on` | Disables Nerd Font detection (falls back to Standard Unicode mode). |
+| Environment Variable     | Value                    | Description                                                         |
+|--------------------------|--------------------------|---------------------------------------------------------------------|
+| `NO_COLOR`               | any                      | Disables all color output (standard specification).                 |
+| `RAZTINT_NO_COLOR`       | any                      | Specific override to disable RazTint colors.                        |
+| `RAZTINT_FORCE_COLOR`    | `1`, `true`, `yes`, `on` | Forces color output even if not a TTY.                              |
+| `RAZTINT_USE_NERD_ICONS` | `1`, `true`, `yes`, `on` | Forces the use of Nerd Font icons.                                  |
+| `RAZTINT_NO_NERD_ICONS`  | `1`, `true`, `yes`, `on` | Disables Nerd Font detection (falls back to Standard Unicode mode). |
 
 
 ### Programmatically:
