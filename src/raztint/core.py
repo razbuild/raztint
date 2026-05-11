@@ -3,6 +3,7 @@ from collections.abc import Callable
 from .colors import COLORS
 from .env_detect import get_icon_mode, supports_color
 from .icons import ICONS
+from .styles import STYLES
 
 
 class RazTint:
@@ -11,12 +12,16 @@ class RazTint:
     def __init__(self) -> None:
         self.colors = COLORS
         self.icons = ICONS
+        self.styles = STYLES
 
         self.use_color: bool = supports_color()
         self.icon_mode: str = get_icon_mode()
 
         for name, code in self.colors.items():
             setattr(self, name.lower(), self._make_color_func(code))
+
+        for name, (on, off) in self.styles.items():
+            setattr(self, name.lower(), self._make_style_func(on, off))
 
         for name, data in self.icons.items():
             color_key = data.get("color", "WHITE")
@@ -37,6 +42,9 @@ class RazTint:
     def _make_color_func(self, code: str) -> Callable[[str], str]:
         return lambda text: self.color(text, code)
 
+    def _make_style_func(self, on: str, off: str) -> Callable[[str], str]:
+        return lambda text: self.style(text, on, off)
+
     def _make_icon_func(self, data: dict[str, str], code: str) -> Callable[[], str]:
         def fn() -> str:
             if self.icon_mode == "nerd":
@@ -55,6 +63,16 @@ class RazTint:
         if not self.use_color:
             return text
         return f"\033[{fg_code}m{text}\033[0m"
+
+    def style(self, text: str, on_code: str, off_code: str) -> str:
+        """Apply ANSI style to text with style-specific reset.
+
+        Uses a targeted reset code (e.g. 22, 23, 24) instead of the
+        generic \033[0m so that any previously applied colors are preserved.
+        """
+        if not self.use_color:
+            return text
+        return f"\033[{on_code}m{text}\033[{off_code}m"
 
     def set_color(self, enabled: bool) -> None:
         """Enable or disable color output programmatically."""

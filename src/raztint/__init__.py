@@ -26,6 +26,12 @@ bright_magenta = tint.bright_magenta  # type: ignore
 bright_cyan = tint.bright_cyan  # type: ignore
 bright_white = tint.bright_white  # type: ignore
 
+bold = tint.bold  # type: ignore
+dim = tint.dim  # type: ignore
+italic = tint.italic  # type: ignore
+underline = tint.underline  # type: ignore
+strikethrough = tint.strikethrough  # type: ignore
+
 __all__ = [
     "RazTint",
     "tint",
@@ -49,5 +55,10 @@ __all__ = [
     "bright_magenta",
     "bright_cyan",
     "bright_white",
+    "bold",
+    "dim",
+    "italic",
+    "underline",
+    "strikethrough",
     "__version__",
 ]
