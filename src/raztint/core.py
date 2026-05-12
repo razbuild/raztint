@@ -1,6 +1,6 @@
 from collections.abc import Callable
 
-from .colors import COLORS
+from .colors import BACKGROUND_COLORS, COLORS
 from .env_detect import get_icon_mode, supports_color
 from .icons import ICONS
 from .styles import STYLES
@@ -11,6 +11,7 @@ class RazTint:
 
     def __init__(self) -> None:
         self.colors = COLORS
+        self.backgrounds = BACKGROUND_COLORS
         self.icons = ICONS
         self.styles = STYLES
 
@@ -19,6 +20,9 @@ class RazTint:
 
         for name, code in self.colors.items():
             setattr(self, name.lower(), self._make_color_func(code))
+
+        for name, code in self.backgrounds.items():
+            setattr(self, name.lower(), self._make_background_func(code))
 
         for name, (on, off) in self.styles.items():
             setattr(self, name.lower(), self._make_style_func(on, off))
@@ -42,6 +46,9 @@ class RazTint:
     def _make_color_func(self, code: str) -> Callable[[str], str]:
         return lambda text: self.color(text, code)
 
+    def _make_background_func(self, code: str) -> Callable[[str], str]:
+        return lambda text: self.background(text, code)
+
     def _make_style_func(self, on: str, off: str) -> Callable[[str], str]:
         return lambda text: self.style(text, on, off)
 
@@ -63,6 +70,12 @@ class RazTint:
         if not self.use_color:
             return text
         return f"\033[{fg_code}m{text}\033[0m"
+
+    def background(self, text: str, bg_code: str) -> str:
+        """Apply ANSI background color code to text."""
+        if not self.use_color:
+            return text
+        return f"\033[{bg_code}m{text}\033[49m"
 
     def style(self, text: str, on_code: str, off_code: str) -> str:
         """Apply ANSI style to text with style-specific reset.

@@ -28,6 +28,23 @@ bright_magenta = tint.bright_magenta  # type: ignore
 bright_cyan = tint.bright_cyan  # type: ignore
 bright_white = tint.bright_white  # type: ignore
 
+bg_black = tint.bg_black  # type: ignore
+bg_red = tint.bg_red  # type: ignore
+bg_green = tint.bg_green  # type: ignore
+bg_yellow = tint.bg_yellow  # type: ignore
+bg_blue = tint.bg_blue  # type: ignore
+bg_magenta = tint.bg_magenta  # type: ignore
+bg_cyan = tint.bg_cyan  # type: ignore
+bg_white = tint.bg_white  # type: ignore
+bg_gray = tint.bg_gray  # type: ignore
+bg_bright_red = tint.bg_bright_red  # type: ignore
+bg_bright_green = tint.bg_bright_green  # type: ignore
+bg_bright_yellow = tint.bg_bright_yellow  # type: ignore
+bg_bright_blue = tint.bg_bright_blue  # type: ignore
+bg_bright_magenta = tint.bg_bright_magenta  # type: ignore
+bg_bright_cyan = tint.bg_bright_cyan  # type: ignore
+bg_bright_white = tint.bg_bright_white  # type: ignore
+
 bold = tint.bold  # type: ignore
 dim = tint.dim  # type: ignore
 italic = tint.italic  # type: ignore
@@ -57,6 +74,22 @@ __all__ = [
     "bright_magenta",
     "bright_cyan",
     "bright_white",
+    "bg_black",
+    "bg_red",
+    "bg_green",
+    "bg_yellow",
+    "bg_blue",
+    "bg_magenta",
+    "bg_cyan",
+    "bg_white",
+    "bg_gray",
+    "bg_bright_red",
+    "bg_bright_green",
+    "bg_bright_yellow",
+    "bg_bright_blue",
+    "bg_bright_magenta",
+    "bg_bright_cyan",
+    "bg_bright_white",
     "bold",
     "dim",
     "italic",

@@ -1,6 +1,8 @@
 import os
 from unittest import mock
 
+from raztint import bg_blue, bg_red, tint
+from raztint.colors import BACKGROUND_COLORS
 from raztint.core import RazTint
 from raztint.styles import STYLES
 
@@ -30,6 +32,11 @@ class TestColorizer:
         assert hasattr(raztint, "white")
         assert hasattr(raztint, "gray")
 
+        # Background colors
+        assert hasattr(raztint, "bg_red")
+        assert hasattr(raztint, "bg_blue")
+        assert hasattr(raztint, "bg_bright_white")
+
         # Icons
         assert hasattr(raztint, "ok")
         assert hasattr(raztint, "err")
@@ -53,6 +60,49 @@ class TestColorizer:
         assert "\033[31m" in result
         assert "test" in result
         assert "\033[0m" in result
+
+    def test_background_methods_exist(self):
+        """Test that dynamic background color methods are created."""
+        raztint = RazTint()
+        for background_name in BACKGROUND_COLORS:
+            assert hasattr(raztint, background_name.lower())
+
+    def test_background_method_disabled(self):
+        """Test background method returns plain text when disabled."""
+        raztint = RazTint()
+        raztint.set_color(False)
+
+        assert raztint.background("test", "41") == "test"
+        assert raztint.bg_red("test") == "test"
+
+    def test_background_method_enabled_uses_background_reset(self):
+        """Test background colors use ANSI background codes and reset 49."""
+        raztint = RazTint()
+        raztint.set_color(True)
+
+        assert raztint.bg_red("test") == "\033[41mtest\033[49m"
+        assert raztint.bg_gray("test") == "\033[100mtest\033[49m"
+
+    def test_background_preserves_outer_foreground_color(self):
+        """Background reset should not clear an outer foreground color."""
+        raztint = RazTint()
+        raztint.set_color(True)
+
+        assert (
+            raztint.red(raztint.bg_blue("test"))
+            == "\033[31m\033[44mtest\033[49m\033[0m"
+        )
+
+    def test_module_level_background_helpers(self):
+        """Module-level singleton exposes background helpers."""
+        original_use_color = tint.use_color
+        tint.set_color(True)
+
+        try:
+            assert bg_red("test") == "\033[41mtest\033[49m"
+            assert bg_blue("test") == "\033[44mtest\033[49m"
+        finally:
+            tint.set_color(original_use_color)
 
     def test_env_no_color(self):
         """Test NO_COLOR environment variable."""

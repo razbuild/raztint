@@ -61,7 +61,7 @@ that script, done right and fully tested.
 
 - Zero external dependencies (Python ≥ 3.10 standard library only)
 - Three-tiered icon fallback: Nerd Font → Unicode → ASCII, with environment-aware detection
-- Full ANSI 16-color support for foreground text
+- Full ANSI 16-color support for foreground and background text
 - Automatic TTY and Windows VT detection
 - Fully type-hinted public API
 - Support for text styles: bold, dim, italic, underline, and strikethrough
@@ -105,7 +105,7 @@ You can import functions directly for quick usage, or instantiate the class for 
 The easiest way to use RazTint is importing the pre-instantiated helpers:
 
 ```python
-from raztint import green, red, ok, err, info, warn, bold, underline
+from raztint import bg_blue, green, red, ok, err, info, warn, bold, underline
 
 # Coloring text
 print(green("Success! The operation completed."))
@@ -114,6 +114,7 @@ print(red("Critical Error: Database not found."))
 # Styling text
 print(bold("This is bold text."))
 print(underline(red("This is underlined red text.")))
+print(red(bg_blue("This is red text on a blue background.")))
 
 # Using Icons (Auto-adapts to Nerd Font/Unicode/ASCII)
 print(f"{ok()} File saved successfully.")
@@ -237,6 +238,24 @@ The following functions return strings wrapped with ANSI styling when supported:
 | `white(text)`   | `bright_white(text)` |
 
 Internally, these use `tint.color()`.
+
+### Background Color Functions
+
+The following functions return strings wrapped with ANSI background colors when supported:
+
+| Standard Backgrounds | Bright Variants              |
+|----------------------|------------------------------|
+| `bg_black(text)`     | `bg_gray(text)`              |
+| `bg_red(text)`       | `bg_bright_red(text)`        |
+| `bg_green(text)`     | `bg_bright_green(text)`      |
+| `bg_yellow(text)`    | `bg_bright_yellow(text)`     |
+| `bg_blue(text)`      | `bg_bright_blue(text)`       |
+| `bg_magenta(text)`   | `bg_bright_magenta(text)`    |
+| `bg_cyan(text)`      | `bg_bright_cyan(text)`       |
+| `bg_white(text)`     | `bg_bright_white(text)`      |
+
+Internally, these use `tint.background()` and reset with `\033[49m`, so nested
+background colors do not clear an outer foreground color.
 
 ### Text Style Functions
 In addition to colors, RazTint provides functions for applying text styles. 
