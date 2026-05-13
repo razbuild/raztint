@@ -280,6 +280,77 @@ print(underline("This text is underlined."))
 ```
 > Known Limitation: bold and dim share the same ANSI reset code. Nesting one inside the other may lead to unexpected behavior.
 
+### `format_text()` – Combine Colors, Backgrounds, and Styles
+
+Instead of deeply nested function calls, use `format_text()` to apply multiple styling options in a single call.
+
+**Signature:**
+```python
+format_text(text: str, color: str | int | None = None, bg: str | int | None = None,
+            styles: str | list[str] | None = None, reset: bool = True) -> str
+```
+
+**Parameters:**
+- `text`: The text to format
+- `color`: Foreground color name (e.g., `"red"`, `"bright_green"`) or ANSI code (31, 91), or `None`
+- `bg`: Background color name (e.g., `"red"`, `"bg_red"`) or ANSI code (41, 101), or `None`
+- `styles`: A single style string (e.g., `"bold"`), list of style names (e.g., `["bold", "underline"]`), or `None`
+- `reset`: If `True` (default), appends a full reset code `\033[0m`. If `False`, only style-specific resets are applied.
+
+**Returns:** Formatted text with ANSI codes if color is enabled, plain text otherwise.
+
+**Examples:**
+
+```python
+from raztint import format_text
+
+# Single style and color
+print(format_text("Error", color="red", styles="bold"))
+
+# Multiple styles with background
+print(format_text("Alert", color="white", bg="red", styles=["bold", "underline"]))
+
+# Using the module-level function
+print(format_text("Important message", color="yellow", bg="blue", styles="bold"))
+```
+
+**Comparison with nested calls:**
+
+```python
+# Old way (deeply nested)
+from raztint import red, bold, underline
+print(bold(underline(red("Important message"))))
+
+# New way (cleaner and more readable)
+from raztint import format_text
+print(format_text("Important message", color="red", styles=["bold", "underline"]))
+```
+
+**Advanced: Concatenation with `reset=False`**
+
+If you need to concatenate multiple formatted sections without a hard reset between them (useful for building up colored output), use `reset=False`:
+
+```python
+from raztint import format_text
+
+part1 = format_text("WARNING:", color="yellow", reset=False)
+part2 = format_text(" Disk full", color="red")
+print(part1 + part2)
+```
+
+**Valid color names:**
+Standard: `"black"`, `"red"`, `"green"`, `"yellow"`, `"blue"`, `"magenta"`, `"cyan"`, `"white"`, `"gray"`
+Bright: `"bright_red"`, `"bright_green"`, `"bright_yellow"`, `"bright_blue"`, `"bright_magenta"`, `"bright_cyan"`, `"bright_white"`
+
+For backgrounds, use the same names (e.g., `bg="red"` or `bg="bright_green"`).
+
+**Valid style names:**
+- `"bold"`
+- `"dim"`
+- `"italic"`
+- `"underline"`
+- `"strikethrough"`
+
 ---
 
 ## Icon Functions

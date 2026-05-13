@@ -51,6 +51,8 @@ italic = tint.italic
 underline = tint.underline
 strikethrough = tint.strikethrough
 
+format_text = tint.format_text
+
 __all__ = [
     "RazTint",
     "tint",
@@ -95,5 +97,6 @@ __all__ = [
     "italic",
     "underline",
     "strikethrough",
+    "format_text",
     "__version__",
 ]
