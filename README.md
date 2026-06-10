@@ -13,9 +13,11 @@
 
 ## Preview
 
-| ASCII Icons | Nerd Font Icons | Unicode Icons |
-|---|---|---|
-| ![ASCII](https://raw.githubusercontent.com/razbuild/raztint/master/assets/ascii.png) | ![Nerd Font](https://raw.githubusercontent.com/razbuild/raztint/master/assets/nerdfont.png) | ![Unicode](https://raw.githubusercontent.com/razbuild/raztint/master/assets/unicode.png) |
+## Preview
+
+<p align="center">
+  <img src="./assets/preview.png" alt="RazTint preview: Nerd Font, Unicode, and ASCII icon modes with colored and styled output examples" width="644"/>
+</p>
 
 ---
 
