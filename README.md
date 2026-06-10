@@ -13,10 +13,8 @@
 
 ## Preview
 
-## Preview
-
 <p align="center">
-  <img src="./assets/preview.png" alt="RazTint preview: Nerd Font, Unicode, and ASCII icon modes with colored and styled output examples" width="644"/>
+  <img src="./assets/preview.png" alt="RazTint preview: Nerd Font, Unicode, and ASCII icon modes with colored and styled output examples" width="678"/>
 </p>
 
 ---
