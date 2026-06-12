@@ -33,6 +33,8 @@
 - [Known Limitations](#known-limitations)
 - [Contributing](#contributing)
 - [License](#license)
+  <img src="./assets/preview.png" alt="RazTint preview: Nerd Font, Unicode, and ASCII icon modes with colored and styled output examples" width="678"/>
+</p>
 
 ---
 
