@@ -17,6 +17,7 @@ from raztint import bold, dim, err, info, ok, paint, warn
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
 
+
 def header(text: str) -> None:
     print()
     print(paint(f"  {text}", color="bright_white", styles="bold"))
@@ -47,16 +48,16 @@ def status(msg: str) -> None:
 # ── Simulated processing logic ────────────────────────────────────────────────
 
 FILES = [
-    {"name": "report_q1.csv",      "size_kb": 128,  "status": "ok"},
-    {"name": "data_export.json",   "size_kb": 2048, "status": "ok"},
-    {"name": "corrupt_file.bin",   "size_kb": 0,    "status": "error"},
-    {"name": "archive_2024.tar",   "size_kb": 8192, "status": "ok"},
-    {"name": "temp_upload.tmp",    "size_kb": 512,  "status": "warn"},
+    {"name": "report_q1.csv", "size_kb": 128, "status": "ok"},
+    {"name": "data_export.json", "size_kb": 2048, "status": "ok"},
+    {"name": "corrupt_file.bin", "size_kb": 0, "status": "error"},
+    {"name": "archive_2024.tar", "size_kb": 8192, "status": "ok"},
+    {"name": "temp_upload.tmp", "size_kb": 512, "status": "warn"},
 ]
 
 CONFIG = {
     "output_dir": "/tmp/processed",
-    "api_key": "sk-abc123secret",        # will be redacted in logs
+    "api_key": "sk-abc123secret",  # will be redacted in logs
     "db_url": "postgres://user:pass@db.internal/prod",
 }
 
@@ -110,17 +111,18 @@ def run() -> None:
     def row(label: str, value: str, color: str) -> None:
         print(f"  {label:<{col_w}}{paint(value, color=color, styles='bold')}")
 
-    row("Files validated:",  str(validated),                 "green")
-    row("Files processed:",  str(processed),                 "green")
-    row("Skipped (empty):",  str(skipped),                   "yellow")
-    row("Errors:",           str(errors),                    "red" if errors else "green")
-    row("Output directory:", CONFIG["output_dir"],           "cyan")
+    row("Files validated:", str(validated), "green")
+    row("Files processed:", str(processed), "green")
+    row("Skipped (empty):", str(skipped), "yellow")
+    row("Errors:", str(errors), "red" if errors else "green")
+    row("Output directory:", CONFIG["output_dir"], "cyan")
 
     print()
     if errors == 0:
         print(f"  {ok()} {bold('All files processed successfully.')}")
     else:
-        print(f"  {err()} {paint(f'{errors} file(s) failed — check logs above.', color='red')}")
+        msg = paint(f"{errors} file(s) failed — check logs above.", color="red")
+        print(f"  {err()} {msg}")
     print()
 
 

@@ -7,8 +7,6 @@
 [![Python Versions](https://img.shields.io/pypi/pyversions/raztint)](https://pypi.org/project/raztint/)
 [![License](https://img.shields.io/pypi/l/raztint)](https://github.com/razbuild/raztint/blob/master/LICENSE)
 [![Zero Dependencies](https://img.shields.io/badge/dependencies-zero-brightgreen)](https://github.com/razbuild/raztint)
-[![pytest](https://img.shields.io/badge/tested%20with-pytest-blue)](https://github.com/razbuild/raztint/actions)
-[![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
 
   <p>A zero-dependency Python library for ANSI coloring and smart CLI icons that automatically adapt to your environment.</p>
 </div>
@@ -33,8 +31,6 @@
 - [Known Limitations](#known-limitations)
 - [Contributing](#contributing)
 - [License](#license)
-  <img src="./assets/preview.png" alt="RazTint preview: Nerd Font, Unicode, and ASCII icon modes with colored and styled output examples" width="678"/>
-</p>
 
 ---
 

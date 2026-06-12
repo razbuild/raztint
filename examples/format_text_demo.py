@@ -14,34 +14,53 @@ from raztint import paint, tint
 # ── Foreground colors ─────────────────────────────────────────────────────────
 print("── Foreground colors ──")
 for color in (
-    "black", "red", "green", "yellow", "blue",
-    "magenta", "cyan", "white", "gray",
-    "bright_red", "bright_green", "bright_yellow", "bright_blue",
-    "bright_magenta", "bright_cyan", "bright_white",
+    "black",
+    "red",
+    "green",
+    "yellow",
+    "blue",
+    "magenta",
+    "cyan",
+    "white",
+    "gray",
+    "bright_red",
+    "bright_green",
+    "bright_yellow",
+    "bright_blue",
+    "bright_magenta",
+    "bright_cyan",
+    "bright_white",
 ):
     print(paint(f"  {color}", color=color))
 
 # ── Background colors ─────────────────────────────────────────────────────────
 print("\n── Background colors ──")
 for bg in (
-    "bg_red", "bg_green", "bg_yellow", "bg_blue",
-    "bg_magenta", "bg_cyan", "bg_white",
+    "bg_red",
+    "bg_green",
+    "bg_yellow",
+    "bg_blue",
+    "bg_magenta",
+    "bg_cyan",
+    "bg_white",
 ):
     print(paint(f"  {bg}", bg=bg))
 
 # ── Text styles ───────────────────────────────────────────────────────────────
 print("\n── Styles ──")
-print(paint("  bold",             styles="bold"))
-print(paint("  dim",              styles="dim"))
-print(paint("  italic",           styles="italic"))
-print(paint("  underline",        styles="underline"))
-print(paint("  strikethrough",    styles="strikethrough"))
+print(paint("  bold", styles="bold"))
+print(paint("  dim", styles="dim"))
+print(paint("  italic", styles="italic"))
+print(paint("  underline", styles="underline"))
+print(paint("  strikethrough", styles="strikethrough"))
 print(paint("  bold + underline", styles=["bold", "underline"]))
 
 # ── Color + background + style combined ──────────────────────────────────────
 print("\n── Combined: color + bg + styles ──")
 print(paint("  Highlighted warning", color="yellow", bg="bg_black", styles="bold"))
-print(paint("  Critical alert",      color="white",  bg="bg_red",   styles=["bold", "underline"]))
+print(
+    paint("  Critical alert", color="white", bg="bg_red", styles=["bold", "underline"])
+)
 
 # ── Icons via paint() ─────────────────────────────────────────────────────────
 print("\n── Icons via paint() ──")
@@ -55,13 +74,13 @@ for intent in ("success", "danger", "warning", "info", "pending", "debug"):
 
 # ── Intent overrides — explicit arg always wins ───────────────────────────────
 print("\n── Intent overrides ──")
-print(paint("  success intent, cyan color",    intent="success", color="cyan"))
-print(paint("  danger intent, no icon",        intent="danger",  icon=None))
-print(paint("  warning intent, bold style",    intent="warning", styles="bold"))
+print(paint("  success intent, cyan color", intent="success", color="cyan"))
+print(paint("  danger intent, no icon", intent="danger", icon=None))
+print(paint("  warning intent, bold style", intent="warning", styles="bold"))
 
 # ── paint() with reset=False — for multi-segment lines ───────────────────────
 print("\n── Concatenation with reset=False ──")
-label  = paint("  WARNING:", color="yellow", styles="bold", reset=False)
+label = paint("  WARNING:", color="yellow", styles="bold", reset=False)
 detail = paint(" Disk usage above 90%", color="red")
 print(label + detail)
 
