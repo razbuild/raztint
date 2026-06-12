@@ -7,19 +7,38 @@
 [![Python Versions](https://img.shields.io/pypi/pyversions/raztint)](https://pypi.org/project/raztint/)
 [![License](https://img.shields.io/pypi/l/raztint)](https://github.com/razbuild/raztint/blob/master/LICENSE)
 [![Zero Dependencies](https://img.shields.io/badge/dependencies-zero-brightgreen)](https://github.com/razbuild/raztint)
+[![pytest](https://img.shields.io/badge/tested%20with-pytest-blue)](https://github.com/razbuild/raztint/actions)
+[![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
 
   <p>A zero-dependency Python library for ANSI coloring and smart CLI icons that automatically adapt to your environment.</p>
 </div>
 
 ## Preview
 
-| ASCII Icons | Nerd Font Icons | Unicode Icons |
-|---|---|---|
-| ![ASCII](https://raw.githubusercontent.com/razbuild/raztint/master/assets/ascii.png) | ![Nerd Font](https://raw.githubusercontent.com/razbuild/raztint/master/assets/nerdfont.png) | ![Unicode](https://raw.githubusercontent.com/razbuild/raztint/master/assets/unicode.png) |
+<p align="center">
+  <img src="./assets/preview.png" alt="RazTint preview: Nerd Font, Unicode, and ASCII icon modes with colored and styled output examples" width="644"/>
+</p>
+
+---
+
+## Table of Contents
+
+- [Preview](#preview)
+- [Why RazTint?](#why-raztint)
+- [Features](#features)
+- [Requirements](#requirements)
+- [Installation](#installation)
+- [Quick Start](#quick-start)
+- [Documentation](#documentation)
+- [Known Limitations](#known-limitations)
+- [Contributing](#contributing)
+- [License](#license)
 
 ---
 
 ## Why RazTint?
+
+> 💡 RazTint believes terminal styling should be *zero-friction*: no dependencies, no configuration files, no guessing the user's environment. It figures out the rest so you can focus on your CLI logic.
 
 - **Zero dependencies** — Python ≥ 3.10 standard library only
 - **Smart icons** — Nerd Font → Unicode → ASCII fallback, with environment-aware detection
@@ -103,6 +122,23 @@ See [Getting Started](docs/getting-started.md) for more examples. Icon output de
 | [Icons & Detection](docs/icons-and-detection.md) | Icon modes and environment/font/color detection logic |
 | [Configuration](docs/configuration.md) | Environment variables and runtime toggles |
 | [Development](docs/development.md) | Local setup, tests, and linting |
+| [Tutorial](docs/tutorial.md) | Philosophy, detection walk-through, and best practices |
+
+### Examples
+
+| Script | Description |
+|---|---|
+| [`examples/basic_usage.py`](examples/basic_usage.py) | Colors, styles, icons, intents, and redaction in one script |
+| [`examples/format_text_demo.py`](examples/format_text_demo.py) | Full `paint()` showcase — every color, style, and icon mode |
+| [`examples/real_world_cli.py`](examples/real_world_cli.py) | Simulated file-processor CLI showing real integration patterns |
+
+---
+
+## Known Limitations
+
+- **Python 3.10+** — older versions are not supported.
+- **Font detection relies on OS tools** — `fc-list` (Linux), `system_profiler` (macOS), PowerShell (Windows). Set `RAZTINT_SKIP_SYSTEM_FONT_SCAN=1` in sandboxed environments.
+- **Strict `NO_COLOR` compliance** — when `NO_COLOR` is set, all colour output is suppressed regardless of other settings.
 
 ---
 
