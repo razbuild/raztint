@@ -17,6 +17,7 @@ from ..icons.resolve import resolve_icon
 from ..security.masking import MaskRule
 from .ansi import apply_background, apply_color, apply_style
 from .builder import register_dynamic_methods
+from .extended import color256_bg, color256_fg, hex_bg, hex_fg, rgb_bg, rgb_fg
 
 
 class RazTint:
@@ -64,6 +65,34 @@ class RazTint:
             mode=mode,
             has_nerd_fonts=self._has_nerd_fonts,
         )
+
+    # ── Extended color methods ────────────────────────────────────────────────
+
+    def rgb(self, text: str, r: int, g: int, b: int) -> str:
+        """Apply a 24-bit True Color foreground via RGB channels."""
+        return rgb_fg(text, r, g, b, use_color=self.use_color)
+
+    def bg_rgb(self, text: str, r: int, g: int, b: int) -> str:
+        """Apply a 24-bit True Color background via RGB channels."""
+        return rgb_bg(text, r, g, b, use_color=self.use_color)
+
+    def hex_color(self, text: str, hex_str: str) -> str:
+        """Apply a 24-bit True Color foreground via hex string (e.g. '#FF6432')."""
+        return hex_fg(text, hex_str, use_color=self.use_color)
+
+    def bg_hex_color(self, text: str, hex_str: str) -> str:
+        """Apply a 24-bit True Color background via hex string."""
+        return hex_bg(text, hex_str, use_color=self.use_color)
+
+    def color256(self, text: str, index: int) -> str:
+        """Apply a 256-color palette foreground (index 0-255)."""
+        return color256_fg(text, index, use_color=self.use_color)
+
+    def bg_color256(self, text: str, index: int) -> str:
+        """Apply a 256-color palette background (index 0-255)."""
+        return color256_bg(text, index, use_color=self.use_color)
+
+    # ── format_text ───────────────────────────────────────────────────────────
 
     def format_text(
         self,
