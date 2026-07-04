@@ -96,6 +96,36 @@ class TestGetIconMode:
 
 
 def test_enable_windows_vt_mode_handles_missing_windll() -> None:
-    with mock.patch("raztint.detect.env.ctypes", create=True) as fake_ctypes:
-        fake_ctypes.windll = None
+    fake_ctypes = mock.Mock()
+    fake_ctypes.windll = None
+    with mock.patch.dict("sys.modules", {"ctypes": fake_ctypes}):
+        assert enable_windows_vt_mode() is False
+
+
+def test_enable_windows_vt_mode_handles_invalid_stdout_handle() -> None:
+    fake_ctypes = mock.Mock()
+    fake_ctypes.windll.kernel32.GetStdHandle.return_value = -1
+    with mock.patch.dict("sys.modules", {"ctypes": fake_ctypes}):
+        assert enable_windows_vt_mode() is False
+
+
+def test_enable_windows_vt_mode_handles_get_console_mode_failure() -> None:
+    fake_ctypes = mock.Mock()
+    fake_ctypes.c_uint32.return_value = mock.Mock(value=0)
+    fake_ctypes.byref.side_effect = lambda value: value
+    fake_ctypes.windll.kernel32.GetStdHandle.return_value = 42
+    fake_ctypes.windll.kernel32.GetConsoleMode.return_value = 0
+    with mock.patch.dict("sys.modules", {"ctypes": fake_ctypes}):
+        assert enable_windows_vt_mode() is False
+
+
+def test_enable_windows_vt_mode_returns_false_when_set_console_mode_fails() -> None:
+    fake_ctypes = mock.Mock()
+    mode = mock.Mock(value=7)
+    fake_ctypes.c_uint32.return_value = mode
+    fake_ctypes.byref.side_effect = lambda value: value
+    fake_ctypes.windll.kernel32.GetStdHandle.return_value = 42
+    fake_ctypes.windll.kernel32.GetConsoleMode.return_value = 1
+    fake_ctypes.windll.kernel32.SetConsoleMode.return_value = 0
+    with mock.patch.dict("sys.modules", {"ctypes": fake_ctypes}):
         assert enable_windows_vt_mode() is False
