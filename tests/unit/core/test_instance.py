@@ -271,3 +271,15 @@ class TestColorizer:
             combined.index("\033[1m") : combined.index("\033[22m") + len("\033[22m")
         ]
         assert "\033[0m" not in style_part
+
+
+def test_private_resolve_icon():
+    raztint = RazTint()
+
+    with mock.patch(
+        "raztint.core.instance.resolve_icon",
+        return_value="[✓]",
+    ) as mocked:
+        assert raztint._resolve_icon("ok") == "[✓]"
+
+    mocked.assert_called_once()

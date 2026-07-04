@@ -51,7 +51,7 @@ class TestFormatText:
         raztint = RazTint()
         raztint.set_color(True)
 
-        result = raztint.format_text("test", color="RED")
+        result = raztint.format_text("test", color="red")
         assert "\033[31m" in result
 
     def test_format_text_color_integer_code(self):
