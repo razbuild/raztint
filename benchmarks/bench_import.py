@@ -1,11 +1,15 @@
 import importlib
+import sys
+
 import pyperf
 
+
 def benchmark_import_time():
-    # Force a fresh reload of the module to measure real import overhead
-    if "raztint" in __import__("sys").modules:
-        del __import__("sys").modules["raztint"]
+    for name in list(sys.modules):
+        if name == "raztint" or name.startswith("raztint."):
+            del sys.modules[name]
     importlib.import_module("raztint")
+
 
 if __name__ == "__main__":
     runner = pyperf.Runner()

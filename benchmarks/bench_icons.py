@@ -1,13 +1,32 @@
 import pyperf
-from raztint.icons import IconRegistry # Assumes standard module layout
+
+from raztint.core.ansi import apply_color
+from raztint.data.colors import COLORS
+from raztint.icons.registry import ICONS
+from raztint.icons.resolve import resolve_icon
+
+
+class _MockIconHost:
+    """Minimal stand-in for the real IconHost protocol implementation,
+    built only to exercise resolve_icon() in isolation for benchmarking.
+    """
+
+    icons = ICONS
+    icon_mode = "auto"
+    colors = COLORS
+
+    @staticmethod
+    def color(symbol: str, color_code: str) -> str:
+        return apply_color(symbol, color_code, use_color=True)
+
 
 def benchmark_icon_fallback_logic():
-    registry = IconRegistry()
-    # Mock a dense array of icon lookups to cycle the cache
-    icon_queries = ["home", "user", "settings", "trash_fallback", "missing_node"] * 30
-    
+    ctx = _MockIconHost()
+    # Cycle through every real icon name to exercise the "auto" fallback branch
+    icon_queries = ["ok", "err", "warn", "info", "pending", "debug"] * 25
     for query in icon_queries:
-        registry.get_icon(query, fallback_style="ascii")
+        resolve_icon(ctx, query, has_nerd_fonts=lambda: False)
+
 
 if __name__ == "__main__":
     runner = pyperf.Runner()

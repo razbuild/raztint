@@ -1,13 +1,16 @@
 import pyperf
-from raztint.intents import IntentResolver # Assumes standard module layout
+
+from raztint.data.intents import INTENTS
+
 
 def benchmark_semantic_intent_resolution():
-    resolver = IntentResolver()
     # Populate a complex simulation pattern matrix of intents
-    intents = ["info", "warning", "error", "success", "critical"] * 20
-    
+    # Note: only keys that actually exist in INTENTS are used
+    # ("error" -> "danger", "critical" has no equivalent and was dropped)
+    intents = ["info", "warning", "danger", "success", "pending"] * 20
     for intent in intents:
-        resolver.resolve(intent)
+        INTENTS[intent]
+
 
 if __name__ == "__main__":
     runner = pyperf.Runner()

@@ -1,5 +1,29 @@
 # Changelog
 
+## [0.8.3] - 2026-07-07
+
+### Added
+
+- Added `benchmarks/` directory for performance benchmarking by @Shouryaverma19 in #16
+
+### Performance
+
+- Improved environment detection performance
+- Optimized font rendering performance
+
+### Tests
+
+- Added new test coverage
+- Added `test_env.py` by @nightcityblade in #18
+
+### Docs
+
+- Improved project documentation
+- Enhanced README with clearer explanations
+- Updated and expanded usage examples
+
+---
+
 ## [0.8.2] - 2026-06-28
 
 ### Fixed
