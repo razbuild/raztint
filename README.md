@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="assets/RazTint.svg" alt="RazTint" width="400" />
+  <img src="https://raw.githubusercontent.com/razbuild/raztint/master/assets/RazTint.svg" alt="RazTint" width="400" />
   <br><br>
   
 [![PyPI Version](https://img.shields.io/pypi/v/raztint)](https://pypi.org/project/raztint/)
