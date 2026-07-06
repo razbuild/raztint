@@ -186,5 +186,5 @@ See [CONTRIBUTING.md](https://github.com/razbuild/.github/blob/main/CONTRIBUTING
 [![License](https://img.shields.io/pypi/l/raztint)](https://github.com/razbuild/raztint/blob/master/LICENSE)
 
 <div align="center">
-  <img src="https://raw.githubusercontent.com/razbuild/.github/main/profile/svg/badge.svg" alt="Made by RazBuild" width="160">
+  <img src="https://raw.githubusercontent.com/razbuild/.github/main/assets/badge.svg" alt="Made by RazBuild" width="160">
 </div>
