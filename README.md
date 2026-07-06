@@ -15,7 +15,7 @@
 ## Preview
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/razbuild/raztint/master/assets/RazTint.svg" alt="RazTint preview: Nerd Font, Unicode, and ASCII icon modes with colored and styled output examples" width="644"/>
+  <img src="./assets/preview.png" alt="RazTint preview: Nerd Font, Unicode, and ASCII icon modes with colored and styled output examples" width="644"/>
 </p>
 
 ---
