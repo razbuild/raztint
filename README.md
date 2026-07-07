@@ -25,7 +25,7 @@ RazTint defines a fixed mapping from intent (`success`, `danger`, `warning`, …
 ## Preview
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/razbuild/raztint/master/assets/preview.png" alt="RazTint preview: Nerd Font, Unicode, and ASCII icon modes with colored and styled output examples" width="644"/>
+  <img src="assets/preview.png" alt="RazTint preview: Nerd Font, Unicode, and ASCII icon modes with colored and styled output examples" width="644"/>
 </p>
 <p align="center"><em>A simulated production log stream 9 secrets detected, 9 secrets redacted, 0 leaked to the terminal.</em></p>
 
