@@ -92,13 +92,14 @@ More examples in [Getting Started](docs/getting-started.md).
 
 ## How It Compares
 
-| | `colorama` / `termcolor` | `rich` | RazTint |
-|---|---|---|---|
-| Focus | Raw ANSI codes | Terminal UIs (tables, progress bars) | Consistent CLI messages |
-| Semantic intents | Manual per call site | Manual per call site | Built in |
-| Icon fallback (Nerd Font → Unicode → ASCII) | No | Partial | Automatic, cached |
-| Secret redaction | No | No | Built in |
-| Dependencies | Minimal | Several | None |
+| Capability | colorama / termcolor | rich | RazTint |
+|:--|:--:|:--:|:--:|
+| ANSI color support | ✅ | ✅ | ✅ |
+| Terminal UI components | ❌ | ✅ | ❌ |
+| Semantic logging intents | ❌ | ❌ | ✅ |
+| Automatic icon fallback | ❌ | ⚠️ Partial | ✅ |
+| Secret masking | ❌ | ❌ | ✅ |
+| Extra dependencies | None | Several | None |
 
 RazTint isn't a `rich` replacement for dashboards or tables, it solves the narrower problem of making `ok`/`err`/`warn`/`info` messages consistent and safe by default.
 
