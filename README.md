@@ -127,7 +127,7 @@ logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 logger: Logger = getLogger(__name__)
 
 logger.info(paint("Database migration completed.", intent="success", icon=None))
-logger.warning(paint("Disk usage above 90%.", intent="warning", icon=None, style="dim"))
+logger.warning(paint("Disk usage above 90%.", intent="warning", icon=None, styles="dim"))
 logger.error(
     paint("Authentication failed for token=abc123", intent="danger", redact=True, icon=None)
 )

@@ -29,7 +29,7 @@ DEFAULT_RULES: tuple[MaskRule, ...] = (
         r"\1-****-****-\2",
     ),
     MaskRule(
-        r"(?i)((?:password|passwd|secret|api_?key)\s*[=:]\s*)(?!\*{4})(\S+)",
+        r"(?i)((?:password|passwd|secret|api_?key|token)\s*[=:]\s*)(?!\S*\*{4})(\S+)",
         "generic_secret",
         r"\1****",
     ),
