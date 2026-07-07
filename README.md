@@ -1,74 +1,56 @@
 <div align="center">
   <img src="https://raw.githubusercontent.com/razbuild/raztint/master/assets/RazTint.svg" alt="RazTint" width="400" />
   <br><br>
-  
+
 [![PyPI Version](https://img.shields.io/pypi/v/raztint)](https://pypi.org/project/raztint/)
 [![Zero Dependencies](https://img.shields.io/badge/dependencies-zero-brightgreen)](https://github.com/razbuild/raztint)
 [![Codecov](https://img.shields.io/codecov/c/github/razbuild/raztint)](https://codecov.io/gh/razbuild/raztint)
 
 [![Python Versions](https://img.shields.io/pypi/pyversions/raztint)](https://pypi.org/project/raztint/)
 [![PyPI Downloads](https://static.pepy.tech/badge/raztint)](https://pepy.tech/project/raztint)
-
-  <p>A zero-dependency Python library for ANSI coloring and smart CLI icons that automatically adapt to your environment.</p>
 </div>
+
+Every module in a CLI codebase ends up inventing its own way to print "success" or "error." One file uses green text, another uses an emoji, a third does both differently. Output looks inconsistent, breaks in CI, and nobody notices until a log line leaks a password.
+
+```python
+# before
+print("\033[32mSuccess\033[0m")
+
+# after
+print(paint("Success", intent="success"))
+```
+
+RazTint defines a fixed mapping from intent (`success`, `danger`, `warning`, …) to color and icon once, and every call site reuses that same mapping instead of picking its own.
 
 ## Preview
 
 <p align="center">
-  <img src="./assets/preview.png" alt="RazTint preview: Nerd Font, Unicode, and ASCII icon modes with colored and styled output examples" width="644"/>
+  <img src="https://raw.githubusercontent.com/razbuild/raztint/master/assets/preview.png" alt="RazTint preview: Nerd Font, Unicode, and ASCII icon modes with colored and styled output examples" width="644"/>
 </p>
-
----
+<p align="center"><em>A simulated production log stream 9 secrets detected, 9 secrets redacted, 0 leaked to the terminal.</em></p>
 
 ## Table of Contents
 
-- [Preview](#preview)
-- [Why RazTint?](#why-raztint)
-- [Features](#features)
-- [Requirements](#requirements)
+- [When to Use RazTint](#when-to-use-raztint)
 - [Installation](#installation)
 - [Quick Start](#quick-start)
+- [How It Compares](#how-it-compares)
+- [Features](#features)
+- [Logging Integration Example](#logging-integration-example)
 - [Documentation](#documentation)
-- [Extended Colors](#extended-colors)
 - [Known Limitations](#known-limitations)
 - [Contributing](#contributing)
 - [License](#license)
 
----
+## When to Use RazTint
 
-## Why RazTint?
+Reach for it if your CLI prints more than a couple of message types and you want them to look the same across modules, or you need output that renders correctly in CI, on Windows, and on terminals without a Nerd Font.
 
-> [!NOTE]
-> RazTint believes terminal styling should be *zero-friction*: no dependencies, no configuration files, no guessing the user's environment. It figures out the rest so you can focus on your CLI logic.
-
-- **Zero dependencies** — Python ≥ 3.10 standard library only
-- **Smart icons** — Nerd Font → Unicode → ASCII fallback, with environment-aware detection
-- **Cross-platform behavior** — Linux, macOS, and Windows, including CI
-- **Minimal setup** — import and use; detection is cached and fast
-
----
-
-## Features
-
-- 🎨 Full ANSI 16-color foreground and background support
-- 🌈 Extended colors: 24-bit True Color (`rgb`, `hex_color`) and 256-color (`color256`)
-- ✨ Text styles: bold, dim, italic, underline, strikethrough
-- 🔍 Status icons with three-tier fallback and environment-aware detection
-- 🖌️ **`paint()`** — one call for color, background, styles, and icons
-- 🎯 **Intents** — semantic presets (`success`, `danger`, `warning`, …)
-- 🔒 **Redaction** — mask secrets in logs before printing
-- 💡 Fully type-hinted public API (`py.typed`, IDE autocompletion)
-- ⚙️ Configurable via environment variables (`NO_COLOR`, `RAZTINT_FORCE_COLOR`, …)
-
----
-
-## Requirements
-
-- Python 3.10 or newer
-
----
+For a single colored `print()` in a one-off script, plain ANSI codes or `termcolor` are simpler and enough.
 
 ## Installation
+
+Requires Python 3.10+.
 
 ```bash
 pip install raztint
@@ -82,8 +64,6 @@ cd raztint
 uv sync
 ```
 
----
-
 ## Quick Start
 
 ```python
@@ -92,14 +72,14 @@ from raztint import ok, paint
 print(f"{ok()} File saved.")
 print(paint("Connection failed.", color="red", icon="err"))
 
-# Semantic intents
+# intent sets color + icon together from one semantic name
 print(paint("Deployment complete.", intent="success"))
 
-# Mask secrets before logging
+# redact masks secrets before the string is printed
 print(paint("password=1234", intent="debug", redact=True))  # password=****
 ```
 
-Standalone redaction without formatting:
+Redaction on its own, without formatting:
 
 ```python
 from raztint import redact
@@ -108,9 +88,49 @@ print(redact("password=supersecret api_key=ghp_abc123"))
 # password=**** api_key=****
 ```
 
-See [Getting Started](docs/getting-started.md) for more examples. Icon output depends on the detected mode: Nerd Font, standard Unicode, or ASCII.
+More examples in [Getting Started](docs/getting-started.md).
 
----
+## How It Compares
+
+| | `colorama` / `termcolor` | `rich` | RazTint |
+|---|---|---|---|
+| Focus | Raw ANSI codes | Terminal UIs (tables, progress bars) | Consistent CLI messages |
+| Semantic intents | Manual per call site | Manual per call site | Built in |
+| Icon fallback (Nerd Font → Unicode → ASCII) | No | Partial | Automatic, cached |
+| Secret redaction | No | No | Built in |
+| Dependencies | Minimal | Several | None |
+
+RazTint isn't a `rich` replacement for dashboards or tables, it solves the narrower problem of making `ok`/`err`/`warn`/`info` messages consistent and safe by default.
+
+## Features
+
+- **Intents**: presets (`success`, `danger`, `warning`, `debug`, …) that separate meaning from styling
+- **`paint()`**: one call for color, background, styles, and icons
+- **Status icons**: `ok()`, `err()`, `warn()`, `info()`, each with the three-tier fallback
+- **Redaction**: pattern-based masking (`key=value` pairs like `password=`, `api_key=`, `token=`) applied as part of the formatting call, not a separate logging step; patterns are configurable, see [Security & Redaction](docs/redaction.md)
+- **Environment detection**: Nerd Font → Unicode → ASCII, cached; configurable via `NO_COLOR`, `RAZTINT_FORCE_COLOR`
+- **Typed**: `py.typed`, full public API type hints
+- **Low-level escape hatch**: raw 16-color, 256-color, and 24-bit True Color support, plus bold/dim/italic/underline/strikethrough, for when intents aren't enough
+
+## Logging Integration Example
+
+RazTint only returns a formatted string, it doesn't hook into `logging` or replace a handler. Pass that string to `print()`, a logger, or anything else that accepts a string.
+
+```python
+import logging
+from logging import Logger, getLogger
+
+from raztint import paint
+
+logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
+logger: Logger = getLogger(__name__)
+
+logger.info(paint("Database migration completed.", intent="success", icon=None))
+logger.warning(paint("Disk usage above 90%.", intent="warning", icon=None, style="dim"))
+logger.error(
+    paint("Authentication failed for token=abc123", intent="danger", redact=True, icon=None)
+)
+```
 
 ## Documentation
 
@@ -125,61 +145,24 @@ See [Getting Started](docs/getting-started.md) for more examples. Icon output de
 | [Development](docs/development.md) | Local setup, tests, and linting |
 | [Tutorial](docs/tutorial.md) | Philosophy, detection walk-through, and best practices |
 
-### Examples
+### Example Scripts
 
 | Script | Description |
 |---|---|
 | [`examples/basic_usage.py`](examples/basic_usage.py) | Colors, styles, icons, intents, and redaction in one script |
-| [`examples/format_text_demo.py`](examples/format_text_demo.py) | Full `paint()` showcase — every color, style, and icon mode |
-| [`examples/real_world_cli.py`](examples/real_world_cli.py) | Simulated file-processor CLI showing real integration patterns |
-
----
-
-## Extended Colors
-
-RazTint supports **24-bit True Color** and **256-color** mode via raw ANSI escape sequences — no extra dependencies.
-
-```python
-from raztint import rgb, hex_color, color256
-from raztint import bg_rgb, bg_hex_color, bg_color256
-
-# True Color foreground
-print(rgb("This is orange text", 255, 100, 50))
-print(hex_color("Same orange via hex", "#FF6432"))
-
-# True Color background
-print(bg_rgb("Orange background", 255, 100, 50))
-print(bg_hex_color("Same via hex", "#FF6432"))
-
-# 256-color
-print(color256("Orange via 256 palette", 208))
-print(bg_color256("Background 256", 208))
-
-# Compose freely with existing helpers
-from raztint import bold
-print(bold(rgb("Bold True Color text", 0, 200, 0)))
-print(rgb(bg_color256("White on orange bg", 208), 255, 255, 255))
-```
-> [!NOTE]
-> **Terminal support:** True Color requires a terminal that supports `TERM=xterm-256color` or similar. `NO_COLOR` and `RAZTINT_FORCE_COLOR` are respected.
-
----
+| [`examples/format_text_demo.py`](examples/format_text_demo.py) | Every color, style, and icon mode |
+| [`examples/real_world_cli.py`](examples/real_world_cli.py) | Simulated file-processor CLI |
 
 ## Known Limitations
 
-- **Python 3.10+** — older versions are not supported.
-- **Font detection relies on OS tools** — `fc-list` (Linux), `system_profiler` (macOS), PowerShell (Windows). Set `RAZTINT_SKIP_SYSTEM_FONT_SCAN=1` in sandboxed environments.
-- **Strict `NO_COLOR` compliance** — when `NO_COLOR` is set, all colour output is suppressed regardless of other settings.
-
----
+- Python 3.10+ only.
+- Font detection relies on OS tools (`fc-list` on Linux, `system_profiler` on macOS, PowerShell on Windows). Set `RAZTINT_SKIP_SYSTEM_FONT_SCAN=1` in sandboxed environments.
+- When `NO_COLOR` is set, all color output is suppressed regardless of other settings.
 
 ## Contributing
 
-PRs and issues are welcome.
-If you find a bug or want to add a feature, open an issue first so we can discuss it.
+PRs and issues are welcome. Open an issue first to discuss before starting work on a feature.
 See [CONTRIBUTING.md](https://github.com/razbuild/.github/blob/main/CONTRIBUTING.md) for setup and guidelines.
-
----
 
 ## License
 

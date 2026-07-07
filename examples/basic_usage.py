@@ -1,5 +1,5 @@
 """
-basic_usage.py — RazTint quick-start examples.
+basic_usage.py RazTint quick-start examples.
 
 Run:
     python examples/basic_usage.py

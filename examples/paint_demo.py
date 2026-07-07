@@ -1,12 +1,12 @@
 """
-format_text_demo.py — Full showcase of paint(), the primary RazTint API.
+paint_demo.py Full showcase of paint(), the primary RazTint API.
 
 Covers: colors, background colors, every style, icon modes,
         intents, intent overrides, concatenation with reset=False,
         redaction, and runtime state inspection.
 
 Run:
-    python examples/format_text_demo.py
+    python examples/paint_demo.py
 """
 
 from raztint import paint, tint
