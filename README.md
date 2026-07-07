@@ -151,7 +151,7 @@ logger.error(
 | Script | Description |
 |---|---|
 | [`examples/basic_usage.py`](examples/basic_usage.py) | Colors, styles, icons, intents, and redaction in one script |
-| [`examples/format_text_demo.py`](examples/format_text_demo.py) | Every color, style, and icon mode |
+| [`examples/format_text_demo.py`](examples/paint_demo.py) | Every color, style, and icon mode |
 | [`examples/real_world_cli.py`](examples/real_world_cli.py) | Simulated file-processor CLI |
 
 ## Known Limitations
