@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.8.4] - 2026-07-07
+
+### Fixed
+- Fixed `generic_secret` mask rule not detecting `token` as a sensitive keyword, causing values like `token=abc123` to remain unredacted
+- Fixed `generic_secret` rule re-matching and overwriting values already masked by more specific rules (e.g. `github_token`), which previously turned `ghp_****` into `****`, losing the token-type prefix
+
+### Changed
+- Updated `generic_secret` pattern's negative lookahead from `(?!\*{4})` to `(?!\S*\*{4})` so it correctly skips values that are partially or fully redacted anywhere in the matched value, not just at the start
+
+---
+
 ## [0.8.3] - 2026-07-07
 
 ### Added
