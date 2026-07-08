@@ -2,12 +2,12 @@
   <img src="https://raw.githubusercontent.com/razbuild/raztint/master/assets/RazTint.svg" alt="RazTint" width="400" />
   <br><br>
 
-[![PyPI Version](https://img.shields.io/pypi/v/raztint)](https://pypi.org/project/raztint/)
-[![Zero Dependencies](https://img.shields.io/badge/dependencies-zero-brightgreen)](https://github.com/razbuild/raztint)
-[![Codecov](https://img.shields.io/codecov/c/github/razbuild/raztint)](https://codecov.io/gh/razbuild/raztint)
+  [![PyPI Version](https://img.shields.io/pypi/v/raztint)](https://pypi.org/project/raztint/)
+  [![Zero Dependencies](https://img.shields.io/badge/dependencies-zero-brightgreen)](https://github.com/razbuild/raztint)
+  [![Codecov](https://img.shields.io/codecov/c/github/razbuild/raztint)](https://codecov.io/gh/razbuild/raztint)
 
-[![Python Versions](https://img.shields.io/pypi/pyversions/raztint)](https://pypi.org/project/raztint/)
-[![PyPI Downloads](https://static.pepy.tech/badge/raztint)](https://pepy.tech/project/raztint)
+  [![Python Versions](https://img.shields.io/pypi/pyversions/raztint)](https://pypi.org/project/raztint/)
+  [![PyPI Downloads](https://static.pepy.tech/badge/raztint)](https://pepy.tech/project/raztint)
 </div>
 
 Every module in a CLI codebase ends up inventing its own way to print "success" or "error." One file uses green text, another uses an emoji, a third does both differently. Output looks inconsistent, breaks in CI, and nobody notices until a log line leaks a password.
@@ -27,7 +27,7 @@ RazTint defines a fixed mapping from intent (`success`, `danger`, `warning`, …
 <p align="center">
   <img src="assets/preview.png" alt="RazTint preview: Nerd Font, Unicode, and ASCII icon modes with colored and styled output examples" width="644"/>
 </p>
-<p align="center"><em>A simulated production log stream 9 secrets detected, 9 secrets redacted, 0 leaked to the terminal.</em></p>
+<p align="center"><em>A simulated production log stream — 9 secrets detected, 9 secrets redacted, 0 leaked to the terminal.</em></p>
 
 ## Table of Contents
 
@@ -92,14 +92,14 @@ More examples in [Getting Started](docs/getting-started.md).
 
 ## How It Compares
 
-| Capability | colorama / termcolor | rich | RazTint |
-|:--|:--:|:--:|:--:|
-| ANSI color support | ✅ | ✅ | ✅ |
-| Terminal UI components | ❌ | ✅ | ❌ |
-| Semantic logging intents | ❌ | ❌ | ✅ |
-| Automatic icon fallback | ❌ | ⚠️ Partial | ✅ |
-| Secret masking | ❌ | ❌ | ✅ |
-| Extra dependencies | None | Several | None |
+| Capability                | colorama / termcolor | rich          | RazTint |
+| :------------------------ | :-------------------: | :-----------: | :-----: |
+| ANSI color support        | ✅                     | ✅             | ✅      |
+| Terminal UI components    | ❌                     | ✅             | ❌      |
+| Semantic logging intents  | ❌                     | ❌             | ✅      |
+| Automatic icon fallback   | ❌                     | ⚠️ Partial     | ✅      |
+| Secret masking            | ❌                     | ❌             | ✅      |
+| Extra dependencies        | None                   | Several        | None    |
 
 RazTint isn't a `rich` replacement for dashboards or tables, it solves the narrower problem of making `ok`/`err`/`warn`/`info` messages consistent and safe by default.
 
@@ -135,24 +135,24 @@ logger.error(
 
 ## Documentation
 
-| Guide | Description |
-|---|---|
-| [Getting Started](docs/getting-started.md) | Functional usage, `paint()`, and the `tint` instance |
-| [API Reference](docs/api-reference.md) | Colors, styles, icons, and `RazTint` class methods |
-| [Intents](docs/intents.md) | Semantic presets for common CLI messages |
-| [Security & Redaction](docs/redaction.md) | Masking tokens, credentials, and custom rules |
-| [Icons & Detection](docs/icons-and-detection.md) | Icon modes and environment/font/color detection logic |
-| [Configuration](docs/configuration.md) | Environment variables and runtime toggles |
-| [Development](docs/development.md) | Local setup, tests, and linting |
-| [Tutorial](docs/tutorial.md) | Philosophy, detection walk-through, and best practices |
+| Guide                                             | Description                                              |
+| -------------------------------------------------- | --------------------------------------------------------- |
+| [Getting Started](docs/getting-started.md)         | Functional usage, `paint()`, and the `tint` instance       |
+| [API Reference](docs/api-reference.md)             | Colors, styles, icons, and `RazTint` class methods         |
+| [Intents](docs/intents.md)                         | Semantic presets for common CLI messages                   |
+| [Security & Redaction](docs/redaction.md)          | Masking tokens, credentials, and custom rules               |
+| [Icons & Detection](docs/icons-and-detection.md)   | Icon modes and environment/font/color detection logic       |
+| [Configuration](docs/configuration.md)             | Environment variables and runtime toggles                   |
+| [Development](docs/development.md)                 | Local setup, tests, and linting                             |
+| [Tutorial](docs/tutorial.md)                       | Philosophy, detection walk-through, and best practices      |
 
 ### Example Scripts
 
-| Script | Description |
-|---|---|
+| Script                                             | Description                                  |
+| --------------------------------------------------- | ---------------------------------------------- |
 | [`examples/basic_usage.py`](examples/basic_usage.py) | Colors, styles, icons, intents, and redaction in one script |
-| [`examples/paint_demo.py`](examples/paint_demo.py) | Every color, style, and icon mode |
-| [`examples/real_world_cli.py`](examples/real_world_cli.py) | Simulated file-processor CLI |
+| [`examples/paint_demo.py`](examples/paint_demo.py)   | Every color, style, and icon mode              |
+| [`examples/real_world_cli.py`](examples/real_world_cli.py) | Simulated file-processor CLI            |
 
 ## Known Limitations
 
