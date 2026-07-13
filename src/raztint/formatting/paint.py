@@ -28,7 +28,7 @@ class UnsetType:
 
     __slots__ = ()
 
-    def __repr__(self) -> str:  # ty: ignore
+    def __repr__(self) -> str:
         return "UNSET"
 
 

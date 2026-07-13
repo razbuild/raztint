@@ -1,4 +1,5 @@
 import os
+import re
 import subprocess
 import sys
 from functools import lru_cache
@@ -15,6 +16,9 @@ _NERD_INDICATORS = (
     "cascadia code nerd",
 )
 
+
+_NERD_SUFFIX_RE = re.compile(r"\bnf\b")
+
 _MAC_FONT_DIRS = (
     os.path.expanduser("~/Library/Fonts"),
     "/Library/Fonts",
@@ -23,7 +27,9 @@ _MAC_FONT_DIRS = (
 
 
 def _has_indicator(text: str) -> bool:
-    return any(indicator in text for indicator in _NERD_INDICATORS)
+    if any(indicator in text for indicator in _NERD_INDICATORS):
+        return True
+    return bool(_NERD_SUFFIX_RE.search(text))
 
 
 def _check_mac_font_dirs() -> bool:
@@ -65,7 +71,8 @@ def _check_windows_fonts() -> bool:
                 "-Command",
                 (
                     "Get-ChildItem 'C:\\Windows\\Fonts' | "
-                    "Where-Object {$_.Name -like '*[Nn]erd*'} | "
+                    "Where-Object {$_.Name -like '*[Nn]erd*' -or "
+                    "$_.Name -like '* NF*'} | "
                     "Select-Object -First 1"
                 ),
             ],
@@ -75,7 +82,7 @@ def _check_windows_fonts() -> bool:
         )
         has_fonts = result.returncode == 0 and bool(result.stdout.strip())
         debug(
-            f"Font detection (Windows): returncode={result.returncode}"
+            f"Font detection (Windows): returncode={result.returncode}, "
             f"has_fonts={has_fonts}"
         )
         return has_fonts

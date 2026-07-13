@@ -39,7 +39,7 @@ def enable_windows_vt_mode() -> bool:
 
 
 def supports_color() -> bool:
-    if os.getenv("NO_COLOR") or os.getenv("RAZTINT_NO_COLOR"):
+    if os.getenv("NO_COLOR") is not None or os.getenv("RAZTINT_NO_COLOR") is not None:
         debug("Color disabled by NO_COLOR/RAZTINT_NO_COLOR")
         return False
 

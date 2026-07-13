@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.8.5] - 2026-07-13
+
+### Fixed
+- Fixed `NO_COLOR` and `RAZTINT_NO_COLOR` handling so the presence of either environment variable disables colors even when its value is empty
+- Fixed Nerd Font detection to recognize fonts using the `NF` suffix in addition to `Nerd`-based names
+
+### Changed
+- Improved Windows Nerd Font detection by also searching for font files with the `NF` suffix
+
+---
+
 ## [0.8.4] - 2026-07-07
 
 ### Fixed

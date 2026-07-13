@@ -12,6 +12,7 @@ respect-type-ignore-comments = true
 all = "error"
 unresolved-attribute = "ignore"
 unused-ignore-comment = "ignore"
+missing-override-decorator = "ignore"
 
 [terminal]
 error-on-warning = true
