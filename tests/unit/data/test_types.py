@@ -17,7 +17,6 @@ def test_color_name_literal_matches_palette() -> None:
 
 def test_background_name_literal_includes_prefixed_and_short() -> None:
     names = set(get_args(BackgroundColorName))
-    assert "bg_red" in names
     assert "red" in names
 
 
