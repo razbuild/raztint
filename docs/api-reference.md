@@ -72,60 +72,17 @@ print(paint("Done!", color="green", icon="ok", icon_mode="auto"))
 print(paint("Saved.", intent="success"))
 print(paint(f"token= ghp_XXXXXXXX", intent="debug", redact=True))
 ```
+## Formatting colors, backgrounds, and styles
 
----
+Use `paint()` for named foreground colors, backgrounds, and styles:
 
-## Color functions
+```python
+print(paint("Error", color="red"))
+print(paint("Alert", color="white", bg="red"))
+print(paint("Important", styles=["bold", "underline"]))
+```
 
-Return strings wrapped with ANSI foreground colors when supported:
-
-| Standard | Bright |
-|---|---|
-| `black(text)` | `gray(text)` |
-| `red(text)` | `bright_red(text)` |
-| `green(text)` | `bright_green(text)` |
-| `yellow(text)` | `bright_yellow(text)` |
-| `blue(text)` | `bright_blue(text)` |
-| `magenta(text)` | `bright_magenta(text)` |
-| `cyan(text)` | `bright_cyan(text)` |
-| `white(text)` | `bright_white(text)` |
-
-Internally these call `tint.color()`.
-
----
-
-## Background color functions
-
-Return strings wrapped with ANSI background colors when supported:
-
-| Standard | Bright |
-|---|---|
-| `bg_black(text)` | `bg_gray(text)` |
-| `bg_red(text)` | `bg_bright_red(text)` |
-| `bg_green(text)` | `bg_bright_green(text)` |
-| `bg_yellow(text)` | `bg_bright_yellow(text)` |
-| `bg_blue(text)` | `bg_bright_blue(text)` |
-| `bg_magenta(text)` | `bg_bright_magenta(text)` |
-| `bg_cyan(text)` | `bg_bright_cyan(text)` |
-| `bg_white(text)` | `bg_bright_white(text)` |
-
-Background helpers reset with `\033[49m`, so nested background colors do not clear an outer foreground color.
-
----
-
-## Text style functions
-
-| Function | Description |
-|---|---|
-| `bold(text)` | Bold |
-| `dim(text)` | Dimmed |
-| `italic(text)` | Italic |
-| `underline(text)` | Underlined |
-| `strikethrough(text)` | Strikethrough |
-
-Styles use their own reset codes and do not remove existing colors.
-
-> **Known limitation:** `bold` and `dim` share the same ANSI reset code. Nesting one inside the other may produce unexpected results.
+The old foreground, background, and style convenience helpers were removed so `paint()` is the single source of truth for formatting behavior.
 
 ---
 
@@ -179,7 +136,7 @@ t = RazTint()
 | `format_text(...)` | Same as `paint()` |
 | `set_color(enabled)` | Enable or disable color output |
 
-All color/style/icon helpers (`red`, `bold`, `ok`, …) are also available on the instance.
+Status icon helpers (`ok`, `err`, `warn`, `info`, `pending`, `debug`) are available on the instance. Use `format_text()` for colors, backgrounds, and styles.
 
 **Example:**
 
@@ -189,7 +146,7 @@ from raztint import RazTint
 t = RazTint()
 colored = t.color("Hello", "31")  # red via raw code
 t.set_color(False)
-print(t.red("Plain text"))
+print(t.format_text("Plain text", color="red"))
 ```
 
 ### Attributes
@@ -227,19 +184,12 @@ Everything available from `import raztint`:
 ```python
 from raztint import (
     RazTint, tint,
-    ok, err, warn, info,
-    black, red, green, yellow, blue, magenta, cyan, white, gray,
-    bright_red, bright_green, bright_yellow, bright_blue,
-    bright_magenta, bright_cyan, bright_white,
-    bg_black, bg_red, bg_green, bg_yellow, bg_blue, bg_magenta,
-    bg_cyan, bg_white, bg_gray,
-    bg_bright_red, bg_bright_green, bg_bright_yellow, bg_bright_blue,
-    bg_bright_magenta, bg_bright_cyan, bg_bright_white,
-    bold, dim, italic, underline, strikethrough,
+    ok, err, warn, info, pending, debug,
     paint,
+    rgb, bg_rgb, hex_color, bg_hex_color, color256, bg_color256,
     redact, MaskRule, DEFAULT_RULES,
     INTENTS, IntentConfig,
-    ColorName, BackgroundColorName, StyleName, IconMode, IntentName,
+    ColorName, BackgroundColorName, StyleName, IconName, IconMode, IntentName,
     __version__,
 )
 ```

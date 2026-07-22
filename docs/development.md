@@ -94,5 +94,5 @@ Report bugs and feature requests via [GitHub Issues](https://github.com/razbuild
 
 ## See also
 
-- [Configuration](configuration.md) — environment variables used in CI
-- [API Reference](api-reference.md) — public API surface
+- [Configuration](configuration.md) environment variables used in CI
+- [API Reference](api-reference.md) public API surface

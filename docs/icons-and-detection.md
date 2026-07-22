@@ -93,8 +93,7 @@ Color support is determined by checking (in order):
 4. On Windows: Virtual Terminal processing is enabled
 5. `TERM` is set and not `"dumb"`
 
-When color is disabled, color functions return plain text and `paint()` returns the icon symbol for the active mode plus unstyled text.
-
+When color is disabled, `paint()` returns the icon symbol for the active mode plus unstyled text.
 Toggle at runtime:
 
 ```python

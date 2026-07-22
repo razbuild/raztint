@@ -1,5 +1,5 @@
 """
-real_world_cli.py — A simulated file-processor CLI built with RazTint.
+real_world_cli.py A simulated file-processor CLI built with RazTint.
 
 Shows real integration patterns:
   - status messages at each processing stage
@@ -13,9 +13,7 @@ Run:
 
 import time
 
-from raztint import bold, dim, err, info, ok, paint, warn
-
-# ── Helpers ───────────────────────────────────────────────────────────────────
+from raztint import err, info, ok, paint, warn
 
 
 def header(text: str) -> None:
@@ -26,7 +24,7 @@ def header(text: str) -> None:
 
 def step(label: str, detail: str = "") -> None:
     sep = f"  {detail}" if detail else ""
-    print(f"  {dim(label)}{sep}")
+    print(f"  {paint(label, styles='dim')}{sep}")
 
 
 def success(msg: str) -> None:
@@ -45,7 +43,7 @@ def status(msg: str) -> None:
     print(f"  {info()} {paint(msg, color='blue')}")
 
 
-# ── Simulated processing logic ────────────────────────────────────────────────
+# Simulated processing logic
 
 FILES = [
     {"name": "report_q1.csv", "size_kb": 128, "status": "ok"},
@@ -63,18 +61,16 @@ CONFIG = {
 
 
 def run() -> None:
-    # ── Startup ───────────────────────────────────────────────────────────────
     header("File Processor v1.0")
     status("Initialising…")
 
-    # Log config — do not include raw secrets in log payloads
+    # Log config do not include raw secrets in log payloads
     config_log = (
         f"output_dir={CONFIG['output_dir']}  api_key=[REDACTED]  db_url=[REDACTED]"
     )
     print(paint(f"     Config: {config_log}", intent="debug", redact=True, icon=None))
     time.sleep(0.2)
 
-    # ── Validation ────────────────────────────────────────────────────────────
     header("Validating input files")
     validated, skipped = 0, 0
 
@@ -86,12 +82,11 @@ def run() -> None:
             warning(f"{f['name']}  — unexpected extension (.tmp)")
             validated += 1
         else:
-            step(f"{f['name']}", f"  {dim(str(f['size_kb']) + ' KB')}")
+            step(f"{f['name']}", f"  {paint(str(f['size_kb']) + ' KB', styles='dim')}")
             validated += 1
 
     time.sleep(0.1)
 
-    # ── Processing ────────────────────────────────────────────────────────────
     header("Processing")
     processed, errors = 0, 0
 
@@ -106,7 +101,6 @@ def run() -> None:
             success(f"Processed {f['name']}")
             processed += 1
 
-    # ── Summary ───────────────────────────────────────────────────────────────
     header("Summary")
     col_w = 20
 
@@ -121,7 +115,7 @@ def run() -> None:
 
     print()
     if errors == 0:
-        print(f"  {ok()} {bold('All files processed successfully.')}")
+        print(f"  {ok()} {paint('All files processed successfully.', styles='bold')}")
     else:
         msg = paint(f"{errors} file(s) failed — check logs above.", color="red")
         print(f"  {err()} {msg}")

@@ -89,36 +89,28 @@ Nerd mode still activates from environment variable hints even when scanning is 
 
 ## Step-by-step: from zero to real CLI output
 
-### Step 1 — Install
-
-```bash
-pip install raztint
-```
-
-### Step 2 — Color helpers
-
-The simplest way: import a color function and call it.
+### Step 2 Colors with `paint()`
 
 ```python
-from raztint import green, red, yellow, blue
+from raztint import paint
 
-print(green("Everything is fine."))
-print(red("Something went wrong."))
-print(yellow("Disk space is low."))
-print(blue("Connecting to host..."))
+print(paint("Everything is fine.", color="green"))
+print(paint("Something went wrong.", color="red"))
+print(paint("Disk space is low.", color="yellow"))
+print(paint("Connecting to host...", color="blue"))
 ```
 
-### Step 3 — Style helpers
+### Step 3 Styles with `paint()`
 
 ```python
-from raztint import bold, italic, underline, dim
+from raztint import paint
 
-print(bold("Important"))
-print(dim("Verbose log line — not critical"))
-print(underline(red("Error — see below")))   # compose freely
+print(paint("Important", styles="bold"))
+print(paint("Verbose log line — not critical", styles="dim"))
+print(paint("Error — see below", color="red", styles="underline"))
 ```
 
-### Step 4 — Icon helpers
+### Step 4 Icon helpers
 
 Icons auto-adapt to the terminal — you never choose the mode at call time.
 
@@ -131,7 +123,7 @@ print(f"{warn()} Disk space low.")
 print(f"{info()} Analysis in progress...")
 ```
 
-### Step 5 — `paint()` for everything in one call
+### Step 5 `paint()` for everything in one call
 
 ```python
 from raztint import paint
@@ -143,7 +135,7 @@ print(paint("Alert", color="white", bg="bg_red", styles=["bold", "underline"]))
 
 `paint()` is an alias for `tint.format_text()`. Both names work identically.
 
-### Step 6 — Intents
+### Step 6 Intents
 
 Intents are semantic presets. Instead of spelling out color + icon + style every time, use a name:
 
@@ -165,7 +157,7 @@ Explicit parameters always override the intent's defaults:
 print(paint("Done.", intent="success", icon=None))
 ```
 
-### Step 7 — Redaction
+### Step 7 Redaction
 
 Never let secrets reach the terminal log:
 

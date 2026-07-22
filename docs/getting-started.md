@@ -2,25 +2,22 @@
 
 [← Documentation index](https://github.com/razbuild/raztint/blob/master/docs/index.md)
 
-You can use RazTint in three ways: import helpers directly, call `paint()` for combined formatting, or create a `RazTint` instance for scoped control.
+You can use RazTint in three ways: call `paint()` for formatting, import status icon helpers, or create a `RazTint` instance for scoped control.
 
 ---
 
 ## Functional usage
 
-The simplest approach — import pre-bound helpers from the module:
+You can use RazTint in three ways: call `paint()` for formatting, import status icon helpers, or create a `RazTint` instance for scoped control.
 
 ```python
-from raztint import bg_blue, green, red, ok, err, info, warn, bold, underline
+from raztint import err, info, ok, paint, warn
 
-# Colors
-print(green("Success! The operation completed."))
-print(red("Critical Error: Database not found."))
-
-# Styles
-print(bold("This is bold text."))
-print(underline(red("Underlined red text.")))
-print(red(bg_blue("Red text on a blue background.")))
+print(paint("Success! The operation completed.", color="green"))
+print(paint("Critical Error: Database not found.", color="red"))
+print(paint("This is bold text.", styles="bold"))
+print(paint("Underlined red text.", color="red", styles="underline"))
+print(paint("Red text on a blue background.", color="red", bg="blue"))
 
 # Icons (auto-adapts to Nerd Font / Unicode / ASCII)
 print(f"{ok()} File saved successfully.")
@@ -55,15 +52,11 @@ print(paint("Done!", color="green", icon="ok", icon_mode="ascii"))
 print(paint("Done!", color="green", icon="ok", icon_mode="auto"))
 ```
 
-### Nested calls vs. `paint()`
+### Combining formatting
 
 ```python
-# Nested helpers
-from raztint import red, bold, underline
-print(bold(underline(red("Important message"))))
-
-# Equivalent with paint()
 from raztint import paint
+
 print(paint("Important message", color="red", styles=["bold", "underline"]))
 print(paint("Important message", color="red", styles=["bold", "underline"], icon="err"))
 ```
@@ -89,7 +82,7 @@ print(part1 + part2)
 ```python
 from raztint import tint
 
-print(tint.red("text"))
+print(tint.format_text("text", color="red"))
 print(tint.ok(), "hello")
 print(tint.format_text("Done!", color="green", icon="ok"))
 ```
@@ -112,7 +105,7 @@ from raztint import RazTint
 
 t = RazTint()
 t.set_color(False)
-print(t.blue("Plain text — color disabled for this instance."))
+print(t.format_text("Plain text color disabled for this instance.", color="blue"))
 ```
 
 Each instance carries its own `use_color` and `icon_mode` state.

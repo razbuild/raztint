@@ -20,7 +20,7 @@ RazTint is organized into focused modules:
 
 | Module | Purpose |
 |---|---|
-| `raztint.core` | `RazTint` instance, ANSI helpers, dynamic method registration |
+| `raztint.core` | `RazTint` instance, ANSI helpers, and icon method registration |
 | `raztint.data` | Color/style registries, intent presets, typed literals |
 | `raztint.detect` | TTY, Windows VT, and Nerd Font detection |
 | `raztint.formatting` | `paint()` / `format_text()` implementation |
