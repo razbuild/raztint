@@ -196,7 +196,7 @@ class TestFormatText:
 
     def test_format_text_color_and_background_no_override_regression(self):
         """Regression test for issue #23: foreground color not overridden by background.
-        
+
         This test ensures that when both color (foreground) and bg (background) are
         provided, both ANSI codes are applied and the foreground color is not lost.
         Previously, background could override foreground text color if codes weren't
@@ -208,7 +208,10 @@ class TestFormatText:
         # Test case 1: white text on red background
         result = raztint.format_text("test", color="white", bg="red")
         # Both codes must be present: 37 (white fg) and 41 (red bg)
-        assert "\033[37;41m" in result or ("\033[37m" in result and "\033[41m" in result)
+        assert (
+            "\033[37;41m" in result
+            or ("\033[37m" in result and "\033[41m" in result)
+        )
         # Verify both codes appear before the text
         assert result.startswith("\033[")
         assert "test" in result
@@ -216,12 +219,18 @@ class TestFormatText:
         # Test case 2: red text on white background (verify reverse also works)
         result = raztint.format_text("alert", color="red", bg="white")
         # Both codes must be present: 31 (red fg) and 47 (white bg)
-        assert "\033[31;47m" in result or ("\033[31m" in result and "\033[47m" in result)
+        assert (
+            "\033[31;47m" in result
+            or ("\033[31m" in result and "\033[47m" in result)
+        )
         assert "alert" in result
 
         # Test case 3: with integer codes (should also combine)
         result = raztint.format_text("msg", color=32, bg=47)  # green text, white bg
-        assert "\033[32;47m" in result or ("\033[32m" in result and "\033[47m" in result)
+        assert (
+            "\033[32;47m" in result
+            or ("\033[32m" in result and "\033[47m" in result)
+        )
         assert "msg" in result
 
         # Test case 4: foreground color with background AND style
