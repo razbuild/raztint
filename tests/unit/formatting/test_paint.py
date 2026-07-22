@@ -1,8 +1,10 @@
 import os
+from typing import cast
 from unittest import mock
 
 from raztint import paint, tint
 from raztint.core import RazTint
+from raztint.data.types import BackgroundColorName, ColorName, IntentName, StyleName
 
 
 class TestFormatText:
@@ -74,7 +76,10 @@ class TestFormatText:
 
         with mock.patch.object(raztint, "use_color", True):
             try:
-                raztint.format_text("test", color="not_a_color")
+                raztint.format_text(
+                    "test",
+                    color=cast(ColorName, "not_a_color"),
+                )
                 assert False, "Should have raised ValueError"
             except ValueError as e:
                 assert "unknown color" in str(e).lower()
@@ -120,7 +125,10 @@ class TestFormatText:
 
         with mock.patch.object(raztint, "use_color", True):
             try:
-                raztint.format_text("test", bg="not_a_bg")
+                raztint.format_text(
+                    "test",
+                    bg=cast(BackgroundColorName, "not_a_bg"),
+                )
                 assert False, "Should have raised ValueError"
             except ValueError as e:
                 assert "unknown" in str(e).lower()
@@ -165,7 +173,10 @@ class TestFormatText:
 
         with mock.patch.object(raztint, "use_color", True):
             try:
-                raztint.format_text("test", styles="not_a_style")
+                raztint.format_text(
+                    "test",
+                    styles=cast(StyleName, "not_a_style"),
+                )
                 assert False, "Should have raised ValueError"
             except ValueError as e:
                 assert "unknown style" in str(e).lower()
@@ -175,9 +186,9 @@ class TestFormatText:
         raztint = RazTint()
         raztint.set_color(True)
 
-        result1 = raztint.format_text("test", styles="bold")
-        result2 = raztint.format_text("test", styles="BOLD")
-        result3 = raztint.format_text("test", styles="Bold")
+        result1 = raztint.format_text("test", styles=cast(StyleName, "bold"))
+        result2 = raztint.format_text("test", styles=cast(StyleName, "BOLD"))
+        result3 = raztint.format_text("test", styles=cast(StyleName, "Bold"))
 
         # All should contain the same ANSI codes
         assert "\033[1m" in result1
@@ -208,9 +219,8 @@ class TestFormatText:
         # Test case 1: white text on red background
         result = raztint.format_text("test", color="white", bg="red")
         # Both codes must be present: 37 (white fg) and 41 (red bg)
-        assert (
-            "\033[37;41m" in result
-            or ("\033[37m" in result and "\033[41m" in result)
+        assert "\033[37;41m" in result or (
+            "\033[37m" in result and "\033[41m" in result
         )
         # Verify both codes appear before the text
         assert result.startswith("\033[")
@@ -219,27 +229,20 @@ class TestFormatText:
         # Test case 2: red text on white background (verify reverse also works)
         result = raztint.format_text("alert", color="red", bg="white")
         # Both codes must be present: 31 (red fg) and 47 (white bg)
-        assert (
-            "\033[31;47m" in result
-            or ("\033[31m" in result and "\033[47m" in result)
+        assert "\033[31;47m" in result or (
+            "\033[31m" in result and "\033[47m" in result
         )
         assert "alert" in result
 
         # Test case 3: with integer codes (should also combine)
         result = raztint.format_text("msg", color=32, bg=47)  # green text, white bg
-        assert (
-            "\033[32;47m" in result
-            or ("\033[32m" in result and "\033[47m" in result)
+        assert "\033[32;47m" in result or (
+            "\033[32m" in result and "\033[47m" in result
         )
         assert "msg" in result
 
         # Test case 4: foreground color with background AND style
-        result = raztint.format_text(
-            "styled",
-            color="yellow",
-            bg="blue",
-            styles="bold"
-        )
+        result = raztint.format_text("styled", color="yellow", bg="blue", styles="bold")
         # Should have: 33 (yellow), 44 (blue bg), 1 (bold)
         assert "33" in result
         assert "44" in result
@@ -340,7 +343,10 @@ class TestFormatText:
         raztint.set_color(True)
 
         for color_name in raztint.colors.keys():
-            result = raztint.format_text("test", color=color_name.lower())
+            result = raztint.format_text(
+                "test",
+                color=cast(ColorName, color_name.lower()),
+            )
             assert "test" in result
             # Should have ANSI codes
             assert "\033[" in result
@@ -351,7 +357,10 @@ class TestFormatText:
         raztint.set_color(True)
 
         for style_name in raztint.styles.keys():
-            result = raztint.format_text("test", styles=style_name.lower())
+            result = raztint.format_text(
+                "test",
+                styles=cast(StyleName, style_name.lower()),
+            )
             assert "test" in result
             # Should have ANSI codes
             assert "\033[" in result
@@ -363,7 +372,10 @@ class TestFormatText:
 
         with mock.patch.object(raztint, "use_color", True):
             try:
-                raztint.format_text("test", styles=123)
+                raztint.format_text(
+                    "test",
+                    styles=cast(StyleName | list[StyleName] | None, 123),
+                )
                 assert False, "Should have raised TypeError"
             except TypeError as e:
                 assert "styles" in str(e).lower()
@@ -431,7 +443,7 @@ class TestFormatText:
         raztint = RazTint()
         raztint.set_color(True)
 
-        result = raztint.format_text("Saved", intent="success")
+        result = raztint.format_text("Saved", intent=cast(IntentName, "success"))
         assert "\033[32m" in result
         assert "Saved" in result
 
@@ -440,7 +452,7 @@ class TestFormatText:
         raztint.set_color(True)
 
         try:
-            raztint.format_text("x", intent="not_an_intent")
+            raztint.format_text("x", intent=cast(IntentName, "not_an_intent"))
             assert False, "Should have raised ValueError"
         except ValueError as e:
             assert "unknown intent" in str(e).lower()
