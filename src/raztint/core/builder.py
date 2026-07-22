@@ -1,10 +1,10 @@
 from collections.abc import Callable
 
-from ..core.protocols import DynamicInstance
+from ..core.protocols import IconHost
 from ..icons.registry import ICONS
 
 
-def register_dynamic_methods(instance: DynamicInstance) -> None:
+def register_dynamic_methods(instance: IconHost) -> None:
     """Attach color, background, style, and icon callables to a RazTint instance."""
     colors = instance.colors
     backgrounds = instance.backgrounds
@@ -16,8 +16,8 @@ def register_dynamic_methods(instance: DynamicInstance) -> None:
     for name, code in backgrounds.items():
         setattr(instance, name.lower(), _make_background_func(instance, code))
 
-    for name, (on, off) in styles.items():
-        setattr(instance, name.lower(), _make_style_func(instance, on, off))
+    for name, (on_code, off_code) in styles.items():
+        setattr(instance, name.lower(), _make_style_func(instance, on_code, off_code))
 
     for name, data in ICONS.items():
         color_key = data.get("color", "WHITE")
@@ -25,22 +25,31 @@ def register_dynamic_methods(instance: DynamicInstance) -> None:
         setattr(instance, name.lower(), _make_icon_func(instance, data, color_code))
 
 
-def _make_color_func(instance: DynamicInstance, code: str) -> Callable[[str], str]:
-    return lambda text: instance.color(text, code)
+def _make_color_func(instance: IconHost, code: str) -> Callable[[str], str]:
+    def fn(text: str) -> str:
+        return instance.color(text, code)
+
+    return fn
 
 
-def _make_background_func(instance: DynamicInstance, code: str) -> Callable[[str], str]:
-    return lambda text: instance.background(text, code)
+def _make_background_func(instance: IconHost, code: str) -> Callable[[str], str]:
+    def fn(text: str) -> str:
+        return instance.background(text, code)
+
+    return fn
 
 
 def _make_style_func(
-    instance: DynamicInstance, on: str, off: str
+    instance: IconHost, on_code: str, off_code: str
 ) -> Callable[[str], str]:
-    return lambda text: instance.style(text, on, off)
+    def fn(text: str) -> str:
+        return instance.style(text, on_code, off_code)
+
+    return fn
 
 
 def _make_icon_func(
-    instance: DynamicInstance, data: dict[str, str], code: str
+    instance: IconHost, data: dict[str, str], code: str
 ) -> Callable[[], str]:
     def fn() -> str:
         if instance.icon_mode == "nerd":

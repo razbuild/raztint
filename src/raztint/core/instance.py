@@ -1,6 +1,6 @@
 from typing import cast
 
-from ..core.protocols import DynamicInstance, FormatTarget, IconHost
+from ..core.protocols import FormatTarget, IconHost
 from ..data import BACKGROUND_COLORS, COLORS, STYLES
 from ..data.types import (
     BackgroundColorName,
@@ -32,7 +32,7 @@ class RazTint:
         self.use_color: bool = supports_color()
         self.icon_mode: IconMode = self._get_icon_mode()
 
-        register_dynamic_methods(cast(DynamicInstance, self))
+        register_dynamic_methods(cast(IconHost, self))
 
     @staticmethod
     def _has_nerd_fonts() -> bool:

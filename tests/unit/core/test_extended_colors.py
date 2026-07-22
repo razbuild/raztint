@@ -152,9 +152,9 @@ def test_bg_color256_no_color_returns_plain(t_off: RazTint) -> None:
 # ── Composition with existing styles ─────────────────────────────────────────
 
 
-def test_rgb_composes_with_bold(t: RazTint) -> None:
+def test_rgb_composes_with_paint_style(t: RazTint) -> None:
     inner = t.rgb("hello", 0, 200, 0)
-    result = t.bold(inner)
+    result = t.format_text(inner, styles="bold")
     assert "\033[38;2;0;200;0m" in result
     assert "\033[1m" in result
 

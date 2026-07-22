@@ -2,7 +2,7 @@
 
 from typing import Literal
 
-# Foreground color names accepted by paint() and RazTint color helpers.
+# Foreground color names accepted by paint().
 ColorName = Literal[
     "black",
     "red",

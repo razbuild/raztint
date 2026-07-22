@@ -1,7 +1,7 @@
 import os
 from unittest import mock
 
-from raztint import bg_blue, bg_red, err, info, ok, tint, warn
+from raztint import err, info, ok, tint, warn
 from raztint.core import RazTint
 from raztint.data import BACKGROUND_COLORS, STYLES
 
@@ -93,13 +93,13 @@ class TestColorizer:
         )
 
     def test_module_level_background_helpers(self):
-        """Module-level singleton exposes background helpers."""
+        """Background color methods exist on the module-level singleton instance."""
         original_use_color = tint.use_color
         tint.set_color(True)
 
         try:
-            assert bg_red("test") == "\033[41mtest\033[49m"
-            assert bg_blue("test") == "\033[44mtest\033[49m"
+            assert tint.bg_red("test") == "\033[41mtest\033[49m"
+            assert tint.bg_blue("test") == "\033[44mtest\033[49m"
         finally:
             tint.set_color(original_use_color)
 
