@@ -36,7 +36,7 @@ paint(
 | `bg` | `BackgroundColorName \| int \| None` | Background color name (e.g. `"bg_red"`, `"red"`) or ANSI code (e.g. `41`). |
 | `styles` | `StyleName \| list[StyleName] \| None` | Style name or list of style names. |
 | `reset` | `bool` | If `True` (default), full reset after text. If `False`, style-specific resets are emitted only when styles are used; otherwise no reset is appended. |
-| `icon` | `IconName \| None` | Icon key to prepend: `"ok"`, `"err"`, `"warn"`, `"info"`. |
+| `icon` | `IconName \| None` | Icon key to prepend: `"ok"`, `"err"`, `"warn"`, `"info"`, `"pending"`, `"debug"`. |
 | `icon_mode` | `IconMode \| None` | Override icon mode: `"auto"`, `"nerd"`, `"std"`, or `"ascii"`. |
 | `redact` | `bool` | If `True`, mask sensitive data in `text` before formatting. |
 | `redact_rules` | `list[MaskRule] \| None` | Custom redaction rules (defaults to `DEFAULT_RULES`). |
@@ -96,6 +96,8 @@ Return status symbols based on environment detection:
 | `err()` | Error |
 | `warn()` | Warning |
 | `info()` | Information |
+| `pending()` | In-progress / waiting state |
+| `debug()` | Diagnostic output |
 
 Fallback order: Nerd Font → Unicode → ASCII. See [Icons & Detection](icons-and-detection.md).
 

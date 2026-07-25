@@ -16,8 +16,8 @@ Defined in `raztint.data.intents.INTENTS`:
 | `danger` | red | err | bold | Errors and failures |
 | `warning` | yellow | warn | — | Caution messages |
 | `info` | blue | info | — | Informational notes |
-| `pending` | cyan | — | italic | In-progress / waiting states |
-| `debug` | gray | — | dim | Verbose or diagnostic output |
+| `pending` | cyan | pending | italic | In-progress / waiting states |
+| `debug` | white | debug | dim | Verbose or diagnostic output |
 
 ---
 

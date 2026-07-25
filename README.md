@@ -2,15 +2,15 @@
   <img src="https://raw.githubusercontent.com/razbuild/raztint/master/assets/RazTint.svg" alt="RazTint" width="400" />
   <br><br>
 
+  [![Python Versions](https://img.shields.io/pypi/pyversions/raztint)](https://pypi.org/project/raztint/)
+
   [![PyPI Version](https://img.shields.io/pypi/v/raztint)](https://pypi.org/project/raztint/)
   [![Zero Dependencies](https://img.shields.io/badge/dependencies-zero-brightgreen)](https://github.com/razbuild/raztint)
   [![Codecov](https://img.shields.io/codecov/c/github/razbuild/raztint)](https://codecov.io/gh/razbuild/raztint)
 
-  [![Python Versions](https://img.shields.io/pypi/pyversions/raztint)](https://pypi.org/project/raztint/)
-  [![PyPI Downloads](https://static.pepy.tech/badge/raztint)](https://pepy.tech/project/raztint)
 </div>
 
-Every module in a CLI codebase ends up inventing its own way to print "success" or "error." One file uses green text, another uses an emoji, a third does both differently. Output looks inconsistent, breaks in CI, and nobody notices until a log line leaks a password.
+Every CLI project eventually invents its own way to print "success" or "error." One module uses green text, another adds an emoji, a third does both differently. Output looks inconsistent, breaks in CI, and nobody notices until a log line leaks a password.
 
 ```python
 # before
@@ -22,31 +22,7 @@ print(paint("Success", intent="success"))
 
 RazTint defines a fixed mapping from intent (`success`, `danger`, `warning`, …) to color and icon once, and every call site reuses that same mapping instead of picking its own.
 
-## Preview
-
-<p align="center">
-  <img src="https://raw.githubusercontent.com/razbuild/raztint/master/assets/preview.png" alt="RazTint preview: Nerd Font, Unicode, and ASCII icon modes with colored and styled output examples" width="644"/>
-</p>
-<p align="center"><em>A simulated production log stream — 9 secrets detected, 9 secrets redacted, 0 leaked to the terminal.</em></p>
-
-## Table of Contents
-
-- [When to Use RazTint](#when-to-use-raztint)
-- [Installation](#installation)
-- [Quick Start](#quick-start)
-- [How It Compares](#how-it-compares)
-- [Features](#features)
-- [Logging Integration Example](#logging-integration-example)
-- [Documentation](#documentation)
-- [Known Limitations](#known-limitations)
-- [Contributing](#contributing)
-- [License](#license)
-
-## When to Use RazTint
-
-Reach for it if your CLI prints more than a couple of message types and you want them to look the same across modules, or you need output that renders correctly in CI, on Windows, and on terminals without a Nerd Font.
-
-For a single colored `print()` in a one-off script, plain ANSI codes or `termcolor` are simpler and enough.
+---
 
 ## Installation
 
@@ -90,48 +66,26 @@ print(redact("password=supersecret api_key=ghp_abc123"))
 
 More examples in [Getting Started](docs/getting-started.md).
 
-## How It Compares
+---
 
-| Capability                | colorama / termcolor | rich          | RazTint |
-| :------------------------ | :-------------------: | :-----------: | :-----: |
-| ANSI color support        | ✅                     | ✅             | ✅      |
-| Terminal UI components    | ❌                     | ✅             | ❌      |
-| Semantic logging intents  | ❌                     | ❌             | ✅      |
-| Automatic icon fallback   | ❌                     | ⚠️ Partial     | ✅      |
-| Secret masking            | ❌                     | ❌             | ✅      |
-| Extra dependencies        | None                   | Several        | None    |
+## Preview
 
-RazTint isn't a `rich` replacement for dashboards or tables, it solves the narrower problem of making `ok`/`err`/`warn`/`info` messages consistent and safe by default.
+<p align="center">
+  <img src="https://raw.githubusercontent.com/razbuild/raztint/master/assets/preview.png" alt="RazTint preview: Nerd Font, Unicode, and ASCII icon modes with colored and styled output examples" width="644"/>
+</p>
+<p align="center"><em>A simulated production log stream 9 secrets detected, 9 secrets redacted, 0 leaked to the terminal.</em></p>
+
+---
 
 ## Features
 
 - **Intents**: presets (`success`, `danger`, `warning`, `debug`, …) that separate meaning from styling
 - **`paint()`**: one call for color, background, styles, and icons
-- **Status icons**: `ok()`, `err()`, `warn()`, `info()`, each with the three-tier fallback
+- **Status icons**: `ok()`, `err()`, `warn()`, `info()`, `pending()`, `debug()`, each with the three-tier fallback
 - **Redaction**: pattern-based masking (`key=value` pairs like `password=`, `api_key=`, `token=`) applied as part of the formatting call, not a separate logging step; patterns are configurable, see [Security & Redaction](docs/redaction.md)
 - **Environment detection**: Nerd Font → Unicode → ASCII, cached; configurable via `NO_COLOR`, `RAZTINT_FORCE_COLOR`
 - **Typed**: `py.typed`, full public API type hints
-- **Low-level escape hatch**: raw 16-color, 256-color, and 24-bit True Color support, plus bold/dim/italic/underline/strikethrough, for when intents aren't enough
-
-## Logging Integration Example
-
-RazTint only returns a formatted string, it doesn't hook into `logging` or replace a handler. Pass that string to `print()`, a logger, or anything else that accepts a string.
-
-```python
-import logging
-from logging import Logger, getLogger
-
-from raztint import paint
-
-logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
-logger: Logger = getLogger(__name__)
-
-logger.info(paint("Database migration completed.", intent="success", icon=None))
-logger.warning(paint("Disk usage above 90%.", intent="warning", icon=None, styles="dim"))
-logger.error(
-    paint("Authentication failed for token=abc123", intent="danger", redact=True, icon=None)
-)
-```
+- **Advanced styling**: raw 16-color, 256-color, and True Color support, plus bold, italic, underline, dim, and strikethrough when semantic intents aren't enough.
 
 ## Documentation
 
@@ -153,6 +107,47 @@ logger.error(
 | [`examples/basic_usage.py`](examples/basic_usage.py) | Colors, styles, icons, intents, and redaction in one script |
 | [`examples/paint_demo.py`](examples/paint_demo.py)   | Every color, style, and icon mode              |
 | [`examples/real_world_cli.py`](examples/real_world_cli.py) | Simulated file-processor CLI            |
+
+---
+
+## Design Philosophy
+
+RazTint is built around a single idea:
+
+> [!NOTE]
+> Make terminal output consistent, meaningful, and safe by default.
+
+RazTint is not a terminal UI framework. It focuses on high-quality console messaging with:
+
+- ANSI color support
+- Semantic logging helpers
+- Automatic icon fallbacks
+- Secret masking
+- Zero external dependencies
+
+By keeping its scope intentionally small, RazTint stays predictable, dependency-free, and easy to drop into existing CLI projects.
+
+---
+
+## Logging Integration Example
+
+RazTint only returns a formatted string, it doesn't hook into `logging` or replace a handler. Pass that string to `print()`, a logger, or anything else that accepts a string.
+
+```python
+import logging
+from logging import Logger, getLogger
+
+from raztint import paint
+
+logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
+logger: Logger = getLogger(__name__)
+
+logger.info(paint("Database migration completed.", intent="success", icon=None))
+logger.warning(paint("Disk usage above 90%.", intent="warning", icon=None, styles="dim"))
+logger.error(
+    paint("Authentication failed for token=abc123", intent="danger", redact=True, icon=None)
+)
+```
 
 ## Known Limitations
 

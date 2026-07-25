@@ -9,23 +9,25 @@ RazTint picks the best icon rendering mode for the current terminal and optional
 ## Icon functions
 
 ```python
-from raztint import ok, err, warn, info
+from raztint import ok, err, warn, info, pending, debug
 
 print(ok(), "Operation completed")
 print(err(), "An error happened")
 print(warn(), "Be careful")
 print(info(), "For your information")
+print(pending(), "Waiting...")
+print(debug(), "Diagnostic info")
 ```
 
 ---
 
 ## Icon modes
 
-| Mode | ok | err | warn | info | Condition |
-|---|---|---|---|---|---|
-| Nerd | 󰄬 | 󰅖 | 󰈅 | 󰙎 | Nerd Font detected or forced |
-| Std | ✓ | ✗ | ! | i | UTF-8 supported, no Nerd Font |
-| ASCII | OK | ERR | WARN | INFO | Fallback |
+| Mode | ok | err | warn | info | pending | debug | Condition |
+|---|---|---|---|---|---|---|---|
+| Nerd | 󰄬 | 󰅖 | 󰈅 | 󰙎 | 󱦟 | 󰃤 | Nerd Font detected or forced |
+| Std | ✓ | ✗ | ! | i | PENDING | DEBUG | UTF-8 supported, no Nerd Font |
+| ASCII | OK | ERR | WARN | INFO | PENDING | DEBUG | Fallback |
 
 > Icons may not render correctly in GitHub preview depending on your browser font.
 

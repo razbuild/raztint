@@ -115,12 +115,14 @@ print(paint("Error — see below", color="red", styles="underline"))
 Icons auto-adapt to the terminal — you never choose the mode at call time.
 
 ```python
-from raztint import ok, err, warn, info
+from raztint import ok, err, warn, info, pending, debug
 
 print(f"{ok()}  File saved.")
 print(f"{err()} Connection refused.")
 print(f"{warn()} Disk space low.")
 print(f"{info()} Analysis in progress...")
+print(f"{pending()} Waiting for response...")
+print(f"{debug()} Cache hit ratio=0.92")
 ```
 
 ### Step 5 `paint()` for everything in one call

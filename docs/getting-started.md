@@ -11,7 +11,7 @@ You can use RazTint in three ways: call `paint()` for formatting, import status 
 You can use RazTint in three ways: call `paint()` for formatting, import status icon helpers, or create a `RazTint` instance for scoped control.
 
 ```python
-from raztint import err, info, ok, paint, warn
+from raztint import err, info, ok, paint, warn, pending, debug
 
 print(paint("Success! The operation completed.", color="green"))
 print(paint("Critical Error: Database not found.", color="red"))
@@ -24,6 +24,8 @@ print(f"{ok()} File saved successfully.")
 print(f"{err()} Connection failed.")
 print(f"{info()} Analysis in progress...")
 print(f"{warn()} Disk space low.")
+print(f"{pending()} Waiting for response...")
+print(f"{debug()} Cache hit ratio=0.92")
 ```
 
 ---
