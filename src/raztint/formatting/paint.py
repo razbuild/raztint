@@ -3,8 +3,7 @@ from typing import cast
 from ..core.protocols import FormatTarget
 from ..data import INTENTS
 from ..data.types import (
-    BackgroundColorName,
-    ColorName,
+    ColorValue,
     IconMode,
     IconName,
     IntentName,
@@ -52,8 +51,8 @@ def _icon_prefix(
 def format_text(
     instance: FormatTarget,
     text: str,
-    color: ColorName | int | None = None,
-    bg: BackgroundColorName | int | None = None,
+    color: ColorValue | None = None,
+    bg: ColorValue | None = None,
     styles: StyleName | list[StyleName] | None = None,
     reset: bool = True,
     icon: IconArg = UNSET,

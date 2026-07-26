@@ -1,5 +1,8 @@
 from typing import Literal
 
+# Color value: named color string, 256-color index, RGB tuple, or hex string.
+ColorValue = str | int | tuple[int, int, int]
+
 # Foreground color names accepted by paint().
 ColorName = Literal[
     "black",

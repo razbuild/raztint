@@ -1,6 +1,8 @@
 import os
 from unittest import mock
 
+import pytest
+
 from raztint import paint, tint
 from raztint.core import RazTint
 
@@ -86,10 +88,10 @@ class TestFormatText:
 
         with mock.patch.object(raztint, "use_color", True):
             try:
-                raztint.format_text("test", color=50)
+                raztint.format_text("test", color=256)
                 assert False, "Should have raised ValueError"
             except ValueError as e:
-                assert "invalid" in str(e).lower()
+                assert "invalid" in str(e).lower() or "256-color" in str(e)
 
     def test_format_text_background_string_name(self):
         """Test format_text with background color name."""
@@ -132,10 +134,10 @@ class TestFormatText:
 
         with mock.patch.object(raztint, "use_color", True):
             try:
-                raztint.format_text("test", bg=50)
+                raztint.format_text("test", bg=256)
                 assert False, "Should have raised ValueError"
             except ValueError as e:
-                assert "invalid" in str(e).lower()
+                assert "invalid" in str(e).lower() or "256-color" in str(e)
 
     def test_format_text_single_style_string(self):
         """Test format_text with a single style as string."""
@@ -398,3 +400,219 @@ class TestFormatText:
             assert paint("hi", color="red") == tint.format_text("hi", color="red")
         finally:
             tint.set_color(original_use_color)
+
+
+class TestUnifiedColorValues:
+    """Integration tests for unified color value support in paint()."""
+
+    def test_paint_rgb_foreground(self):
+        """paint() with RGB tuple foreground."""
+        raztint = RazTint()
+        raztint.set_color(True)
+
+        result = raztint.format_text("test", color=(255, 120, 0))
+        assert "\033[38;2;255;120;0m" in result
+        assert "test" in result
+
+    def test_paint_rgb_background(self):
+        """paint() with RGB tuple background."""
+        raztint = RazTint()
+        raztint.set_color(True)
+
+        result = raztint.format_text("test", bg=(30, 30, 30))
+        assert "\033[48;2;30;30;30m" in result
+        assert "test" in result
+
+    def test_paint_rgb_both(self):
+        """paint() with RGB tuples for both foreground and background."""
+        raztint = RazTint()
+        raztint.set_color(True)
+
+        result = raztint.format_text("test", color=(255, 0, 0), bg=(0, 255, 0))
+        # Codes are combined with semicolons: \033[38;2;255;0;0;48;2;0;255;0m
+        assert "38;2;255;0;0" in result
+        assert "48;2;0;255;0" in result
+        assert "test" in result
+
+    def test_paint_hex_foreground(self):
+        """paint() with hex string foreground."""
+        raztint = RazTint()
+        raztint.set_color(True)
+
+        result = raztint.format_text("test", color="#ff7800")
+        assert "\033[38;2;255;120;0m" in result
+        assert "test" in result
+
+    def test_paint_hex_background(self):
+        """paint() with hex string background."""
+        raztint = RazTint()
+        raztint.set_color(True)
+
+        result = raztint.format_text("test", bg="#202020")
+        assert "\033[48;2;32;32;32m" in result
+        assert "test" in result
+
+    def test_paint_hex_uppercase(self):
+        """paint() with uppercase hex strings."""
+        raztint = RazTint()
+        raztint.set_color(True)
+
+        result = raztint.format_text("test", color="#FF7800", bg="#202020")
+        assert "38;2;255;120;0" in result
+        assert "48;2;32;32;32" in result
+
+    def test_paint_hex_both(self):
+        """paint() with hex strings for both foreground and background."""
+        raztint = RazTint()
+        raztint.set_color(True)
+
+        result = raztint.format_text("test", color="#ff0000", bg="#00ff00")
+        assert "38;2;255;0;0" in result
+        assert "48;2;0;255;0" in result
+
+    def test_paint_color256_foreground(self):
+        """paint() with 256-color index foreground."""
+        raztint = RazTint()
+        raztint.set_color(True)
+
+        result = raztint.format_text("test", color=208)
+        assert "\033[38;5;208m" in result
+        assert "test" in result
+
+    def test_paint_color256_background(self):
+        """paint() with 256-color index background."""
+        raztint = RazTint()
+        raztint.set_color(True)
+
+        result = raztint.format_text("test", bg=236)
+        assert "\033[48;5;236m" in result
+        assert "test" in result
+
+    def test_paint_color256_both(self):
+        """paint() with 256-color indices for both foreground and background."""
+        raztint = RazTint()
+        raztint.set_color(True)
+
+        result = raztint.format_text("test", color=200, bg=50)
+        assert "38;5;200" in result
+        assert "48;5;50" in result
+
+    def test_paint_module_level_rgb(self):
+        """Module-level paint() with RGB tuple."""
+        original_use_color = tint.use_color
+        tint.set_color(True)
+        try:
+            result = paint("test", color=(255, 120, 0))
+            assert "\033[38;2;255;120;0m" in result
+        finally:
+            tint.set_color(original_use_color)
+
+    def test_paint_module_level_hex(self):
+        """Module-level paint() with hex string."""
+        original_use_color = tint.use_color
+        tint.set_color(True)
+        try:
+            result = paint("test", color="#ff7800")
+            assert "\033[38;2;255;120;0m" in result
+        finally:
+            tint.set_color(original_use_color)
+
+    def test_paint_module_level_256(self):
+        """Module-level paint() with 256-color index."""
+        original_use_color = tint.use_color
+        tint.set_color(True)
+        try:
+            result = paint("test", color=208)
+            assert "\033[38;5;208m" in result
+        finally:
+            tint.set_color(original_use_color)
+
+    def test_paint_rgb_with_styles(self):
+        """paint() with RGB color and styles."""
+        raztint = RazTint()
+        raztint.set_color(True)
+
+        result = raztint.format_text("test", color=(255, 0, 0), styles="bold")
+        assert "38;2;255;0;0" in result
+        # Bold style code is "1"
+        assert ";1m" in result or ";1;" in result
+
+    def test_paint_hex_with_styles(self):
+        """paint() with hex color and styles."""
+        raztint = RazTint()
+        raztint.set_color(True)
+
+        result = raztint.format_text("test", color="#ff0000", styles="underline")
+        assert "\033[38;2;255;0;0" in result
+
+    def test_paint_color256_with_styles(self):
+        """paint() with 256-color and styles."""
+        raztint = RazTint()
+        raztint.set_color(True)
+
+        result = raztint.format_text("test", color=208, styles="dim")
+        assert "\033[38;5;208" in result
+
+    def test_paint_color_disabled_rgb(self):
+        """paint() with RGB color but color disabled returns plain text."""
+        raztint = RazTint()
+        raztint.set_color(False)
+
+        result = raztint.format_text("test", color=(255, 120, 0))
+        assert result == "test"
+
+    def test_paint_color_disabled_hex(self):
+        """paint() with hex color but color disabled returns plain text."""
+        raztint = RazTint()
+        raztint.set_color(False)
+
+        result = raztint.format_text("test", color="#ff7800")
+        assert result == "test"
+
+    def test_paint_color_disabled_256(self):
+        """paint() with 256-color but color disabled returns plain text."""
+        raztint = RazTint()
+        raztint.set_color(False)
+
+        result = raztint.format_text("test", color=208)
+        assert result == "test"
+
+    def test_paint_rgb_invalid_raises(self):
+        """paint() with invalid RGB tuple raises ValueError."""
+        raztint = RazTint()
+        raztint.set_color(True)
+
+        with pytest.raises(ValueError, match="RGB channel"):
+            raztint.format_text("test", color=(256, 0, 0))  # type: ignore[arg-type]
+
+    def test_paint_hex_invalid_raises(self):
+        """paint() with invalid hex raises ValueError."""
+        raztint = RazTint()
+        raztint.set_color(True)
+
+        with pytest.raises(ValueError, match="6-digit hex"):
+            raztint.format_text("test", color="#fff")
+
+    def test_paint_256_invalid_raises(self):
+        """paint() with invalid 256-color index raises ValueError."""
+        raztint = RazTint()
+        raztint.set_color(True)
+
+        with pytest.raises(ValueError, match="256-color index"):
+            raztint.format_text("test", color=300)
+
+    def test_paint_backward_compat_named_color(self):
+        """paint() still works with named color strings."""
+        raztint = RazTint()
+        raztint.set_color(True)
+
+        result = raztint.format_text("test", color="red")
+        assert "\033[31m" in result
+
+    def test_paint_backward_compat_standard_ansi_code(self):
+        """paint() still works with standard ANSI codes."""
+        raztint = RazTint()
+        raztint.set_color(True)
+
+        result = raztint.format_text("test", color=91)
+        assert "\033[91m" in result

@@ -25,13 +25,6 @@ pending = tint.pending
 debug = tint.debug
 paint = tint.format_text
 
-# Extended colors
-rgb = tint.rgb
-bg_rgb = tint.bg_rgb
-hex_color = tint.hex_color
-bg_hex_color = tint.bg_hex_color
-color256 = tint.color256
-bg_color256 = tint.bg_color256
 
 __all__ = [
     "RazTint",
@@ -54,11 +47,5 @@ __all__ = [
     "IconName",
     "IconMode",
     "IntentName",
-    "rgb",
-    "bg_rgb",
-    "hex_color",
-    "bg_hex_color",
-    "color256",
-    "bg_color256",
     "__version__",
 ]

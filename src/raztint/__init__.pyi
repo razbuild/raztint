@@ -5,6 +5,7 @@ from .data import INTENTS as INTENTS
 from .data import IntentConfig as IntentConfig
 from .data.types import BackgroundColorName as BackgroundColorName
 from .data.types import ColorName as ColorName
+from .data.types import ColorValue as ColorValue
 from .data.types import IconMode as IconMode
 from .data.types import IconName as IconName
 from .data.types import IntentName as IntentName
@@ -31,8 +32,8 @@ def redact(
 ) -> str: ...
 def paint(
     text: str,
-    color: ColorName | int | None = None,
-    bg: BackgroundColorName | int | None = None,
+    color: ColorValue | None = None,
+    bg: ColorValue | None = None,
     styles: StyleName | list[StyleName] | None = None,
     reset: bool = True,
     icon: IconArg = UNSET,
@@ -43,10 +44,3 @@ def paint(
 ) -> str: ...
 
 __all__: list[str]
-
-def rgb(text: str, r: int, g: int, b: int) -> str: ...
-def bg_rgb(text: str, r: int, g: int, b: int) -> str: ...
-def hex_color(text: str, hex_str: str) -> str: ...
-def bg_hex_color(text: str, hex_str: str) -> str: ...
-def color256(text: str, index: int) -> str: ...
-def bg_color256(text: str, index: int) -> str: ...
