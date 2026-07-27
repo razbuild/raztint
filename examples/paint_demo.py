@@ -36,13 +36,13 @@ for color in (
 # Background colors
 print("\n--- Background colors ---")
 for bg in (
-    "bg_red",
-    "bg_green",
-    "bg_yellow",
-    "bg_blue",
-    "bg_magenta",
-    "bg_cyan",
-    "bg_white",
+    "red",
+    "green",
+    "yellow",
+    "blue",
+    "magenta",
+    "cyan",
+    "white",
 ):
     print(paint(f"  {bg}", bg=bg))
 
@@ -57,9 +57,9 @@ print(paint("  bold + underline", styles=["bold", "underline"]))
 
 # Color + background + style combined
 print("\n--- Combined: color + bg + styles ---")
-print(paint("  Highlighted warning", color="yellow", bg="bg_black", styles="bold"))
+print(paint("  Highlighted warning", color="yellow", bg="black", styles="bold"))
 print(
-    paint("  Critical alert", color="white", bg="bg_red", styles=["bold", "underline"])
+    paint("  Critical alert", color="white", bg="red", styles=["bold", "underline"])
 )
 
 # Icons via paint()
@@ -69,13 +69,13 @@ for icon in ("ok", "err", "warn", "info"):
 
 # Intents semantic presets
 print("\n--- Intents ---")
-for intent in ("success", "danger", "warning", "info", "pending", "debug"):
+for intent in ("success", "error", "warning", "info", "pending", "debug"):
     print(paint(f"  {intent}: operation result", intent=intent))  # type: ignore[arg-type]
 
 # Intent overrides explicit arg always wins
 print("\n--- Intent overrides ---")
 print(paint("  success intent, cyan color", intent="success", color="cyan"))
-print(paint("  danger intent, no icon", intent="danger", icon=None))
+print(paint("  error intent, no icon", intent="error", icon=None))
 print(paint("  warning intent, bold style", intent="warning", styles="bold"))
 
 # paint() with reset=False for multi-segment lines

@@ -76,10 +76,10 @@ def run() -> None:
 
     for f in FILES:
         if f["size_kb"] == 0:
-            failure(f"{f['name']}  — empty file, skipping")
+            failure(f"{f['name']}  - empty file, skipping")
             skipped += 1
         elif f["status"] == "warn":
-            warning(f"{f['name']}  — unexpected extension (.tmp)")
+            warning(f"{f['name']}  - unexpected extension (.tmp)")
             validated += 1
         else:
             step(f"{f['name']}", f"  {paint(str(f['size_kb']) + ' KB', styles='dim')}")
