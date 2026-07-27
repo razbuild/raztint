@@ -20,7 +20,7 @@ print("\033[32mSuccess\033[0m")
 print(paint("Success", intent="success"))
 ```
 
-RazTint defines a fixed mapping from intent (`success`, `danger`, `warning`, …) to color and icon once, and every call site reuses that same mapping instead of picking its own.
+RazTint defines a fixed mapping from intent (`success`, `error`, `warning`, …) to color and icon once, and every call site reuses that same mapping instead of picking its own.
 
 ---
 
@@ -79,7 +79,7 @@ More examples in [Getting Started](docs/getting-started.md).
 
 ## Features
 
-- **Intents**: presets (`success`, `danger`, `warning`, `debug`, …) that separate meaning from styling
+- **Intents**: presets (`success`, `error`, `warning`, `debug`, …) that separate meaning from styling
 - **`paint()`**: one call for color, background, styles, and icons
 - **Status icons**: `ok()`, `err()`, `warn()`, `info()`, `pending()`, `debug()`, each with the three-tier fallback
 - **Redaction**: pattern-based masking (`key=value` pairs like `password=`, `api_key=`, `token=`) applied as part of the formatting call, not a separate logging step; patterns are configurable, see [Security & Redaction](docs/redaction.md)
@@ -145,7 +145,7 @@ logger: Logger = getLogger(__name__)
 logger.info(paint("Database migration completed.", intent="success", icon=None))
 logger.warning(paint("Disk usage above 90%.", intent="warning", icon=None, styles="dim"))
 logger.error(
-    paint("Authentication failed for token=abc123", intent="danger", redact=True, icon=None)
+    paint("Authentication failed for token=abc123", intent="error", redact=True, icon=None)
 )
 ```
 

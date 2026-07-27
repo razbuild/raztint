@@ -6,20 +6,16 @@
 
 ## `paint()` / `format_text()`
 
-The main entry point for combining colors, backgrounds, styles, icons, intents, and redaction.
-
 `paint` is a module-level alias for `tint.format_text()`. Both accept identical parameters.
-
-**Signature:**
 
 ```python
 paint(
     text: str,
-    color: ColorName | int | None = None,
-    bg: BackgroundColorName | int | None = None,
+    color: ColorValue | None = None,
+    bg: ColorValue | None = None,
     styles: StyleName | list[StyleName] | None = None,
     reset: bool = True,
-    icon: IconName | None = None,
+    icon: IconArg = UNSET,
     icon_mode: IconMode | None = None,
     redact: bool = False,
     redact_rules: list[MaskRule] | None = None,
@@ -27,68 +23,82 @@ paint(
 ) -> str
 ```
 
-**Parameters:**
-
 | Parameter | Type | Description |
 |---|---|---|
-| `text` | `str` | The text to format. |
-| `color` | `ColorName \| int \| None` | Foreground color name (e.g. `"red"`) or ANSI code (e.g. `31`). |
-| `bg` | `BackgroundColorName \| int \| None` | Background color name (e.g. `"bg_red"`, `"red"`) or ANSI code (e.g. `41`). |
-| `styles` | `StyleName \| list[StyleName] \| None` | Style name or list of style names. |
-| `reset` | `bool` | If `True` (default), full reset after text. If `False`, style-specific resets are emitted only when styles are used; otherwise no reset is appended. |
-| `icon` | `IconName \| None` | Icon key to prepend: `"ok"`, `"err"`, `"warn"`, `"info"`, `"pending"`, `"debug"`. |
-| `icon_mode` | `IconMode \| None` | Override icon mode: `"auto"`, `"nerd"`, `"std"`, or `"ascii"`. |
-| `redact` | `bool` | If `True`, mask sensitive data in `text` before formatting. |
-| `redact_rules` | `list[MaskRule] \| None` | Custom redaction rules (defaults to `DEFAULT_RULES`). |
-| `intent` | `IntentName \| None` | Semantic preset; fills unset `color`, `icon`, and `styles`. |
+| `text` | `str` | Text to format. |
+| `color` | `ColorValue \| None` | Foreground color: named string, hex string, RGB tuple, or ANSI-256 integer. |
+| `bg` | `ColorValue \| None` | Background color (same types as `color`). |
+| `styles` | `StyleName \| list[StyleName] \| None` | Style name or list. |
+| `reset` | `bool` | Full reset after text. `False` emits style-specific resets only. |
+| `icon` | `IconArg` | Icon key: `"ok"`, `"err"`, `"warn"`, `"info"`, `"pending"`, `"debug"`. Uses `UNSET` sentinel to inherit from intent. |
+| `icon_mode` | `IconMode \| None` | `"auto"`, `"nerd"`, `"std"`, or `"ascii"`. `None` uses instance default. |
+| `redact` | `bool` | Mask sensitive data before formatting. |
+| `redact_rules` | `list[MaskRule] \| None` | Custom rules (defaults to `DEFAULT_RULES`). |
+| `intent` | `IntentName \| None` | Semantic preset; fills unset `color`, `icon`, `styles`. |
 
-**`icon_mode` values:**
+**Returns:** Formatted string with ANSI codes when color is enabled. When disabled, returns plain text (icon prefix still included).
+
+**Raises:** `ValueError` for unknown names; `TypeError` for invalid `styles` type.
+
+### Color values
+
+`ColorValue` (`str | int | tuple[int, int, int]`) is inferred by Python type:
+
+| Type | Format | Example |
+|---|---|---|
+| `str` starting with `#` | Hex RGB | `"#ff7800"` |
+| `str` (other) | Named color | `"red"` |
+| `int` 30-37, 90-97 | Standard ANSI fg | `31` |
+| `int` 40-47, 100-107 | Standard ANSI bg | `41` |
+| `int` (0-255) | 256-color index | `208` |
+| `tuple[int, int, int]` | TrueColor RGB | `(255, 120, 0)` |
+
+The `bg` parameter also accepts named colors without a `bg_` prefix.
+
+### `icon_mode` values
 
 | Value | Behavior |
 |---|---|
-| `None` | Uses `tint.icon_mode` — whatever the environment detected at startup |
-| `"auto"` | Cascades: Nerd Font → Unicode → ASCII at call time |
-| `"nerd"` | Nerd Font icon; falls back to `std` then `ascii` if unavailable |
-| `"std"` | Unicode icon; falls back to `ascii` if unavailable |
+| `None` | Uses instance default (`tint.icon_mode`) |
+| `"auto"` | Cascades: Nerd → Unicode → ASCII at call time |
+| `"nerd"` | Nerd Font icon; falls back to `std` then `ascii` |
+| `"std"` | Unicode icon; falls back to `ascii` |
 | `"ascii"` | Always ASCII |
 
-**Returns:** Formatted string with ANSI codes if color is enabled. When color is disabled, text is returned unchanged unless an icon is requested, in which case the plain icon prefix is still included.
-
-**Raises:**
-
-- `ValueError` — unknown color, background, style, icon, or intent name
-- `TypeError` — `styles` is not `str`, `list[str]`, or `None`
-
-**Examples:**
+### Examples
 
 ```python
 from raztint import paint
 
+# Named colors
 print(paint("Success", color="green"))
 print(paint("Error", color="red", styles="bold"))
+
+# 256-color, TrueColor, hex
+print(paint("Orange", color=208))
+print(paint("Orange", color=(255, 120, 0)))
+print(paint("Orange", color="#ff7800"))
+
+# Background
+print(paint("Alert", color="white", bg="red"))
+print(paint("Dark bg", bg=(30, 30, 30)))
+print(paint("Dark bg", bg="#1e1e1e"))
+
+# Combined
 print(paint("Alert", color="white", bg="red", styles=["bold", "underline"]))
 print(paint("File saved.", color="green", styles="bold", icon="ok"))
-print(paint("Done!", color="green", icon="ok", icon_mode="auto"))
-print(paint("Saved.", intent="success"))
-print(paint(f"token= ghp_XXXXXXXX", intent="debug", redact=True))
+
+# Intents
+print(paint("Done!", intent="success"))
+print(paint("Failed", intent="error"))
+
+# Redaction
+print(paint("token=ghp_XXXXXXXX", intent="debug", redact=True))
 ```
-## Formatting colors, backgrounds, and styles
-
-Use `paint()` for named foreground colors, backgrounds, and styles:
-
-```python
-print(paint("Error", color="red"))
-print(paint("Alert", color="white", bg="red"))
-print(paint("Important", styles=["bold", "underline"]))
-```
-
-The old foreground, background, and style convenience helpers were removed so `paint()` is the single source of truth for formatting behavior.
 
 ---
 
 ## Icon functions
-
-Return status symbols based on environment detection:
 
 | Function | Meaning |
 |---|---|
@@ -96,102 +106,68 @@ Return status symbols based on environment detection:
 | `err()` | Error |
 | `warn()` | Warning |
 | `info()` | Information |
-| `pending()` | In-progress / waiting state |
+| `pending()` | In-progress / waiting |
 | `debug()` | Diagnostic output |
 
-Fallback order: Nerd Font → Unicode → ASCII. See [Icons & Detection](icons-and-detection.md).
-
-To combine an icon with formatted text in one call, use `paint(..., icon="ok")` instead.
+Fallback order: Nerd Font -> Unicode -> ASCII. See [Icons & Detection](icons-and-detection.md).
 
 ---
 
 ## `redact()`
 
-Mask sensitive data using regex rules. See [Security & Redaction](redaction.md).
-
 ```python
-from raztint import redact, MaskRule
-
-safe = redact("password=secret")
-custom = redact("SECRET-123", rules=[MaskRule(r"SECRET-\d+", "custom", "SECRET-***")])
+redact(
+    text: str,
+    rules: tuple[MaskRule, ...] | list[MaskRule] | None = None,
+) -> str
 ```
+
+When `rules` is `None`, `DEFAULT_RULES` are applied. See [Security & Redaction](redaction.md).
 
 ---
 
 ## `RazTint` class
 
-### Constructor
-
 ```python
 from raztint import RazTint
 
 t = RazTint()
 ```
 
-### Methods
-
 | Method | Description |
 |---|---|
-| `color(text, fg_code)` | Apply a raw ANSI foreground code |
-| `background(text, bg_code)` | Apply a raw ANSI background code |
-| `style(text, on_code, off_code)` | Apply a raw style on/off pair |
+| `color(text, fg_code)` | Apply raw ANSI foreground code |
+| `background(text, bg_code)` | Apply raw ANSI background code |
+| `style(text, on_code, off_code)` | Apply raw style on/off codes |
 | `format_text(...)` | Same as `paint()` |
-| `set_color(enabled)` | Enable or disable color output |
+| `set_color(enabled)` | Enable or disable color |
 
-Status icon helpers (`ok`, `err`, `warn`, `info`, `pending`, `debug`) are available on the instance. Use `format_text()` for colors, backgrounds, and styles.
-
-**Example:**
+Icon helpers (`ok`, `err`, `warn`, `info`, `pending`, `debug`) are available on every instance.
 
 ```python
-from raztint import RazTint
-
 t = RazTint()
-colored = t.color("Hello", "31")  # red via raw code
 t.set_color(False)
 print(t.format_text("Plain text", color="red"))
 ```
 
-### Attributes
-
 | Attribute | Type | Description |
 |---|---|---|
 | `use_color` | `bool` | Whether ANSI output is enabled |
-| `icon_mode` | `IconMode` | Detected default icon mode: `"nerd"`, `"std"`, or `"ascii"` |
-| `colors` | `dict[str, str]` | Foreground color name → ANSI code |
-| `backgrounds` | `dict[str, str]` | Background color name → ANSI code |
-| `styles` | `dict[str, tuple[str, str]]` | Style name → (on, off) codes |
+| `icon_mode` | `IconMode` | Detected default icon mode |
+| `colors` | `dict[str, str]` | Foreground name -> ANSI code |
+| `backgrounds` | `dict[str, str]` | Background name -> ANSI code |
+| `styles` | `dict[str, tuple[str, str]]` | Style name -> (on, off) codes |
 | `icons` | `dict[str, dict[str, str]]` | Icon registry |
 
 ---
 
 ## Typed literals
 
-RazTint exports `Literal` type aliases for IDE autocompletion:
-
 | Type | Values |
 |---|---|
-| `ColorName` | `black`, `red`, `green`, … |
-| `BackgroundColorName` | `bg_red`, `red`, … (with or without `bg_` prefix) |
+| `ColorName` | `black`, `red`, `green`, `blue`, `magenta`, `cyan`, `white`, `gray`, `bright_red`, `bright_green`, `bright_yellow`, `bright_blue`, `bright_magenta`, `bright_cyan`, `bright_white` |
+| `BackgroundColorName` | Same as `ColorName` |
 | `StyleName` | `bold`, `dim`, `italic`, `underline`, `strikethrough` |
-| `IconName` | `ok`, `err`, `warn`, `info` |
+| `IconName` | `ok`, `err`, `warn`, `info`, `pending`, `debug` |
 | `IconMode` | `auto`, `nerd`, `std`, `ascii` |
-| `IntentName` | `success`, `danger`, `warning`, `pending`, `debug`, `info` |
-
----
-
-## Module exports
-
-Everything available from `import raztint`:
-
-```python
-from raztint import (
-    RazTint, tint,
-    ok, err, warn, info, pending, debug,
-    paint,
-    rgb, bg_rgb, hex_color, bg_hex_color, color256, bg_color256,
-    redact, MaskRule, DEFAULT_RULES,
-    INTENTS, IntentConfig,
-    ColorName, BackgroundColorName, StyleName, IconName, IconMode, IntentName,
-    __version__,
-)
-```
+| `IntentName` | `success`, `error`, `warning`, `pending`, `debug`, `info` |

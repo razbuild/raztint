@@ -1,30 +1,28 @@
 # RazTint Documentation
 
-Welcome to the RazTint documentation. The [README](../README.md) covers installation and a minimal quick start; the guides below go into detail.
+For installation and quick start, see the [README](../README.md).
 
 ## Guides
 
-| Guide | What you'll learn |
+| Guide | Description |
 |---|---|
-| [Getting Started](getting-started.md) | Import styles, `paint()`, and class-based usage |
-| [API Reference](api-reference.md) | Every public function, parameter, and class attribute |
-| [Intents](intents.md) | Semantic message presets (`success`, `danger`, …) |
-| [Security & Redaction](redaction.md) | `redact()` and built-in secret masking rules |
-| [Icons & Detection](icons-and-detection.md) | Nerd Font / Unicode / ASCII modes and how they are chosen |
-| [Configuration](configuration.md) | Environment variables, color detection, debugging |
-| [Development](development.md) | Contributing, running tests, and CI checks |
+| [Getting Started](getting-started.md) | `paint()` parameters, color types, `tint` singleton, class-based usage |
+| [API Reference](api-reference.md) | All functions, parameters, and type aliases |
+| [Intents](intents.md) | Semantic preset registry and override behavior |
+| [Security & Redaction](redaction.md) | Built-in mask rules and custom patterns |
+| [Icons & Detection](icons-and-detection.md) | Icon modes and environment detection logic |
+| [Configuration](configuration.md) | Environment variables and runtime toggles |
+| [Development](development.md) | Setup, tests, linting, and contributing |
 
 ## Package layout
 
-RazTint is organized into focused modules:
-
 | Module | Purpose |
 |---|---|
-| `raztint.core` | `RazTint` instance, ANSI helpers, and icon method registration |
+| `raztint.core` | `RazTint` instance, ANSI helpers, method registration |
 | `raztint.data` | Color/style registries, intent presets, typed literals |
 | `raztint.detect` | TTY, Windows VT, and Nerd Font detection |
 | `raztint.formatting` | `paint()` / `format_text()` implementation |
 | `raztint.icons` | Icon registry and mode resolution |
 | `raztint.security` | Regex-based secret redaction |
 
-Most users only need the top-level imports from `raztint`; the subpackages are available for advanced or internal use.
+Most users only need top-level imports from `raztint`; subpackages are for advanced use.

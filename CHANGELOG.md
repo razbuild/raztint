@@ -1,5 +1,32 @@
 # Changelog
 
+## [0.9.0] - 2026-07-26
+
+### Changed
+
+- **Breaking**: The semantic intent name `danger` has been renamed to `error`. Replace all `intent="danger"` usages with `intent="error"`.
+- **Breaking**: Removed the standalone `rgb()`, `bg_rgb()`, `hex_color()`, `bg_hex_color()`, `color256()`, and `bg_color256()` helper functions. All color formatting is now done exclusively through `paint()` (or `tint.format_text()`).
+- **Unified color API**: `paint()` is now the canonical styling function. The `color` and `bg` parameters accept any color value type — named string, hex string (e.g. `"#ff7800"`), RGB tuple (e.g. `(255,120,0)`), or ANSI-256 integer (0-255) — inferred by type. No separate helper functions are needed.
+- `BackgroundColorName` type now accepts plain color names (e.g. `"red"`) without the `bg_` prefix, matching the `paint()` `bg` parameter behavior.
+
+### Removed
+
+- Removed public helper functions: `rgb()`, `bg_rgb()`, `hex_color()`, `bg_hex_color()`, `color256()`, `bg_color256()`
+
+### Migration
+
+| Before | After |
+|---|---|
+| `paint(text, intent="danger")` | `paint(text, intent="error")` |
+| `rgb(text, 255, 120, 0)` | `paint(text, color=(255, 120, 0))` |
+| `bg_rgb(text, 30, 30, 30)` | `paint(text, bg=(30, 30, 30))` |
+| `hex_color(text, "#ff7800")` | `paint(text, color="#ff7800")` |
+| `bg_hex_color(text, "#1e1e1e")` | `paint(text, bg="#1e1e1e")` |
+| `color256(text, 208)` | `paint(text, color=208)` |
+| `bg_color256(text, 236)` | `paint(text, bg=236)` |
+
+---
+
 ## [0.8.5] - 2026-07-13
 
 ### Fixed
@@ -92,9 +119,9 @@
 
 ### Docs
 
-- Added `examples` directory with usage samples (#9, #12) (by [@13-Prabhat](https://github.com/13-Prabhat))
+- Added `examples/` directory with usage samples (#9, #12) (by [@13-Prabhat](https://github.com/13-Prabhat))
 - Added tutorial documentation to improve onboarding (#9, #12) (by [@13-Prabhat](https://github.com/13-Prabhat))
-- Enhanced README with clearer structure and extended usage explanations (#9, #12) (by [@13-Prabhat](https://github.com/13-Prabhat))
+- Enhanced README with clearer structure (#9, #12) (by [@13-Prabhat](https://github.com/13-Prabhat))
 - Added `preview.png` and updated README preview section (#10, #11) (by [@13-Prabhat](https://github.com/13-Prabhat))
 
 ---

@@ -4,8 +4,6 @@
 
 RazTint includes a lightweight regex-based redaction layer for masking secrets before they appear in terminal output or logs.
 
----
-
 ## `redact()`
 
 ```python
@@ -14,18 +12,7 @@ from raztint import redact
 safe = redact("password=supersecret api_key=ghp_abc123xyz")
 ```
 
-**Signature:**
-
-```python
-redact(
-    text: str,
-    rules: tuple[MaskRule, ...] | list[MaskRule] | None = None,
-) -> str
-```
-
 When `rules` is `None`, `DEFAULT_RULES` are applied. Rules run in order; each pattern is compiled once and cached.
-
----
 
 ## Built-in rules
 
@@ -40,16 +27,12 @@ When `rules` is `None`, `DEFAULT_RULES` are applied. Rules run in order; each pa
 | `credit_card` | 16-digit card numbers | `4111-****-****-1111` |
 | `generic_secret` | `password=`, `secret=`, `api_key=`, … | value → `****` |
 
-Inspect the full patterns:
-
 ```python
 from raztint import DEFAULT_RULES
 
 for rule in DEFAULT_RULES:
     print(rule.name, rule.pattern)
 ```
-
----
 
 ## Custom rules
 
@@ -66,31 +49,22 @@ rules = [
 safe = redact("SECRET-12345 deployed", rules=rules)
 ```
 
-`MaskRule` fields:
-
 | Field | Description |
 |---|---|
 | `pattern` | Regex string (supports groups in `replacement`) |
-| `name` | Identifier for documentation / debugging |
+| `name` | Identifier for debugging |
 | `replacement` | Substitution string (may use `\1`, `\2`, …) |
 
----
-
 ## Redaction in `paint()`
-
-Enable masking as part of formatting:
 
 ```python
 from raztint import paint
 
-raw = f"Connected as user:pass@db.internal token=ghp_secret"
+raw = "Connected as user:pass@db.internal token=ghp_secret"
 print(paint(raw, intent="debug", redact=True))
-```
 
-Pass custom rules:
-
-```python
-from raztint import paint, MaskRule
+# Custom rules
+from raztint import MaskRule
 
 rules = [MaskRule(r"INTERNAL-\w+", "internal", "INTERNAL-***")]
 print(paint("key=INTERNAL-abc", redact=True, redact_rules=rules))
@@ -98,17 +72,8 @@ print(paint("key=INTERNAL-abc", redact=True, redact_rules=rules))
 
 Redaction runs **before** ANSI formatting, so masked output never exposes the original secret in the styled string.
 
----
-
 ## Limitations
 
 - Regex redaction is best-effort, not a security guarantee. Review patterns for your threat model.
-- Already-masked values (e.g. `****`) are not double-processed where patterns explicitly skip them.
+- Already-masked values (e.g. `****`) are not double-processed.
 - For structured logging pipelines, consider redacting at the logging layer as well.
-
----
-
-## See also
-
-- [API Reference `redact()`](api-reference.md#redact)
-- [Getting Started Redaction](getting-started.md#redaction)

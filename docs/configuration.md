@@ -4,8 +4,6 @@
 
 Control RazTint behavior with environment variables. Useful for CI/CD pipelines, user overrides, and troubleshooting.
 
----
-
 ## Environment variables
 
 | Variable | Value | Description |
@@ -14,62 +12,35 @@ Control RazTint behavior with environment variables. Useful for CI/CD pipelines,
 | `RAZTINT_NO_COLOR` | any | RazTint-specific override to disable colors. |
 | `RAZTINT_FORCE_COLOR` | `1`, `true`, `yes`, `on` | Forces color output even if not a TTY. |
 | `RAZTINT_USE_NERD_ICONS` | `1`, `true`, `yes`, `on` | Forces Nerd Font icons. |
-| `RAZTINT_NO_NERD_ICONS` | `1`, `true`, `yes`, `on` | Disables Nerd Font detection (falls back to Unicode). |
-| `RAZTINT_SKIP_SYSTEM_FONT_SCAN` | `1`, `true`, `yes`, `on` | Skips OS font scanning; env-based hints only. |
-| `RAZTINT_DEBUG` | `1`, `true`, `yes`, `on` | Logs color/icon/font decisions to stderr. |
+| `RAZTINT_NO_NERD_ICONS` | `1`, `true`, `yes`, `on` | Disables Nerd Fonts (falls back to Unicode). |
+| `RAZTINT_SKIP_SYSTEM_FONT_SCAN` | `1`, `true`, `yes`, `on` | Skips OS font scanning; env hints only. |
+| `RAZTINT_DEBUG` | `1`, `true`, `yes`, `on` | Logs detection decisions to stderr. |
 
-Additional hints recognized during font detection (not RazTint-prefixed):
+Additional hints for font detection:
 
 | Variable | Effect |
 |---|---|
 | `NERDFONTS`, `NERD_FONTS` | Treat as Nerd Font available |
 | `FONT_NAME`, `TERM_FONT` | If value contains `nerd` or `nf-`, enable Nerd mode |
 
----
-
 ## Common scenarios
 
-### CI / piped output
-
-Colors are off by default when stdout is not a TTY. Force them when needed:
-
 ```bash
+# Force colors in CI (off by default when not a TTY)
 RAZTINT_FORCE_COLOR=1 pytest --tb=short
-```
 
-### Disable colors entirely
-
-```bash
+# Disable colors entirely
 NO_COLOR=1 python app.py
-# or
-RAZTINT_NO_COLOR=1 python app.py
-```
 
-### Force standard Unicode icons without Nerd Fonts
-
-If encoding cannot represent the required characters, RazTint falls back to ASCII automatically. To disable Nerd Font icons while still allowing the standard Unicode set:
-
-```bash
+# Disable Nerd Fonts, keep Unicode icons
 RAZTINT_NO_NERD_ICONS=1 python app.py
-```
 
-### Faster startup (skip font scan)
-
-```bash
+# Faster startup -> skip font scan
 RAZTINT_SKIP_SYSTEM_FONT_SCAN=1 python app.py
-```
 
-Nerd mode still activates if `RAZTINT_USE_NERD_ICONS` or other env hints are set.
-
-### Debug detection decisions
-
-```bash
+# Debug detection decisions
 RAZTINT_DEBUG=1 python app.py
 ```
-
-Messages go to stderr and are disabled by default.
-
----
 
 ## Programmatic control
 
@@ -86,17 +57,4 @@ local = RazTint()
 local.set_color(True)
 ```
 
-`use_color` and `icon_mode` are read/write on the instance. Changing `icon_mode` affects subsequent icon calls that do not pass an explicit `icon_mode`.
-
----
-
-## Performance
-
-Detection results are cached (`lru_cache` for encoding probes, module-level font scan). Overhead is negligible in normal use. Use `RAZTINT_SKIP_SYSTEM_FONT_SCAN=1` in slow or sandboxed environments where OS font enumeration is expensive.
-
----
-
-## See also
-
-- [Icons & Detection](icons-and-detection.md)
-- [Development](development.md)
+Detection results are cached (`lru_cache` for encoding probes, module-level font scan). Overhead is negligible. Use `RAZTINT_SKIP_SYSTEM_FONT_SCAN=1` in slow or sandboxed environments.

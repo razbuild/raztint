@@ -4,65 +4,27 @@
 
 RazTint picks the best icon rendering mode for the current terminal and optionally scans the OS for installed Nerd Fonts.
 
----
-
-## Icon functions
-
-```python
-from raztint import ok, err, warn, info, pending, debug
-
-print(ok(), "Operation completed")
-print(err(), "An error happened")
-print(warn(), "Be careful")
-print(info(), "For your information")
-print(pending(), "Waiting...")
-print(debug(), "Diagnostic info")
-```
-
----
-
 ## Icon modes
 
 | Mode | ok | err | warn | info | pending | debug | Condition |
 |---|---|---|---|---|---|---|---|
 | Nerd | 󰄬 | 󰅖 | 󰈅 | 󰙎 | 󱦟 | 󰃤 | Nerd Font detected or forced |
-| Std | ✓ | ✗ | ! | i | PENDING | DEBUG | UTF-8 supported, no Nerd Font |
+| Std | ✓ | ✗ | ! | i | PENDING | DEBUG | UTF-8, no Nerd Font |
 | ASCII | OK | ERR | WARN | INFO | PENDING | DEBUG | Fallback |
-
-> Icons may not render correctly in GitHub preview depending on your browser font.
-
----
 
 ## Detection logic
 
-RazTint determines an instance's default icon mode at initialization:
+RazTint determines the default icon mode at initialization:
 
-### 1. ASCII mode
-
-Used when stdout encoding cannot represent the Nerd Font probe character. In practice, this is the fallback mode for terminals that cannot reliably display the richer icon sets.
-
-### 2. Nerd Font mode
-
-Enabled when any of the following is true:
-
-- `RAZTINT_USE_NERD_ICONS` is set to `1`, `true`, `yes`, or `on`
-- `NERDFONTS` or `NERD_FONTS` environment variable is set
-- `FONT_NAME` or `TERM_FONT` contains `"nerd"` or `"nf-"`
-- A Nerd Font is detected via system checks:
-  - **Linux:** `fc-list` (fontconfig)
-  - **macOS:** `system_profiler` and font directories
-  - **Windows:** `C:\Windows\Fonts` via PowerShell
+1. **ASCII** — stdout encoding cannot represent the Nerd Font probe character.
+2. **Nerd Font** — enabled when any of:
+   - `RAZTINT_USE_NERD_ICONS` is set to `1`, `true`, `yes`, or `on`
+   - `NERDFONTS` or `NERD_FONTS` is set
+   - `FONT_NAME` or `TERM_FONT` contains `"nerd"` or `"nf-"`
+   - A Nerd Font is detected via system scan (`fc-list` on Linux, `system_profiler` on macOS, PowerShell on Windows)
+3. **Standard Unicode** — UTF-8 works and either `RAZTINT_NO_NERD_ICONS` is set or no Nerd Font is found.
 
 Set `RAZTINT_SKIP_SYSTEM_FONT_SCAN=1` to skip OS scanning and rely only on environment hints.
-
-### 3. Standard Unicode mode
-
-Used when UTF-8 encoding works and either:
-
-- `RAZTINT_NO_NERD_ICONS` is set (explicitly disables Nerd Fonts), or
-- Nerd Fonts are not detected and not forced
-
----
 
 ## Overriding icon mode per call
 
@@ -83,49 +45,33 @@ print(paint("Done!", color="green", icon="ok", icon_mode="auto"))
 | `"std"` | Unicode icon, fallback to ascii |
 | `"ascii"` | Always ASCII |
 
----
-
 ## Color detection
 
-Color support is determined by checking (in order):
+Color support is checked in this order:
 
-1. `NO_COLOR` or `RAZTINT_NO_COLOR` — disables colors
-2. `RAZTINT_FORCE_COLOR` — forces colors even when not a TTY
-3. Whether stdout is a TTY (`sys.stdout.isatty()`)
-4. On Windows: Virtual Terminal processing is enabled
-5. `TERM` is set and not `"dumb"`
+1. `NO_COLOR` or `RAZTINT_NO_COLOR` set → colors off.
+2. `RAZTINT_FORCE_COLOR=1` → colors on.
+3. `sys.stdout.isatty()` → on in a real terminal.
+4. Windows: Virtual Terminal processing enabled → on.
+5. `TERM` set and not `"dumb"` → on.
 
-When color is disabled, `paint()` returns the icon symbol for the active mode plus unstyled text.
-Toggle at runtime:
+When color is disabled, `paint()` returns the icon symbol plus unstyled text.
 
 ```python
 from raztint import tint
 
 tint.set_color(False)
-print(tint.red("plain text"))
+print(tint.format_text("plain text", color="red"))
 ```
-
----
 
 ## Installing Nerd Fonts
 
-Download from the official [Nerd Fonts site](https://www.nerdfonts.com/font-downloads), install the font, and set your terminal to use it. RazTint will detect it on the next run (unless scanning is skipped).
-
----
+Download from [Nerd Fonts](https://www.nerdfonts.com/font-downloads), install the font, and set your terminal to use it. RazTint detects it on the next run.
 
 ## Debugging
-
-Enable detection logs to stderr:
 
 ```bash
 RAZTINT_DEBUG=1 python your_script.py
 ```
 
-See [Configuration](configuration.md) for all environment variables.
-
----
-
-## See also
-
-- [Configuration](configuration.md)
-- [API Reference Icon functions](api-reference.md#icon-functions)
+Detection logs go to stderr. See [Configuration](configuration.md) for all environment variables.
