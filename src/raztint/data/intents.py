@@ -11,7 +11,7 @@ class IntentConfig(NamedTuple):
 
 INTENTS: dict[str, IntentConfig] = {
     "success": IntentConfig(color="green", icon="ok", styles="bold"),
-    "danger": IntentConfig(color="red", icon="err", styles="bold"),
+    "error": IntentConfig(color="red", icon="err", styles="bold"),
     "warning": IntentConfig(color="yellow", icon="warn", styles=None),
     "pending": IntentConfig(color="cyan", icon="pending", styles="italic"),
     "debug": IntentConfig(color="white", icon="debug", styles="dim"),

@@ -4,7 +4,7 @@ from raztint.data.intents import INTENTS, IntentConfig
 def test_intents_registry_keys() -> None:
     assert set(INTENTS) == {
         "success",
-        "danger",
+        "error",
         "warning",
         "pending",
         "debug",

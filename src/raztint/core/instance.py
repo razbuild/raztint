@@ -19,7 +19,7 @@ from .builder import register_dynamic_methods
 
 
 class RazTint:
-    """A zero-dependency Python library for ANSI coloring and smart CLI icons."""
+    """A zero-dependency ANSI styling and icon library for CLI output."""
 
     def __init__(self) -> None:
         self.colors = COLORS

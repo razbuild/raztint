@@ -56,7 +56,6 @@ def _compile(pattern: str) -> re.Pattern[str]:
 def redact(
     text: str, rules: tuple[MaskRule, ...] | list[MaskRule] | None = None
 ) -> str:
-    """Mask sensitive data in text using regex patterns."""
     if rules is None:
         compiled_rules = _COMPILED_DEFAULT
     else:

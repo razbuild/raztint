@@ -61,7 +61,6 @@ def format_text(
     redact_rules: list[MaskRule] | None = None,
     intent: IntentName | None = None,
 ) -> str:
-    """Format text with color, background, styles, and an optional icon."""
     if intent is not None:
         cfg = INTENTS.get(intent.lower())
         if cfg is None:

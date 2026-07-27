@@ -1,8 +1,7 @@
 from collections.abc import Callable
 
 from ..data.types import (
-    BackgroundColorName,
-    ColorName,
+    ColorValue,
     IconMode,
     IntentName,
     StyleName,
@@ -38,8 +37,8 @@ class RazTint:
     def format_text(
         self,
         text: str,
-        color: ColorName | int | None = None,
-        bg: BackgroundColorName | int | None = None,
+        color: ColorValue | None = None,
+        bg: ColorValue | None = None,
         styles: StyleName | list[StyleName] | None = None,
         reset: bool = True,
         icon: IconArg = UNSET,
