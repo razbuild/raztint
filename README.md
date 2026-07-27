@@ -104,7 +104,6 @@ More examples in [Getting Started](docs/getting-started.md).
 
 | Script                                             | Description                                  |
 | --------------------------------------------------- | ---------------------------------------------- |
-| [`examples/basic_usage.py`](examples/basic_usage.py) | Colors, styles, icons, intents, and redaction in one script |
 | [`examples/paint_demo.py`](examples/paint_demo.py)   | Every color, style, and icon mode              |
 | [`examples/real_world_cli.py`](examples/real_world_cli.py) | Simulated file-processor CLI            |
 
