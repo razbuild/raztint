@@ -1,4 +1,4 @@
-<img src="assets/RazTint.svg" width="100px" align="left">
+<img src="https://raw.githubusercontent.com/razbuild/raztint/master/assets/RazTint.svg" width="100px" align="left">
 
 ### RazTint
 

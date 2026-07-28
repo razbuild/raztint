@@ -2,11 +2,11 @@
 
 <defs>
 
-    <!-- Premium blue -->
-    <linearGradient id="blue" x1="300" y1="250" x2="760" y2="760">
-        <stop offset="0%" stop-color="#8DD1FF"/>
-        <stop offset="45%" stop-color="#5DA9E9"/>
-        <stop offset="100%" stop-color="#2876C7"/>
+    <!-- RazTint palette: terminal / syntax inspired -->
+    <linearGradient id="tint" x1="300" y1="250" x2="760" y2="760">
+        <stop offset="0%" stop-color="#22D3EE"/>
+        <stop offset="45%" stop-color="#6366F1"/>
+        <stop offset="100%" stop-color="#A855F7"/>
     </linearGradient>
 
 
@@ -20,6 +20,12 @@
         <rect x="17" y="17" width="1024" height="1024" rx="225"/>
     </clipPath>
 
+
+    <!-- Soft glow -->
+    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+        <feGaussianBlur stdDeviation="18"/>
+    </filter>
+
 </defs>
 
 
@@ -30,7 +36,7 @@
     width="1024"
     height="1024"
     rx="225"
-    fill="#050505"/>
+    fill="#080B14"/>
 
 
 <!-- Subtle grain -->
@@ -44,11 +50,23 @@
     clip-path="url(#clip)"/>
 
 
+<!-- Glow layer -->
+<path
+    d="M790 790V268H268"
+    fill="none"
+    stroke="url(#tint)"
+    stroke-width="90"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    opacity=".25"
+    filter="url(#glow)"/>
+
+
 <!-- Outer -->
 <path
     d="M790 790V268H268"
     fill="none"
-    stroke="url(#blue)"
+    stroke="url(#tint)"
     stroke-width="82"
     stroke-linecap="round"
     stroke-linejoin="round"/>
@@ -56,9 +74,9 @@
 
 <!-- Inner -->
 <path
-    d="M650 660V408H408"
+    d="M610 620V450H450"
     fill="none"
-    stroke="url(#blue)"
+    stroke="url(#tint)"
     stroke-width="56"
     stroke-linecap="round"
     stroke-linejoin="round"/>
