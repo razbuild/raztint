@@ -1,14 +1,18 @@
 """
-real_world_cli.py A simulated file-processor CLI built with RazTint.
+file_processor.py
 
-Shows real integration patterns:
-  - status messages at each processing stage
-  - progress reporting
-  - error handling with redaction
-  - summary table
+A simulated file-processing CLI built with RazTint.
+
+Demonstrates real-world usage patterns:
+- staged CLI workflows
+- status messages and progress reporting
+- success, warning, and error output
+- secret-safe logging with redaction
+- processing summaries
+- combining icons with semantic formatting
 
 Run:
-    python examples/real_world_cli.py
+    python examples/file_processor.py
 """
 
 import time

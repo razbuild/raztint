@@ -1,12 +1,21 @@
 """
-paint_demo.py Full showcase of paint(), the primary RazTint API.
+showcase.py
 
-Covers: colors, background colors, every style, icon modes,
-        intents, intent overrides, concatenation with reset=False,
-        redaction, and runtime state inspection.
+Full showcase of RazTint capabilities.
+
+Demonstrates:
+- foreground and background colors
+- text styles
+- combined formatting
+- semantic intents
+- icon rendering
+- intent overrides
+- multi-segment output with reset=False
+- secret redaction
+- runtime configuration inspection
 
 Run:
-    python examples/paint_demo.py
+    python examples/showcase.py
 """
 
 from raztint import paint, tint
@@ -58,9 +67,7 @@ print(paint("  bold + underline", styles=["bold", "underline"]))
 # Color + background + style combined
 print("\n--- Combined: color + bg + styles ---")
 print(paint("  Highlighted warning", color="yellow", bg="black", styles="bold"))
-print(
-    paint("  Critical alert", color="white", bg="red", styles=["bold", "underline"])
-)
+print(paint("  Critical alert", color="white", bg="red", styles=["bold", "underline"]))
 
 # Icons via paint()
 print("\n--- Icons via paint() ---")
