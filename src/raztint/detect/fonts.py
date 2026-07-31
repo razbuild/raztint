@@ -32,6 +32,16 @@ def _has_indicator(text: str) -> bool:
     return bool(_NERD_SUFFIX_RE.search(text))
 
 
+def _is_ci_environment() -> bool:
+    """Detect common CI environments via the de-facto standard CI env var.
+
+    GitHub Actions, GitLab CI, CircleCI, Travis, and most other CI providers
+    set CI=true. system_profiler is slow (~1-2s) and pointless on CI runners,
+    which never have nerd fonts installed anyway.
+    """
+    return os.getenv("CI", "").lower() in ("1", "true", "yes", "on")
+
+
 def _check_mac_font_dirs() -> bool:
     """Fast path: scan known font directories before falling back to system_profiler."""
     for font_dir in _MAC_FONT_DIRS:
@@ -48,6 +58,10 @@ def _check_mac_font_dirs() -> bool:
 
 def _check_mac_system_profiler() -> bool:
     """Slow path (~1-2s): only used if the fast directory scan finds nothing."""
+    if _is_ci_environment():
+        debug("Font detection (macOS): skipping system_profiler in CI environment")
+        return False
+
     try:
         result = subprocess.run(
             ["system_profiler", "SPFontsDataType"],
