@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="https://raw.githubusercontent.com/razbuild/raztint/master/assets/RazTint.svg" alt="RazTint Logo" width="120" />
+<img src="https://raw.githubusercontent.com/razbuild/raztint/main/assets/RazTint.svg" alt="RazTint Logo" width="120" />
 
 # RazTint
 
@@ -22,7 +22,7 @@ Keep your CLI output consistent. Write what a message means, not how it should l
 ## Preview
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/razbuild/raztint/master/assets/preview.png" alt="RazTint preview: Nerd Font, Unicode, and ASCII icon modes with colored and styled output examples" width="644"/>
+  <img src="https://raw.githubusercontent.com/razbuild/raztint/main/assets/preview.png" alt="RazTint preview: Nerd Font, Unicode, and ASCII icon modes with colored and styled output examples" width="644"/>
 </p>
 
 <p align="center">
@@ -132,16 +132,16 @@ A small scope keeps RazTint focused.
 
 | Guide                                                                                             | Description                                             |
 | --------------------------------------------------------------------------------------------------| ---------------------------------------------------------|
-| [Getting Started](https://github.com/razbuild/raztint/blob/master/docs/getting-started.md)        | Functional usage, `paint()`, and the `tint` instance      |
-| [API Reference](https://github.com/razbuild/raztint/blob/master/docs/api-reference.md)            | Colors, styles, icons, and `RazTint` class methods         |
-| [Intents](https://github.com/razbuild/raztint/blob/master/docs/intents.md)                        | Semantic presets for common CLI messages                   |
-| [Security & Redaction](https://github.com/razbuild/raztint/blob/master/docs/redaction.md)         | Masking tokens, credentials, and custom rules               |
-| [Icons & Detection](https://github.com/razbuild/raztint/blob/master/docs/icons-and-detection.md)  | Icon modes and environment/font/color detection logic      |
-| [Configuration](https://github.com/razbuild/raztint/blob/master/docs/configuration.md)            | Environment variables and runtime toggles                    |
-| [Development](https://github.com/razbuild/raztint/blob/master/docs/development.md)                | Local setup, tests, and linting                              |
-| [Tutorial](https://github.com/razbuild/raztint/blob/master/docs/tutorial.md)                      | Philosophy, detection walk-through, and best practices      |
+| [Getting Started](https://github.com/razbuild/raztint/blob/main/docs/getting-started.md)        | Functional usage, `paint()`, and the `tint` instance      |
+| [API Reference](https://github.com/razbuild/raztint/blob/main/docs/api-reference.md)            | Colors, styles, icons, and `RazTint` class methods         |
+| [Intents](https://github.com/razbuild/raztint/blob/main/docs/intents.md)                        | Semantic presets for common CLI messages                   |
+| [Security & Redaction](https://github.com/razbuild/raztint/blob/main/docs/redaction.md)         | Masking tokens, credentials, and custom rules               |
+| [Icons & Detection](https://github.com/razbuild/raztint/blob/main/docs/icons-and-detection.md)  | Icon modes and environment/font/color detection logic      |
+| [Configuration](https://github.com/razbuild/raztint/blob/main/docs/configuration.md)            | Environment variables and runtime toggles                    |
+| [Development](https://github.com/razbuild/raztint/blob/main/docs/development.md)                | Local setup, tests, and linting                              |
+| [Tutorial](https://github.com/razbuild/raztint/blob/main/docs/tutorial.md)                      | Philosophy, detection walk-through, and best practices      |
 
-**Examples:** [`showcase.py`](https://github.com/razbuild/raztint/blob/master/examples/showcase.py) · [`file_processor.py`](https://github.com/razbuild/raztint/blob/master/examples/file_processor.py) · [`redaction_demo.py`](https://github.com/razbuild/raztint/blob/master/examples/redaction_demo.py)
+**Examples:** [`showcase.py`](https://github.com/razbuild/raztint/blob/main/examples/showcase.py) · [`file_processor.py`](https://github.com/razbuild/raztint/blob/main/examples/file_processor.py) · [`redaction_demo.py`](https://github.com/razbuild/raztint/blob/main/examples/redaction_demo.py)
 
 ---
 
@@ -163,7 +163,7 @@ See [CONTRIBUTING.md](https://github.com/razbuild/.github/blob/main/CONTRIBUTING
 
 ## License
 
-[![License](https://img.shields.io/pypi/l/raztint)](https://github.com/razbuild/raztint/blob/master/LICENSE)
+[![License](https://img.shields.io/pypi/l/raztint)](https://github.com/razbuild/raztint/blob/main/LICENSE)
 
 <div align="center">
   <img src="https://raw.githubusercontent.com/razbuild/.github/main/assets/badge.svg" alt="Made by RazBuild" width="160">
