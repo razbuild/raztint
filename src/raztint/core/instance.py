@@ -30,7 +30,7 @@ class RazTint:
         self.use_color: bool = supports_color()
         self.icon_mode: IconMode = self._get_icon_mode()
 
-        register_dynamic_methods(cast(IconHost, self))
+        register_dynamic_methods(cast(FormatTarget, self))
 
     @staticmethod
     def _has_nerd_fonts() -> bool:
