@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.9.1] - 2026-08-12
+
+### Fixed
+
+- Fixed `ty` type-checking errors caused by registering dynamic color, background, style, and icon methods through the narrower `IconHost` protocol.
+- Updated dynamic method registration to use the more specific `FormatTarget` protocol.
+
+---
+
 ## [0.9.0] - 2026-07-28
 
 ### Changed
