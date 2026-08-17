@@ -62,7 +62,7 @@
 
 ### Added
 
-- Added `benchmarks/` directory for performance benchmarking by @Shouryaverma19 in #16
+- Added `benchmarks/` directory for performance benchmarking
 
 ### Performance
 
@@ -72,7 +72,7 @@
 ### Tests
 
 - Added new test coverage
-- Added `test_env.py` by @nightcityblade in #18
+- Added `test_env.py`
 
 ### Docs
 
@@ -119,7 +119,7 @@
 
 ### Added
 
-- Added True Color and 256-color support via `rgb`, `hex_color`, and `color256` APIs (#6, #13) (by [@13-Prabhat](https://github.com/13-Prabhat))
+- Added True Color and 256-color support via `rgb`, `hex_color`, and `color256` APIs
 - Introduced new icons for `Pending` and `debug` states
 
 ### Tests
@@ -128,10 +128,10 @@
 
 ### Docs
 
-- Added `examples/` directory with usage samples (#9, #12) (by [@13-Prabhat](https://github.com/13-Prabhat))
-- Added tutorial documentation to improve onboarding (#9, #12) (by [@13-Prabhat](https://github.com/13-Prabhat))
-- Enhanced README with clearer structure (#9, #12) (by [@13-Prabhat](https://github.com/13-Prabhat))
-- Added `preview.png` and updated README preview section (#10, #11) (by [@13-Prabhat](https://github.com/13-Prabhat))
+- Added `examples/` directory with usage samples
+- Added tutorial documentation to improve onboarding
+- Enhanced README with clearer structure
+- Added `preview.png` and updated README preview section
 
 ---
 
@@ -182,7 +182,7 @@
 ## [0.6.0] - 2026-05-13
 
 ### Added
-- `format_text()` method for applying foreground color, background color, and multiple text styles in a single call. ([@githubuser16384](https://github.com/githubuser16384) in [#8](https://github.com/razbuild/raztint/pull/8))
+- `format_text()` method for applying foreground color, background color, and multiple text styles in a single call.
 - New tests for `format_text()` covering edge cases, validation, and environment toggles.
 
 ### Changed
@@ -194,7 +194,7 @@
 ## [0.5.0] - 2026-05-12
 
 ### Added
-- feat: support for ANSI background colors [#5](https://github.com/razbuild/raztint/pull/5) by [@snoopuppy582](https://github.com/snoopuppy582)
+- feat: support for ANSI background colors
 - test: add unit tests for background color parsing
 
 ### Docs
@@ -213,7 +213,7 @@
 ## [0.4.0] - 2026-05-11
 
 ### Added
-- **Text style support**: New functions `bold`, `dim`, `italic`, `underline`, and `strikethrough` allow applying text styles without breaking existing ANSI colors. Each style uses its own reset code to preserve color when removed. Implemented by [@wangstrider](https://github.com/wangstrider) in [#3](https://github.com/razbuild/raztint/pull/3).
+- **Text style support**: New functions `bold`, `dim`, `italic`, `underline`, and `strikethrough` allow applying text styles without breaking existing ANSI colors. Each style uses its own reset code to preserve color when removed.
 - Comprehensive test coverage for all new style functions.
 
 ### Docs
