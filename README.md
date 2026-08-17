@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="https://raw.githubusercontent.com/razbuild/raztint/main/assets/RazTint.svg" alt="RazTint Logo" width="190" />
+<img src="https://raw.githubusercontent.com/razbuild/raztint/main/assets/RazTint.svg" alt="RazTint Logo" width="185" />
 
 # RazTint
 
@@ -157,7 +157,7 @@ A small scope keeps RazTint focused.
 
 PRs and issues are welcome. Open an issue first to discuss any new feature.
 
-See [CONTRIBUTING.md](https://github.com/razbuild/.github/blob/main/CONTRIBUTING.md) for setup and guidelines.
+See [Contributing Guide](https://github.com/razbuild/raztint/blob/main/CONTRIBUTING.md) for setup and guidelines.
 
 ---
 
