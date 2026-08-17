@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="https://raw.githubusercontent.com/razbuild/raztint/main/assets/RazTint.svg" alt="RazTint Logo" width="120" />
+<img src="https://raw.githubusercontent.com/razbuild/raztint/main/assets/RazTint.svg" alt="RazTint Logo" width="190" />
 
 # RazTint
 
