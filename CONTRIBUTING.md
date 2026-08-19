@@ -25,6 +25,27 @@ Just browse the [open issues](https://github.com/razbuild/raztint/issues) and gr
 
 Please follow our [Code of Conduct](https://github.com/razbuild/.github/blob/main/CODE_OF_CONDUCT.md).
 
+## Early Feedback 🌱
+
+RazTint is still an early project, so feedback is especially valuable.
+
+You don't need to be a developer to help. If you try RazTint and notice
+something confusing, broken, or missing, we'd love to hear about it.
+
+Share your experience in the
+[Early Feedback discussion](https://github.com/razbuild/raztint/discussions).
+
+Things that are useful to us:
+
+- CLI experience
+- Installation and setup
+- Terminal output and colors
+- Documentation
+- Bugs or confusing behavior
+- Features you'd expect from a terminal color tool
+
+Even a few notes after trying the project are helpful.
+
 ## Reporting Bugs 🐛
 
 Please include:
