@@ -39,3 +39,39 @@ class TestResolveIcon:
             raztint_color_on, "ok", mode="nerd", has_nerd_fonts=lambda: True
         )
         assert result.startswith("\033[") and "[✓]" in result
+
+    def test_auto_mode_std_fallback(self, raztint_color_on: RazTint) -> None:
+        raztint_color_on.icons = {
+            "OK": {"nerd": "", "std": "[✓]", "ascii": "[OK]", "color": "GREEN"},
+        }
+        result = resolve_icon(
+            raztint_color_on, "ok", mode="auto", has_nerd_fonts=lambda: False
+        )
+        assert result.startswith("\033[") and "[✓]" in result
+
+    def test_auto_mode_ascii_fallback(self, raztint_color_on: RazTint) -> None:
+        raztint_color_on.icons = {
+            "OK": {"nerd": "", "std": "", "ascii": "[OK]", "color": "GREEN"},
+        }
+        result = resolve_icon(
+            raztint_color_on, "ok", mode="auto", has_nerd_fonts=lambda: False
+        )
+        assert result.startswith("\033[") and "[OK]" in result
+
+    def test_std_mode(self, raztint_color_on: RazTint) -> None:
+        raztint_color_on.icons = {
+            "OK": {"nerd": "[󰄬]", "std": "[✓]", "ascii": "[OK]", "color": "GREEN"},
+        }
+        result = resolve_icon(
+            raztint_color_on, "ok", mode="std", has_nerd_fonts=lambda: True
+        )
+        assert result.startswith("\033[") and "[✓]" in result
+
+    def test_std_mode_ascii_fallback(self, raztint_color_on: RazTint) -> None:
+        raztint_color_on.icons = {
+            "OK": {"nerd": "[󰄬]", "std": "", "ascii": "[OK]", "color": "GREEN"},
+        }
+        result = resolve_icon(
+            raztint_color_on, "ok", mode="std", has_nerd_fonts=lambda: True
+        )
+        assert result.startswith("\033[") and "[OK]" in result
