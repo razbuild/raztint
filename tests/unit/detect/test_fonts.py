@@ -1,7 +1,11 @@
 import os
 from unittest import mock
 
-from raztint.detect.fonts import check_installed_nerd_fonts, has_nerd_fonts
+from raztint.detect.fonts import (
+    _check_mac_font_dirs,
+    check_installed_nerd_fonts,
+    has_nerd_fonts,
+)
 
 
 class TestHasNerdFonts:
@@ -85,3 +89,28 @@ class TestCheckInstalledNerdFonts:
             run.return_value.stdout = "Hack Nerd Font"
             assert check_installed_nerd_fonts() is True
             assert run.call_args is not None
+
+
+class TestCheckMacFontDirs:
+    @mock.patch("raztint.detect.fonts._MAC_FONT_DIRS", ("/mock/fonts",))
+    def test_skips_missing_dirs(self) -> None:
+        with mock.patch("raztint.detect.fonts.os.path.isdir", return_value=False):
+            assert _check_mac_font_dirs() is False
+
+    @mock.patch("raztint.detect.fonts._MAC_FONT_DIRS", ("/mock/fonts",))
+    def test_finds_nerd_font_in_font_dir(self) -> None:
+        with mock.patch("raztint.detect.fonts.os.path.isdir", return_value=True):
+            with mock.patch(
+                "raztint.detect.fonts.os.listdir",
+                return_value=["Hack Nerd Font.ttf"],
+            ):
+                assert _check_mac_font_dirs() is True
+
+    @mock.patch("raztint.detect.fonts._MAC_FONT_DIRS", ("/mock/fonts",))
+    def test_handles_listing_errors(self) -> None:
+        with mock.patch("raztint.detect.fonts.os.path.isdir", return_value=True):
+            with mock.patch(
+                "raztint.detect.fonts.os.listdir",
+                side_effect=PermissionError("denied"),
+            ):
+                assert _check_mac_font_dirs() is False
