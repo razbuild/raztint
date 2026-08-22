@@ -410,7 +410,7 @@ class TestFormatTextIconPaths:
         raztint = RazTint()
         raztint.set_color(False)
 
-        result = raztint.format_text("test", icon="ok")
+        result = raztint.format_text("test", icon="ok", icon_mode="std")
         assert result == "[✓] test"
 
     def test_format_text_icon_only_color_enabled(self):
@@ -418,7 +418,7 @@ class TestFormatTextIconPaths:
         raztint = RazTint()
         raztint.set_color(True)
 
-        result = raztint.format_text("test", icon="ok")
+        result = raztint.format_text("test", icon="ok", icon_mode="std")
         assert result == "\033[32m[✓]\033[0m test"
 
     def test_format_text_no_codes_returns_plain_text(self):
