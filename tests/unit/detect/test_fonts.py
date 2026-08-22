@@ -57,6 +57,22 @@ class TestCheckInstalledNerdFonts:
             assert check_installed_nerd_fonts() is True
             assert run.call_args is not None
 
+    @mock.patch("raztint.detect.fonts.os.name", "nt")
+    def test_windows_detection_handles_powershell_errors(self) -> None:
+        with mock.patch(
+            "raztint.detect.fonts.subprocess.run",
+            side_effect=OSError("powershell not found"),
+        ):
+            assert check_installed_nerd_fonts() is False
+
+    @mock.patch("raztint.detect.fonts.sys.platform", "linux")
+    def test_posix_detection_handles_fc_list_errors(self) -> None:
+        with mock.patch(
+            "raztint.detect.fonts.subprocess.run",
+            side_effect=OSError("fc-list not found"),
+        ):
+            assert check_installed_nerd_fonts() is False
+
     @mock.patch("raztint.detect.fonts.sys.platform", "darwin")
     def test_macos_detection_uses_system_profiler(self) -> None:
         # Explicitly clear CI so we exercise the non-CI (real scan) path.
