@@ -402,6 +402,37 @@ class TestFormatText:
             tint.set_color(original_use_color)
 
 
+class TestFormatTextIconPaths:
+    """Cover icon-only branches in format_text."""
+
+    def test_format_text_color_disabled_with_icon(self):
+        """With color disabled and an icon, only the icon is returned."""
+        raztint = RazTint()
+        raztint.set_color(False)
+
+        result = raztint.format_text("test", icon="ok", icon_mode="std")
+        assert result == "[✓] test"
+
+    def test_format_text_icon_only_color_enabled(self):
+        """With color enabled and only an icon, no text codes are emitted."""
+        raztint = RazTint()
+        raztint.set_color(True)
+
+        result = raztint.format_text("test", icon="ok", icon_mode="std")
+        assert result == "\033[32m[✓]\033[0m test"
+
+    def test_format_text_no_codes_returns_plain_text(self):
+        """If no ANSI codes resolve, plain text is returned."""
+        raztint = RazTint()
+        raztint.set_color(True)
+
+        with mock.patch(
+            "raztint.formatting.paint.normalize_styles", return_value=[]
+        ):
+            result = raztint.format_text("test", styles="bold")
+        assert result == "test"
+
+
 class TestUnifiedColorValues:
     """Integration tests for unified color value support in paint()."""
 
