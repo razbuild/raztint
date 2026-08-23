@@ -98,6 +98,18 @@ class TestCheckInstalledNerdFonts:
                     assert check_installed_nerd_fonts() is False
                     run.assert_not_called()
 
+    @mock.patch("raztint.detect.fonts.sys.platform", "darwin")
+    def test_macos_detection_handles_system_profiler_errors(self) -> None:
+        with mock.patch.dict(os.environ, {}, clear=True):
+            with mock.patch(
+                "raztint.detect.fonts._check_mac_font_dirs", return_value=False
+            ):
+                with mock.patch(
+                    "raztint.detect.fonts.subprocess.run",
+                    side_effect=OSError("system_profiler not found"),
+                ):
+                    assert check_installed_nerd_fonts() is False
+
     @mock.patch("raztint.detect.fonts.sys.platform", "linux")
     def test_posix_detection_uses_fc_list(self) -> None:
         with mock.patch("raztint.detect.fonts.subprocess.run") as run:
