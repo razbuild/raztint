@@ -426,9 +426,7 @@ class TestFormatTextIconPaths:
         raztint = RazTint()
         raztint.set_color(True)
 
-        with mock.patch(
-            "raztint.formatting.paint.normalize_styles", return_value=[]
-        ):
+        with mock.patch("raztint.formatting.paint.normalize_styles", return_value=[]):
             result = raztint.format_text("test", styles="bold")
         assert result == "test"
 
