@@ -1,130 +1,108 @@
 # Getting Started
 
-[← Documentation index](index.md)
+[Documentation home](index.md)
 
-## `paint()` parameters
+RazTint formats strings for command-line applications. It can add ANSI colors, styles, and status icons, then returns an ordinary `str` that you can pass to `print()`, a logger, or another string API.
 
-`paint()` is the unified styling function - an alias for `tint.format_text()`. Color values are inferred by their Python type:
+## Requirements and installation
 
-| Python type | Color format | Example |
-|---|---|---|
-| `str` starting with `#` | Hex RGB | `"#ff7800"` |
-| `str` (other) | Named color | `"red"`, `"green"`, `"bright_blue"` |
-| `int` in 30-37 or 90-97 | Standard ANSI foreground code | `31` |
-| `int` in 40-47 or 100-107 | Standard ANSI background code | `41` |
-| `int` (other, 0-255) | 256-color palette index | `208` |
-| `tuple[int, int, int]` | 24-bit TrueColor RGB | `(255, 120, 0)` |
+RazTint requires Python 3.10 or later.
+
+```bash
+pip install raztint
+
+# Or add it to a uv project.
+uv add raztint
+```
+
+To work from a source checkout:
+
+```bash
+git clone https://github.com/razbuild/raztint.git
+cd raztint
+uv sync
+```
+
+## Print a semantic message
+
+Start with an intent. An intent selects a suitable color, icon, and style for a message category.
 
 ```python
 from raztint import paint
 
-# Named colors
+print(paint("Build passed.", intent="success"))
+print(paint("Connection failed.", intent="error"))
+print(paint("Disk space is low.", intent="warning"))
+```
+
+See [Intents](intents.md) for the complete preset list and override behavior.
+
+## Format text directly
+
+Use `paint()` when you need a specific presentation rather than a semantic preset.
+
+```python
+from raztint import paint
+
 print(paint("Done!", color="green", styles="bold"))
 print(paint("Alert", color="white", bg="red", styles=["bold", "underline"]))
+print(paint("File saved.", color="green", icon="ok"))
+```
 
-# 256-color palette
+`color` and `bg` accept a named color, a six-digit hex value, an RGB tuple, or an ANSI/256-color integer:
+
+```python
 print(paint("Orange", color=208))
-print(paint("Background gray", bg=236))
-
-# TrueColor RGB
 print(paint("Orange", color=(255, 120, 0)))
-print(paint("Dark bg", bg=(30, 30, 30)))
-
-# Hex colors
 print(paint("Orange", color="#ff7800"))
-print(paint("Dark bg", bg="#1e1e1e"))
-
-# Combined with icon
-print(paint("File saved.", color="green", styles="bold", icon="ok"))
-print(paint("Connection failed.", color="red", icon="err"))
-
-# Override icon mode per call
-print(paint("Done!", color="green", icon="ok", icon_mode="nerd"))
-print(paint("Done!", color="green", icon="ok", icon_mode="ascii"))
 ```
 
-### Concatenation with `reset=False`
+For all accepted values and parameters, see the [API Reference](api-reference.md).
 
-Disable the trailing reset on intermediate parts when chaining styled segments:
+## Icons
 
-```python
-part1 = paint("WARNING:", color="yellow", reset=False)
-part2 = paint(" Disk full", color="red")
-print(part1 + part2)
-```
-
-## The `tint` singleton
-
-`tint` is a pre-instantiated `RazTint` for convenience:
+The status helpers return an icon that adapts to the terminal. RazTint uses a Nerd Font icon when available, then standard Unicode, then ASCII.
 
 ```python
-from raztint import tint
-
-print(tint.format_text("text", color="red"))
-print(tint.ok(), "hello")
-print(tint.use_color)   # True if ANSI output is enabled
-print(tint.icon_mode)   # "nerd", "std", or "ascii"
-```
-
-## Class-based usage
-
-Create your own instance for isolated settings:
-
-```python
-from raztint import RazTint
-
-t = RazTint()
-t.set_color(False)
-print(t.format_text("Plain text", color="blue"))
-```
-
-Each instance has its own `use_color` and `icon_mode`.
-
-## Icon helpers
-
-Six status icons auto-adapt to the terminal:
-
-```python
-from raztint import ok, err, warn, info, pending, debug
+from raztint import err, ok, warn
 
 print(f"{ok()} File saved.")
 print(f"{err()} Connection failed.")
-print(f"{warn()} Disk space low.")
-print(f"{info()} Analysis in progress.")
-print(f"{pending()} Waiting for response...")
-print(f"{debug()} Cache hit ratio=0.92")
+print(f"{warn()} Disk space is low.")
 ```
 
-## Intents
+You can set `icon_mode` for one `paint()` call when a stable representation is useful:
 
-Semantic presets that set color, icon, and style together:
+```python
+print(paint("Build passed.", intent="success", icon_mode="ascii"))
+```
+
+Read [Icons and Detection](icons-and-detection.md) for the available modes and detection rules.
+
+## Redact sensitive text
+
+Set `redact=True` to mask supported secret patterns before formatting occurs.
 
 ```python
 from raztint import paint
 
-print(paint("Saved.", intent="success"))
-print(paint("Invalid input.", intent="danger"))
-print(paint("Waiting for worker...", intent="pending"))
+print(paint("password=1234", intent="debug", redact=True))
 ```
 
-Explicit `color`, `icon`, or `styles` override the intent defaults. See [Intents](intents.md).
+Use `redact()` directly when no formatting is needed. [Security and Redaction](redaction.md) describes the built-in patterns and custom rules.
 
-## Redaction
+## Shared instance or your own instance
+
+`paint()` and the icon helpers use the shared `tint` instance. Create `RazTint()` when one part of an application needs independent color settings.
 
 ```python
-from raztint import paint, redact
+from raztint import RazTint, tint
 
-# Standalone
-safe = redact("password=supersecret")
+tint.set_color(False)  # Changes the shared instance.
 
-# Combined with formatting
-print(paint("token=ghp_secret", intent="debug", redact=True))
+plain_output = RazTint()
+plain_output.set_color(False)
+print(plain_output.format_text("No ANSI codes", color="blue"))
 ```
 
-See [Security & Redaction](redaction.md).
-
-## Next steps
-
-- [API Reference](api-reference.md) - full parameter lists and type aliases
-- [Configuration](configuration.md) - environment variables for CI and overrides
-- [Icons & Detection](icons-and-detection.md) - how icon modes are chosen
+See [Configuration](configuration.md) for environment variables and runtime controls.

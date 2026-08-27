@@ -1,8 +1,6 @@
 # API Reference
 
-[← Documentation index](index.md)
-
----
+[Documentation home](index.md)
 
 ## `paint()` / `format_text()`
 
@@ -26,8 +24,8 @@ paint(
 | Parameter | Type | Description |
 |---|---|---|
 | `text` | `str` | Text to format. |
-| `color` | `ColorValue \| None` | Foreground color: named string, hex string, RGB tuple, or ANSI-256 integer. |
-| `bg` | `ColorValue \| None` | Background color (same types as `color`). |
+| `color` | `ColorValue \| None` | Foreground color: named string, hex string, RGB tuple, or ANSI/256-color integer. |
+| `bg` | `ColorValue \| None` | Background color: named string, hex string, RGB tuple, or ANSI/256-color integer. |
 | `styles` | `StyleName \| list[StyleName] \| None` | Style name or list. |
 | `reset` | `bool` | Full reset after text. `False` emits style-specific resets only. |
 | `icon` | `IconArg` | Icon key: `"ok"`, `"err"`, `"warn"`, `"info"`, `"pending"`, `"debug"`. Uses `UNSET` sentinel to inherit from intent. |
@@ -36,9 +34,9 @@ paint(
 | `redact_rules` | `list[MaskRule] \| None` | Custom rules (defaults to `DEFAULT_RULES`). |
 | `intent` | `IntentName \| None` | Semantic preset; fills unset `color`, `icon`, `styles`. |
 
-**Returns:** Formatted string with ANSI codes when color is enabled. When disabled, returns plain text (icon prefix still included).
+**Returns:** A formatted string with ANSI codes when color is enabled. When color is disabled, it returns unstyled text and still includes an icon prefix when requested.
 
-**Raises:** `ValueError` for unknown names; `TypeError` for invalid `styles` type.
+**Raises:** `ValueError` for invalid names or color values, and `TypeError` for unsupported argument types.
 
 ### Color values
 
@@ -48,21 +46,21 @@ paint(
 |---|---|---|
 | `str` starting with `#` | Hex RGB | `"#ff7800"` |
 | `str` (other) | Named color | `"red"` |
-| `int` 30-37, 90-97 | Standard ANSI fg | `31` |
-| `int` 40-47, 100-107 | Standard ANSI bg | `41` |
-| `int` (0-255) | 256-color index | `208` |
+| `int` for `color`: 30-37 or 90-97 | Standard ANSI foreground code | `31` |
+| `int` for `bg`: 40-47 or 100-107 | Standard ANSI background code | `41` |
+| Other `int` values from 0 to 255 | 256-color palette index | `208` |
 | `tuple[int, int, int]` | TrueColor RGB | `(255, 120, 0)` |
 
-The `bg` parameter also accepts named colors without a `bg_` prefix.
+The `bg` parameter accepts named colors with or without a `bg_` prefix.
 
 ### `icon_mode` values
 
 | Value | Behavior |
 |---|---|
 | `None` | Uses instance default (`tint.icon_mode`) |
-| `"auto"` | Cascades: Nerd → Unicode → ASCII at call time |
-| `"nerd"` | Nerd Font icon; falls back to `std` then `ascii` |
-| `"std"` | Unicode icon; falls back to `ascii` |
+| `"auto"` | Uses Nerd Font, standard Unicode, or ASCII according to available support at call time |
+| `"nerd"` | Uses a Nerd Font icon when defined, otherwise standard Unicode, then ASCII |
+| `"std"` | Uses a standard Unicode icon when defined, otherwise ASCII |
 | `"ascii"` | Always ASCII |
 
 ### Examples
@@ -96,8 +94,6 @@ print(paint("Failed", intent="error"))
 print(paint("token=ghp_XXXXXXXX", intent="debug", redact=True))
 ```
 
----
-
 ## Icon functions
 
 | Function | Meaning |
@@ -109,9 +105,7 @@ print(paint("token=ghp_XXXXXXXX", intent="debug", redact=True))
 | `pending()` | In-progress / waiting |
 | `debug()` | Diagnostic output |
 
-Fallback order: Nerd Font -> Unicode -> ASCII. See [Icons & Detection](icons-and-detection.md).
-
----
+For icon modes and fallback behavior, see [Icons and Detection](icons-and-detection.md).
 
 ## `redact()`
 
@@ -122,9 +116,7 @@ redact(
 ) -> str
 ```
 
-When `rules` is `None`, `DEFAULT_RULES` are applied. See [Security & Redaction](redaction.md).
-
----
+When `rules` is `None`, `DEFAULT_RULES` are applied. See [Security and Redaction](redaction.md).
 
 ## `RazTint` class
 
@@ -159,13 +151,11 @@ print(t.format_text("Plain text", color="red"))
 | `styles` | `dict[str, tuple[str, str]]` | Style name -> (on, off) codes |
 | `icons` | `dict[str, dict[str, str]]` | Icon registry |
 
----
-
 ## Typed literals
 
 | Type | Values |
 |---|---|
-| `ColorName` | `black`, `red`, `green`, `blue`, `magenta`, `cyan`, `white`, `gray`, `bright_red`, `bright_green`, `bright_yellow`, `bright_blue`, `bright_magenta`, `bright_cyan`, `bright_white` |
+| `ColorName` | `black`, `red`, `green`, `yellow`, `blue`, `magenta`, `cyan`, `white`, `gray`, `bright_red`, `bright_green`, `bright_yellow`, `bright_blue`, `bright_magenta`, `bright_cyan`, `bright_white` |
 | `BackgroundColorName` | Same as `ColorName` |
 | `StyleName` | `bold`, `dim`, `italic`, `underline`, `strikethrough` |
 | `IconName` | `ok`, `err`, `warn`, `info`, `pending`, `debug` |

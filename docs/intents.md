@@ -1,81 +1,71 @@
 # Intents
 
-[← Documentation index](index.md)
+[Documentation home](index.md)
 
-Intents are semantic presets that map a message category to a color, icon, and style. They reduce repetitive `paint()` calls for common CLI output patterns.
-
-> **Breaking change (v0.9.0):** The `danger` intent was renamed to `error`. Replace all `intent="danger"` usages with `intent="error"`.
+Intents are semantic presets for common command-line messages. Each preset supplies a color, icon, and optional style, so callers describe what the message means instead of repeating presentation details.
 
 ## Built-in intents
 
-| Intent | Color | Icon | Styles | Typical use |
+| Intent | Color | Icon | Style | Typical use |
 |---|---|---|---|---|
-| `success` | green | ok | bold | Completed operations |
-| `error` | red | err | bold | Errors and failures |
-| `warning` | yellow | warn | — | Caution messages |
-| `info` | blue | info | — | Informational notes |
-| `pending` | cyan | pending | italic | In-progress / waiting |
-| `debug` | white | debug | dim | Verbose / diagnostic |
+| `success` | `green` | `ok` | `bold` | Completed operations |
+| `error` | `red` | `err` | `bold` | Errors and failures |
+| `warning` | `yellow` | `warn` | None | Caution messages |
+| `info` | `blue` | `info` | None | Informational messages |
+| `pending` | `cyan` | `pending` | `italic` | Work in progress |
+| `debug` | `white` | `debug` | `dim` | Diagnostic output |
 
-## Usage
+## Use an intent
 
 ```python
 from raztint import paint
 
 print(paint("File saved.", intent="success"))
 print(paint("Connection refused.", intent="error"))
-print(paint("Disk space low.", intent="warning"))
+print(paint("Disk space is low.", intent="warning"))
 print(paint("Starting worker...", intent="pending"))
-print(paint("cache hit ratio=0.92", intent="debug"))
-print(paint("Version 2.1.0", intent="info"))
 ```
 
-### Migration
+## Override a preset
+
+Explicit `color`, `icon`, and `styles` arguments override the corresponding intent defaults. Arguments you do not provide continue to use the preset.
 
 ```python
-# Before (<= 0.8.x)
-paint("Connection refused.", intent="danger")
-
-# After (>= 0.9.0)
-paint("Connection refused.", intent="error")
-```
-
-## Override behavior
-
-Explicit parameters take precedence over intent defaults. Unset parameters inherit from the intent:
-
-```python
-# Uses success defaults: green + ok + bold
+# Uses the success preset: green, ok icon, and bold.
 print(paint("Done.", intent="success"))
 
-# Keeps success color and icon, overrides style
+# Keeps the success color and icon, but changes the style.
 print(paint("Done.", intent="success", styles="underline"))
 
-# Keeps success color/style, suppresses icon
+# Keeps the success color and style, but removes the icon.
 print(paint("Done.", intent="success", icon=None))
 ```
 
-The `icon` parameter uses a sentinel default (`UNSET`) so `icon=None` explicitly suppresses the icon while omitting `icon` inherits the intent's icon.
+`icon` normally uses an internal unset value. Omitting it inherits the intent icon; passing `None` intentionally suppresses that icon.
 
-## Inspecting the registry
+## Inspect the registry
+
+`INTENTS` contains the built-in configurations. `IntentConfig` has `color`, `icon`, and `styles` fields.
 
 ```python
 from raztint import INTENTS, IntentConfig
 
-cfg: IntentConfig = INTENTS["success"]
-print(cfg.color)   # "green"
-print(cfg.icon)    # "ok"
-print(cfg.styles)  # "bold"
+config: IntentConfig = INTENTS["success"]
+print(config.color)   # green
+print(config.icon)    # ok
+print(config.styles)  # bold
 ```
 
-`IntentConfig` is a `NamedTuple` with fields `color`, `icon`, and `styles`.
+An unknown intent raises `ValueError`. Valid names are listed in the error message and in the `IntentName` type.
 
-## Error handling
+## Upgrading from 0.8 and earlier
 
-An unknown intent raises `ValueError`:
+In RazTint 0.9, `danger` was renamed to `error`.
 
 ```python
-paint("x", intent="not_an_intent")  # ValueError
-```
+# Before
+paint("Connection refused.", intent="danger")
 
-Valid names are listed in the error message and match the `IntentName` literal type.
+# After
+paint("Connection refused.", intent="error")
+```

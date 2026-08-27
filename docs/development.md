@@ -1,8 +1,6 @@
 # Development
 
-[← Documentation index](index.md)
-
----
+[Documentation home](index.md)
 
 ## Local setup
 
@@ -13,8 +11,6 @@ git clone https://github.com/razbuild/raztint.git
 cd raztint
 uv sync --group dev
 ```
-
----
 
 ## Running tests
 
@@ -35,8 +31,6 @@ uv run coverage run -m pytest
 uv run coverage report -m
 ```
 
----
-
 ## Linting and type checking
 
 Kept in sync with CI:
@@ -51,8 +45,6 @@ Format code:
 ```bash
 uv run ruff format src tests
 ```
-
----
 
 ## Project structure
 
@@ -69,8 +61,6 @@ tests/
 └── conftest.py
 ```
 
----
-
 ## Typing
 
 The package ships with `py.typed` and a top-level stub file `src/raztint/__init__.pyi`. Public `Literal` types live in `raztint.data.types` and are re-exported from `raztint`.
@@ -78,8 +68,6 @@ The package ships with `py.typed` and a top-level stub file `src/raztint/__init_
 ```bash
 uv run ty check src
 ```
-
----
 
 ## Contributing
 
@@ -90,9 +78,7 @@ uv run ty check src
 
 Report bugs and feature requests via [GitHub Issues](https://github.com/razbuild/raztint/issues).
 
----
-
-## See also
+## Related documentation
 
 - [Configuration](configuration.md) environment variables used in CI
 - [API Reference](api-reference.md) public API surface

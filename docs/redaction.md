@@ -1,6 +1,6 @@
-# Security & Redaction
+# Security and Redaction
 
-[← Documentation index](index.md)
+[Documentation home](index.md)
 
 RazTint includes a lightweight regex-based redaction layer for masking secrets before they appear in terminal output or logs.
 
@@ -18,14 +18,14 @@ When `rules` is `None`, `DEFAULT_RULES` are applied. Rules run in order; each pa
 
 | Rule name | Pattern (summary) | Replacement |
 |---|---|---|
-| `github_token` | GitHub PAT prefixes (`ghp_`, `gho_`, …) | `ghp_****` |
+| `github_token` | GitHub token prefixes, including `ghp_` and `gho_` | Original prefix followed by `****` |
 | `openai_key` | OpenAI `sk-` keys (48 chars) | `sk-****` |
 | `slack_token` | Slack `xox*` tokens | `xox*-****` |
 | `jwt` | JSON Web Tokens | `[JWT:REDACTED]` |
 | `bearer_token` | `Bearer <token>` headers | `Bearer [REDACTED]` |
 | `url_credentials` | Credentials in URLs (`user:pass@`) | `user:****@` |
 | `credit_card` | 16-digit card numbers | `4111-****-****-1111` |
-| `generic_secret` | `password=`, `secret=`, `api_key=`, … | value → `****` |
+| `generic_secret` | `password=`, `secret=`, `api_key=`, and similar assignments | Value replaced with `****` |
 
 ```python
 from raztint import DEFAULT_RULES
@@ -53,7 +53,7 @@ safe = redact("SECRET-12345 deployed", rules=rules)
 |---|---|
 | `pattern` | Regex string (supports groups in `replacement`) |
 | `name` | Identifier for debugging |
-| `replacement` | Substitution string (may use `\1`, `\2`, …) |
+| `replacement` | Substitution string (may use `\1`, `\2`, and similar group references) |
 
 ## Redaction in `paint()`
 

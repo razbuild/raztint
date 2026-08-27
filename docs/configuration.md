@@ -1,8 +1,8 @@
 # Configuration
 
-[← Documentation index](index.md)
+[Documentation home](index.md)
 
-Control RazTint behavior with environment variables. Useful for CI/CD pipelines, user overrides, and troubleshooting.
+Use environment variables to control RazTint in CI, provide user overrides, or troubleshoot terminal detection.
 
 ## Environment variables
 
@@ -12,8 +12,8 @@ Control RazTint behavior with environment variables. Useful for CI/CD pipelines,
 | `RAZTINT_NO_COLOR` | any | RazTint-specific override to disable colors. |
 | `RAZTINT_FORCE_COLOR` | `1`, `true`, `yes`, `on` | Forces color output even if not a TTY. |
 | `RAZTINT_USE_NERD_ICONS` | `1`, `true`, `yes`, `on` | Forces Nerd Font icons. |
-| `RAZTINT_NO_NERD_ICONS` | `1`, `true`, `yes`, `on` | Disables Nerd Fonts (falls back to Unicode). |
-| `RAZTINT_SKIP_SYSTEM_FONT_SCAN` | `1`, `true`, `yes`, `on` | Skips OS font scanning; env hints only. |
+| `RAZTINT_NO_NERD_ICONS` | `1`, `true`, `yes`, `on` | Disables Nerd Font icons and uses standard Unicode when possible. |
+| `RAZTINT_SKIP_SYSTEM_FONT_SCAN` | `1`, `true`, `yes`, `on` | Skips system font scanning and uses environment hints only. |
 | `RAZTINT_DEBUG` | `1`, `true`, `yes`, `on` | Logs detection decisions to stderr. |
 
 Additional hints for font detection:
@@ -35,7 +35,7 @@ NO_COLOR=1 python app.py
 # Disable Nerd Fonts, keep Unicode icons
 RAZTINT_NO_NERD_ICONS=1 python app.py
 
-# Faster startup -> skip font scan
+# Faster startup: skip the font scan
 RAZTINT_SKIP_SYSTEM_FONT_SCAN=1 python app.py
 
 # Debug detection decisions
@@ -47,7 +47,7 @@ RAZTINT_DEBUG=1 python app.py
 ```python
 from raztint import RazTint, tint
 
-# Module singleton
+# Shared module instance
 tint.set_color(False)
 print(tint.use_color)   # False
 print(tint.icon_mode)   # "nerd", "std", or "ascii"
@@ -57,4 +57,4 @@ local = RazTint()
 local.set_color(True)
 ```
 
-Detection results are cached (`lru_cache` for encoding probes, module-level font scan). Overhead is negligible. Use `RAZTINT_SKIP_SYSTEM_FONT_SCAN=1` in slow or sandboxed environments.
+Encoding probes and system font scans are cached. Use `RAZTINT_SKIP_SYSTEM_FONT_SCAN=1` in slow or sandboxed environments.

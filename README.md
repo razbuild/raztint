@@ -69,7 +69,7 @@ print(paint("password=1234", intent="debug", redact=True))
 
 `paint()` returns a plain string. Pass it to `print()`, a `logging` handler, or anywhere else a string works.
 
-See [Getting Started](docs/getting-started.md) for a full walkthrough, including `logging` integration.
+See [Getting Started](docs/getting-started.md) for installation and common usage.
 
 ---
 
@@ -102,7 +102,7 @@ print(paint(f"Auth failed for token={token}", intent="error", redact=True))
 
 - **Semantic intents** `success`, `error`, `warning`, `debug`, and more. Use semantic names instead of choosing colors manually.
 
-- **Redaction** masks `key=value` pairs such as `password=`, `api_key=`, and `token=`. Patterns are configurable, see [Security & Redaction](docs/redaction.md).
+- **Redaction** masks `key=value` pairs such as `password=`, `api_key=`, and `token=`. Patterns are configurable, see [Security and Redaction](docs/redaction.md).
 
 - **Icon helpers** `ok()`, `err()`, `warn()`, `info()`, `pending()`, `debug()`. Falls back from Nerd Font to Unicode to ASCII depending on the terminal.
 
@@ -136,11 +136,10 @@ A small scope keeps RazTint focused.
 | [Getting Started](https://github.com/razbuild/raztint/blob/main/docs/getting-started.md)        | Functional usage, `paint()`, and the `tint` instance      |
 | [API Reference](https://github.com/razbuild/raztint/blob/main/docs/api-reference.md)            | Colors, styles, icons, and `RazTint` class methods         |
 | [Intents](https://github.com/razbuild/raztint/blob/main/docs/intents.md)                        | Semantic presets for common CLI messages                   |
-| [Security & Redaction](https://github.com/razbuild/raztint/blob/main/docs/redaction.md)         | Masking tokens, credentials, and custom rules               |
-| [Icons & Detection](https://github.com/razbuild/raztint/blob/main/docs/icons-and-detection.md)  | Icon modes and environment/font/color detection logic      |
+| [Security and Redaction](https://github.com/razbuild/raztint/blob/main/docs/redaction.md)       | Masking tokens, credentials, and custom rules               |
+| [Icons and Detection](https://github.com/razbuild/raztint/blob/main/docs/icons-and-detection.md) | Icon modes and environment/font/color detection logic      |
 | [Configuration](https://github.com/razbuild/raztint/blob/main/docs/configuration.md)            | Environment variables and runtime toggles                    |
 | [Development](https://github.com/razbuild/raztint/blob/main/docs/development.md)                | Local setup, tests, and linting                              |
-| [Tutorial](https://github.com/razbuild/raztint/blob/main/docs/tutorial.md)                      | Philosophy, detection walk-through, and best practices      |
 
 **Examples:** [`showcase.py`](https://github.com/razbuild/raztint/blob/main/examples/showcase.py) · [`file_processor.py`](https://github.com/razbuild/raztint/blob/main/examples/file_processor.py) · [`redaction_demo.py`](https://github.com/razbuild/raztint/blob/main/examples/redaction_demo.py)
 

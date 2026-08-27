@@ -1,77 +1,57 @@
-# Icons & Detection
+# Icons and Detection
 
-[← Documentation index](index.md)
+[Documentation home](index.md)
 
-RazTint picks the best icon rendering mode for the current terminal and optionally scans the OS for installed Nerd Fonts.
+RazTint detects whether color and richer icon glyphs are usable in the current environment. The result becomes the default for a `RazTint` instance, while individual `paint()` calls can choose an icon mode explicitly.
 
 ## Icon modes
 
-| Mode | ok | err | warn | info | pending | debug | Condition |
-|---|---|---|---|---|---|---|---|
-| Nerd | 󰄬 | 󰅖 | 󰈅 | 󰙎 | 󱦟 | 󰃤 | Nerd Font detected or forced |
-| Std | ✓ | ✗ | ! | i | PENDING | DEBUG | UTF-8, no Nerd Font |
-| ASCII | OK | ERR | WARN | INFO | PENDING | DEBUG | Fallback |
+| Mode | `ok` | `err` | `warn` | `info` | `pending` | `debug` |
+|---|---|---|---|---|---|---|
+| `nerd` | `[󰄬]` | `[󰅖]` | `[]` | `[]` | `[󱦟]` | `[󰃤]` |
+| `std` | `[✓]` | `[✗]` | `[!]` | `[i]` | `[PENDING]` | `[DEBUG]` |
+| `ascii` | `[OK]` | `[ERR]` | `[WARN]` | `[INFO]` | `[PENDING]` | `[DEBUG]` |
 
-## Detection logic
-
-RazTint determines the default icon mode at initialization:
-
-1. **ASCII** — stdout encoding cannot represent the Nerd Font probe character.
-2. **Nerd Font** — enabled when any of:
-   - `RAZTINT_USE_NERD_ICONS` is set to `1`, `true`, `yes`, or `on`
-   - `NERDFONTS` or `NERD_FONTS` is set
-   - `FONT_NAME` or `TERM_FONT` contains `"nerd"` or `"nf-"`
-   - A Nerd Font is detected via system scan (`fc-list` on Linux, `system_profiler` on macOS, PowerShell on Windows)
-3. **Standard Unicode** — UTF-8 works and either `RAZTINT_NO_NERD_ICONS` is set or no Nerd Font is found.
-
-Set `RAZTINT_SKIP_SYSTEM_FONT_SCAN=1` to skip OS scanning and rely only on environment hints.
-
-## Overriding icon mode per call
+| `icon_mode` value | Behavior |
+|---|---|
+| `None` | Uses the instance default (`tint.icon_mode`). |
+| `"auto"` | Uses a Nerd Font icon when available, otherwise standard Unicode, then ASCII. |
+| `"nerd"` | Uses a Nerd Font icon when defined, otherwise standard Unicode, then ASCII. |
+| `"std"` | Uses the standard Unicode icon when defined, otherwise ASCII. |
+| `"ascii"` | Always uses ASCII. |
 
 ```python
 from raztint import paint
 
-print(paint("Done!", color="green", icon="ok", icon_mode="nerd"))
-print(paint("Done!", color="green", icon="ok", icon_mode="std"))
 print(paint("Done!", color="green", icon="ok", icon_mode="ascii"))
-print(paint("Done!", color="green", icon="ok", icon_mode="auto"))
 ```
 
-| `icon_mode` | Behavior |
-|---|---|
-| `None` | Use instance default (`tint.icon_mode`) |
-| `"auto"` | Try nerd → std → ascii at call time |
-| `"nerd"` | Nerd icon, fallback to std then ascii |
-| `"std"` | Unicode icon, fallback to ascii |
-| `"ascii"` | Always ASCII |
+## How icon detection works
 
-## Color detection
+At initialization, RazTint checks whether stdout's encoding can represent a Nerd Font probe. If not, it uses `ascii` mode. Otherwise, it chooses in this order:
 
-Color support is checked in this order:
+1. `RAZTINT_USE_NERD_ICONS` forces `nerd` mode.
+2. `RAZTINT_NO_NERD_ICONS` forces `std` mode.
+3. Environment hints or a system font scan can enable `nerd` mode.
+4. RazTint uses `std` mode when no Nerd Font is found.
 
-1. `NO_COLOR` or `RAZTINT_NO_COLOR` set → colors off.
-2. `RAZTINT_FORCE_COLOR=1` → colors on.
-3. `sys.stdout.isatty()` → on in a real terminal.
-4. Windows: Virtual Terminal processing enabled → on.
-5. `TERM` set and not `"dumb"` → on.
+The environment hints are `NERDFONTS` or `NERD_FONTS` with a truthy value, and `FONT_NAME` or `TERM_FONT` containing a Nerd Font indicator. On Linux and other POSIX systems, the scan uses `fc-list`; macOS checks font directories and can use `system_profiler`; Windows uses PowerShell. Set `RAZTINT_SKIP_SYSTEM_FONT_SCAN=1` to rely only on environment hints.
 
-When color is disabled, `paint()` returns the icon symbol plus unstyled text.
+## How color detection works
 
-```python
-from raztint import tint
+Color is disabled when `NO_COLOR` or `RAZTINT_NO_COLOR` is present, even if it has an empty value. Otherwise, `RAZTINT_FORCE_COLOR` enables color when it has a truthy value (`1`, `true`, `yes`, or `on`). Without an override, color is enabled only when stdout is a TTY and:
 
-tint.set_color(False)
-print(tint.format_text("plain text", color="red"))
-```
+- Windows Virtual Terminal processing can be enabled on Windows, or
+- `TERM` is set to a value other than `dumb` on other platforms.
 
-## Installing Nerd Fonts
+When color is disabled, RazTint still returns icons and text, but omits ANSI escape codes.
 
-Download from [Nerd Fonts](https://www.nerdfonts.com/font-downloads), install the font, and set your terminal to use it. RazTint detects it on the next run.
+## Troubleshoot detection
 
-## Debugging
+Set `RAZTINT_DEBUG=1` before running your command to write detection decisions to stderr.
 
 ```bash
 RAZTINT_DEBUG=1 python your_script.py
 ```
 
-Detection logs go to stderr. See [Configuration](configuration.md) for all environment variables.
+See [Configuration](configuration.md) for all supported environment variables.

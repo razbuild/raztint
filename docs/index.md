@@ -1,28 +1,34 @@
 # RazTint Documentation
 
-For installation and quick start, see the [README](../README.md).
+RazTint is a zero-dependency Python library for clear, semantic command-line output. It formats text with ANSI colors and icons, and can redact common secrets before a string is displayed or logged.
+
+## Start here
+
+1. Install RazTint and print your first message in [Getting Started](getting-started.md).
+2. Use [Intents](intents.md) for consistent success, error, warning, and diagnostic messages.
+3. Read [Security and Redaction](redaction.md) before displaying potentially sensitive values.
 
 ## Guides
 
-| Guide | Description |
+| Guide | Use it when you need to... |
 |---|---|
-| [Getting Started](getting-started.md) | `paint()` parameters, color types, `tint` singleton, class-based usage |
-| [API Reference](api-reference.md) | All functions, parameters, and type aliases |
-| [Intents](intents.md) | Semantic preset registry and override behavior |
-| [Security & Redaction](redaction.md) | Built-in mask rules and custom patterns |
-| [Icons & Detection](icons-and-detection.md) | Icon modes and environment detection logic |
-| [Configuration](configuration.md) | Environment variables and runtime toggles |
-| [Development](development.md) | Setup, tests, linting, and contributing |
+| [Getting Started](getting-started.md) | Install RazTint, format common messages, and choose between the shared instance and your own instance. |
+| [Intents](intents.md) | Apply the built-in semantic presets or override one part of a preset. |
+| [Security and Redaction](redaction.md) | Mask built-in secret patterns or define custom masking rules. |
+| [Icons and Detection](icons-and-detection.md) | Understand icon fallbacks, color detection, and terminal capabilities. |
+| [Configuration](configuration.md) | Control detection with environment variables or at runtime. |
 
-## Package layout
+## Reference
 
-| Module | Purpose |
+| Reference | Contents |
 |---|---|
-| `raztint.core` | `RazTint` instance, ANSI helpers, method registration |
-| `raztint.data` | Color/style registries, intent presets, typed literals |
-| `raztint.detect` | TTY, Windows VT, and Nerd Font detection |
-| `raztint.formatting` | `paint()` / `format_text()` implementation |
-| `raztint.icons` | Icon registry and mode resolution |
-| `raztint.security` | Regex-based secret redaction |
+| [API Reference](api-reference.md) | Public functions, `RazTint`, accepted color values, and public types. |
+| [Development](development.md) | Local setup, tests, quality checks, and project layout. |
 
-Most users only need top-level imports from `raztint`; subpackages are for advanced use.
+## Examples
+
+- [`examples/showcase.py`](../examples/showcase.py) demonstrates colors, styles, icons, intents, and redaction.
+- [`examples/redaction_demo.py`](../examples/redaction_demo.py) demonstrates built-in and custom redaction rules.
+- [`examples/file_processor.py.py`](../examples/file_processor.py.py) is a simulated command-line workflow.
+
+Most applications should import from `raztint`. The package submodules are intended for advanced use.
