@@ -48,7 +48,7 @@ classifiers = [
 
 [project.urls]
 Homepage = "https://github.com/razbuild/raztint"
-Documentation = "https://github.com/razbuild/raztint/tree/master/docs"
+Documentation = "https://github.com/razbuild/raztint/tree/main/docs"
 Repository = "https://github.com/razbuild/raztint"
 Issues = "https://github.com/razbuild/raztint/issues"
 Changelog = "https://github.com/razbuild/raztint/releases"
