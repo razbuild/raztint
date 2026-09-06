@@ -4,7 +4,7 @@ from .colors import (
     COLORS,
     FOREGROUND_LOOKUP,
 )
-from .intents import INTENTS, IntentConfig
+from .intents import INTENTS, IntentConfig, _get_intents
 from .styles import STYLE_LOOKUP, STYLES
 from .types import (
     BackgroundColorName,
@@ -30,4 +30,5 @@ __all__ = [
     "IconName",
     "IntentName",
     "StyleName",
+    "_get_intents",
 ]

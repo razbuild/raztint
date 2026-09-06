@@ -1,8 +1,11 @@
 import os
 from unittest import mock
 
+import pytest
+
 from raztint import err, info, ok, tint, warn
 from raztint.core import RazTint
+from raztint.core.transient import TransientLine
 from raztint.data import BACKGROUND_COLORS, STYLES
 
 
@@ -283,3 +286,187 @@ def test_private_resolve_icon():
         assert raztint._resolve_icon("ok") == "[✓]"
 
     mocked.assert_called_once()
+
+
+class TestTransient:
+    """Test cases for RazTint.transient()."""
+
+    def test_transient_delegates_to_transient_line(self):
+        raztint = RazTint()
+
+        with mock.patch("raztint.core.instance.TransientLine") as mocked_cls:
+            sentinel = mock.Mock()
+            mocked_cls.return_value = sentinel
+
+            result = raztint.transient("loading...")
+
+        mocked_cls.assert_called_once_with("loading...")
+        assert result is sentinel
+
+    def test_transient_returns_transient_line_instance(self):
+        """Without mocking, transient() should return a real TransientLine."""
+        raztint = RazTint()
+        result = raztint.transient("loading...")
+        assert isinstance(result, TransientLine)
+
+
+class TestIntents:
+    """Test cases for RazTint.intents()."""
+
+    def test_intents_with_no_name_returns_all(self):
+        """Calling with no name should delegate to _get_intents(None)."""
+        raztint = RazTint()
+
+        with mock.patch("raztint.core.instance._get_intents") as mocked:
+            mocked.return_value = {"ok": {"color": "GREEN"}}
+            result = raztint.intents()
+
+        mocked.assert_called_once_with(None)
+        assert result == {"ok": {"color": "GREEN"}}
+
+    def test_intents_with_name_forwards_it(self):
+        """Calling with a name should delegate to _get_intents(name)."""
+        raztint = RazTint()
+
+        with mock.patch("raztint.core.instance._get_intents") as mocked:
+            mocked.return_value = {"color": "RED"}
+            result = raztint.intents("err")
+
+        mocked.assert_called_once_with("err")
+        assert result == {"color": "RED"}
+
+    def test_intents_unmocked_returns_known_intent(self):
+        """Sanity check against the real intents data, without mocking."""
+        raztint = RazTint()
+        assert raztint.intents("success") == raztint.intents()["success"]
+
+
+class TestCase:
+    """Test cases for RazTint.case()."""
+
+    def test_case_formats_matching_value(self):
+        """A matching key should format its (text, intent) pair via format_text."""
+        raztint = RazTint()
+        cases = {"success": ("Done!", "success"), "failure": ("Failed!", "error")}
+
+        with mock.patch.object(raztint, "format_text") as mocked_format:
+            mocked_format.return_value = "formatted"
+            result = raztint.case("success", cases)
+
+        mocked_format.assert_called_once_with("Done!", intent="success")
+        assert result == "formatted"
+
+    def test_case_selects_correct_pair_among_several(self):
+        """Each key should route to its own (text, intent) pair."""
+        raztint = RazTint()
+        cases = {"success": ("Done!", "success"), "failure": ("Failed!", "error")}
+
+        with mock.patch.object(raztint, "format_text") as mocked_format:
+            mocked_format.return_value = "formatted"
+            raztint.case("failure", cases)
+
+        mocked_format.assert_called_once_with("Failed!", intent="error")
+
+    def test_case_raises_value_error_for_unknown_key(self):
+        """A value with no entry in cases should raise a clear ValueError."""
+        raztint = RazTint()
+        cases = {"success": ("Done!", "success")}
+
+        with pytest.raises(ValueError, match=r"No case defined for 'missing'"):
+            raztint.case("missing", cases)
+
+    def test_case_error_message_includes_repr_of_value(self):
+        """The ValueError message should use repr() of the offending value."""
+        raztint = RazTint()
+        cases = {1: ("one", "success")}
+
+        with pytest.raises(ValueError, match=r"No case defined for 2"):
+            raztint.case(2, cases)
+
+    def test_case_does_not_swallow_unrelated_keyerror(self):
+        """A missing key should surface as ValueError, not a bare KeyError."""
+        raztint = RazTint()
+
+        with pytest.raises(ValueError):
+            raztint.case("anything", {})
+
+    def test_case_unmocked_returns_formatted_text(self):
+        """End-to-end: case() should return whatever format_text produces."""
+        raztint = RazTint()
+        cases = {"success": ("Done!", "success")}
+
+        assert raztint.case("success", cases) == raztint.format_text(
+            "Done!", intent="success"
+        )
+
+
+class TestPreview:
+    """Test cases for RazTint.preview()."""
+
+    def test_preview_includes_header_and_platform(self):
+        import sys
+
+        raztint = RazTint()
+        output = raztint.preview()
+
+        assert "RazTint" in output
+        assert "Platform" in output
+        assert sys.platform in output
+
+    def test_preview_reflects_color_enabled(self):
+        raztint = RazTint()
+        raztint.set_color(True)
+
+        assert "Color       enabled" in raztint.preview()
+
+    def test_preview_reflects_color_disabled(self):
+        raztint = RazTint()
+        raztint.set_color(False)
+
+        assert "Color       disabled" in raztint.preview()
+
+    def test_preview_reflects_icon_mode(self):
+        raztint = RazTint()
+        raztint.icon_mode = "nerd"
+
+        assert "Icon mode   nerd" in raztint.preview()
+
+    def test_preview_uses_term_env_var_when_set(self):
+        raztint = RazTint()
+
+        with mock.patch.dict(os.environ, {"TERM": "xterm-256color"}, clear=False):
+            assert "Terminal    xterm-256color" in raztint.preview()
+
+    def test_preview_falls_back_to_unknown_terminal_when_term_unset(self):
+        raztint = RazTint()
+
+        env = dict(os.environ)
+        env.pop("TERM", None)
+        with mock.patch.dict(os.environ, env, clear=True):
+            assert "Terminal    unknown" in raztint.preview()
+
+    def test_preview_uses_stdout_encoding_when_available(self):
+        raztint = RazTint()
+        fake_stdout = mock.Mock()
+        fake_stdout.encoding = "utf-8"
+
+        with mock.patch("sys.stdout", fake_stdout):
+            assert "Encoding    utf-8" in raztint.preview()
+
+    def test_preview_falls_back_to_unknown_encoding_when_missing(self):
+        raztint = RazTint()
+
+        class StreamWithoutEncoding:
+            pass
+
+        with mock.patch("sys.stdout", StreamWithoutEncoding()):
+            assert "Encoding    unknown" in raztint.preview()
+
+    def test_preview_falls_back_to_unknown_encoding_when_empty(self):
+        """An empty-string encoding is falsy and should also fall back."""
+        raztint = RazTint()
+        fake_stdout = mock.Mock()
+        fake_stdout.encoding = ""
+
+        with mock.patch("sys.stdout", fake_stdout):
+            assert "Encoding    unknown" in raztint.preview()

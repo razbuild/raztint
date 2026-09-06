@@ -1,6 +1,6 @@
 from importlib.metadata import version
 
-from .core import RazTint
+from .core import RazTint, TransientLine
 from .data import (
     INTENTS,
     BackgroundColorName,
@@ -24,10 +24,13 @@ info = tint.info
 pending = tint.pending
 debug = tint.debug
 paint = tint.format_text
-
+intents = tint.intents
+transient = tint.transient
+case = tint.case
 
 __all__ = [
     "RazTint",
+    "TransientLine",
     "tint",
     "ok",
     "err",
@@ -47,5 +50,7 @@ __all__ = [
     "IconName",
     "IconMode",
     "IntentName",
+    "intents",
+    "case",
     "__version__",
 ]

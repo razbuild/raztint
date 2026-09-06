@@ -1,6 +1,5 @@
 from collections.abc import Callable
 
-from ..icons.registry import ICONS
 from .protocols import FormatTarget
 
 
@@ -9,6 +8,7 @@ def register_dynamic_methods(instance: FormatTarget) -> None:
     colors = instance.colors
     backgrounds = instance.backgrounds
     styles = instance.styles
+    icons = instance.icons
 
     for name, code in colors.items():
         setattr(instance, name.lower(), _make_color_func(instance, code))
@@ -19,7 +19,7 @@ def register_dynamic_methods(instance: FormatTarget) -> None:
     for name, (on_code, off_code) in styles.items():
         setattr(instance, name.lower(), _make_style_func(instance, on_code, off_code))
 
-    for name, data in ICONS.items():
+    for name, data in icons.items():
         color_key = data.get("color", "WHITE")
         color_code = colors.get(color_key, "37")
         setattr(instance, name.lower(), _make_icon_func(instance, data, color_code))

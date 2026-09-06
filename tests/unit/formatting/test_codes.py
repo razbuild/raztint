@@ -44,7 +44,7 @@ class TestFormattingCodes:
 
     def test_normalize_styles_invalid_type(self) -> None:
         with pytest.raises(TypeError, match="styles must be"):
-            normalize_styles(42)  # type: ignore[arg-type]
+            normalize_styles(42)
 
 
 class TestColorValueTypes:

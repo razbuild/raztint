@@ -1,7 +1,11 @@
-from typing import cast
+import os
+import sys
+from collections.abc import Hashable, Mapping
+from typing import TypeVar, cast
 
 from ..core.protocols import FormatTarget, IconHost
 from ..data import BACKGROUND_COLORS, COLORS, STYLES
+from ..data.intents import _get_intents
 from ..data.types import (
     ColorValue,
     IconMode,
@@ -16,6 +20,9 @@ from ..icons.resolve import resolve_icon
 from ..security.masking import MaskRule
 from .ansi import apply_background, apply_color, apply_style
 from .builder import register_dynamic_methods
+from .transient import TransientLine
+
+T = TypeVar("T", bound=Hashable)
 
 
 class RazTint:
@@ -56,6 +63,14 @@ class RazTint:
     def set_color(self, enabled: bool) -> None:
         self.use_color = enabled
 
+    def intents(
+        self, name: str | None = None
+    ) -> dict[str, object] | dict[str, dict[str, object]]:
+        return _get_intents(name)
+
+    def transient(self, text: str) -> TransientLine:
+        return TransientLine(text)
+
     def _resolve_icon(self, icon_name: str, mode: str | None = None) -> str:
         return resolve_icon(
             cast(IconHost, self),
@@ -63,6 +78,18 @@ class RazTint:
             mode=mode,
             has_nerd_fonts=self._has_nerd_fonts,
         )
+
+    def case(
+        self,
+        value: T,
+        cases: Mapping[T, tuple[str, IntentName]],
+    ) -> str:
+        try:
+            text, intent = cases[value]
+        except KeyError:
+            raise ValueError(f"No case defined for {value!r}") from None
+
+        return self.format_text(text, intent=intent)
 
     def format_text(
         self,
@@ -89,4 +116,18 @@ class RazTint:
             redact=redact,
             redact_rules=redact_rules,
             intent=intent,
+        )
+
+    def preview(self) -> str:
+        encoding = getattr(sys.stdout, "encoding", None) or "unknown"
+        terminal = os.getenv("TERM") or "unknown"
+
+        return (
+            "RazTint\n"
+            "────────────────────\n"
+            f"Platform    {sys.platform}\n"
+            f"Terminal    {terminal}\n"
+            f"Encoding    {encoding}\n"
+            f"Color       {'enabled' if self.use_color else 'disabled'}\n"
+            f"Icon mode   {self.icon_mode}"
         )

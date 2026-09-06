@@ -1,4 +1,5 @@
-from collections.abc import Callable
+from collections.abc import Callable, Hashable, Mapping
+from typing import TypeVar
 
 from ..data.types import (
     ColorValue,
@@ -8,6 +9,9 @@ from ..data.types import (
 )
 from ..formatting.paint import UNSET, IconArg
 from ..security.masking import MaskRule
+from .transient import TransientLine
+
+T = TypeVar("T", bound=Hashable)
 
 _IconFn = Callable[[], str]
 
@@ -34,6 +38,17 @@ class RazTint:
     def style(self, text: str, on_code: str, off_code: str) -> str: ...
     def set_color(self, enabled: bool) -> None: ...
     def _resolve_icon(self, icon_name: str, mode: str | None = None) -> str: ...
+    def transient(self, text: str) -> TransientLine: ...
+    def preview(self) -> str: ...
+    def intents(
+        self,
+        name: IntentName | None = None,
+    ) -> dict[str, dict[str, object]]: ...
+    def case(
+        self,
+        value: T,
+        cases: Mapping[T, tuple[str, IntentName]],
+    ) -> str: ...
     def format_text(
         self,
         text: str,
