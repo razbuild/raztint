@@ -1,8 +1,8 @@
-# Development
+# Development 🛠️
 
 [Documentation home](index.md)
 
-## Local setup
+## ⚙️ Local setup
 
 Requires [uv](https://docs.astral.sh/uv/).
 
@@ -12,7 +12,7 @@ cd raztint
 uv sync --group dev
 ```
 
-## Running tests
+## ✅ Running tests
 
 ```bash
 uv run pytest
@@ -31,7 +31,7 @@ uv run coverage run -m pytest
 uv run coverage report -m
 ```
 
-## Linting and type checking
+## 🔍 Linting and type checking
 
 Kept in sync with CI:
 
@@ -46,11 +46,11 @@ Format code:
 uv run ruff format src tests
 ```
 
-## Project structure
+## 📁 Project structure
 
 ```
 src/raztint/
-├── core/          # RazTint instance, ANSI application, builder
+├── core/          # RazTint instance, ANSI application, builder, transient output
 ├── data/          # Colors, styles, intents, typed literals
 ├── detect/        # TTY, Windows VT, font detection, debug logging
 ├── formatting/    # paint() / format_text(), code resolution
@@ -61,7 +61,7 @@ tests/
 └── conftest.py
 ```
 
-## Typing
+## 🏷️ Typing
 
 The package ships with `py.typed` and a top-level stub file `src/raztint/__init__.pyi`. Public `Literal` types live in `raztint.data.types` and are re-exported from `raztint`.
 
@@ -69,16 +69,17 @@ The package ships with `py.typed` and a top-level stub file `src/raztint/__init_
 uv run ty check src
 ```
 
-## Contributing
+Inspect the current terminal and `RazTint` configuration:
 
-1. Fork the repository and create a feature branch.
-2. Add or update tests for behavior changes.
-3. Run `uv run ruff check src tests`, `uv run ty check src`, and `uv run pytest`.
-4. Open a pull request with a clear description of the change.
+```python
+from raztint import tint
 
-Report bugs and feature requests via [GitHub Issues](https://github.com/razbuild/raztint/issues).
+print(tint.preview())
+```
 
-## Related documentation
+`preview()` is useful for diagnosing terminal and color-detection behavior during development.
+
+## 📚 Related documentation
 
 - [Configuration](configuration.md) environment variables used in CI
 - [API Reference](api-reference.md) public API surface

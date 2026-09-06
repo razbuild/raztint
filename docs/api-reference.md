@@ -1,8 +1,8 @@
-# API Reference
+# API Reference 📚
 
 [Documentation home](index.md)
 
-## `paint()` / `format_text()`
+## 🎨 `paint()` / `format_text()`
 
 `paint` is a module-level alias for `tint.format_text()`. Both accept identical parameters.
 
@@ -94,7 +94,7 @@ print(paint("Failed", intent="error"))
 print(paint("token=ghp_XXXXXXXX", intent="debug", redact=True))
 ```
 
-## Icon functions
+## 🔤 Icon functions
 
 | Function | Meaning |
 |---|---|
@@ -107,7 +107,81 @@ print(paint("token=ghp_XXXXXXXX", intent="debug", redact=True))
 
 For icon modes and fallback behavior, see [Icons and Detection](icons-and-detection.md).
 
-## `redact()`
+## 🔀 `case()`
+
+Render text based on a value and a semantic intent.
+
+```python
+case(
+    value,
+    cases: Mapping[Hashable, tuple[str, IntentName]],
+) -> str
+```
+
+Each mapping entry contains the text to render and the semantic intent to apply.
+
+```python
+from raztint import case
+
+status = "done"
+
+print(case(
+    status,
+    {
+        "done": ("Done", "success"),
+        "pending": ("Pending", "warning"),
+        "failed": ("Failed", "error"),
+    },
+))
+```
+
+The selected intent provides the corresponding color, icon, and style.
+
+If `value` is not defined in `cases`, `case()` raises `ValueError`.
+
+```python
+case(
+    "unknown",
+    {
+        "done": ("Done", "success"),
+    },
+)
+# ValueError: No case defined for 'unknown'
+```
+
+## ⏳ `transient()`
+
+Create temporary terminal output that can be updated or erased.
+
+```python
+transient(text: str) -> TransientLine
+```
+
+Use it as a context manager when the output should remain visible only while an operation is running.
+
+```python
+from raztint import tint
+
+with tint.transient("Working..."):
+    do_work()
+
+print("Done!")
+```
+
+The transient line is automatically erased when the context exits, including when an exception occurs.
+
+For manual control, use `update()` and `erase()`:
+
+```python
+line = tint.transient("Connecting...")
+
+line.update("Connected")
+line.erase()
+```
+
+Transient output is active only when the target stream is a TTY. On redirected or piped output, it performs no terminal control operations.
+
+## 🔒 `redact()`
 
 ```python
 redact(
@@ -118,7 +192,7 @@ redact(
 
 When `rules` is `None`, `DEFAULT_RULES` are applied. See [Security and Redaction](redaction.md).
 
-## `RazTint` class
+## 🧩 `RazTint` class
 
 ```python
 from raztint import RazTint
@@ -133,6 +207,7 @@ t = RazTint()
 | `style(text, on_code, off_code)` | Apply raw style on/off codes |
 | `format_text(...)` | Same as `paint()` |
 | `set_color(enabled)` | Enable or disable color |
+| `preview()` | Inspect the current terminal environment and `RazTint` configuration |
 
 Icon helpers (`ok`, `err`, `warn`, `info`, `pending`, `debug`) are available on every instance.
 
@@ -141,6 +216,28 @@ t = RazTint()
 t.set_color(False)
 print(t.format_text("Plain text", color="red"))
 ```
+
+### `preview()`
+
+```python
+from raztint import tint
+
+print(tint.preview())
+```
+
+Example output:
+
+```text
+RazTint
+────────────────────
+Platform    linux
+Terminal    xterm-256color
+Encoding    utf-8
+Color       enabled
+Icon mode   auto
+```
+
+The output reflects the current instance state.
 
 | Attribute | Type | Description |
 |---|---|---|
@@ -151,7 +248,7 @@ print(t.format_text("Plain text", color="red"))
 | `styles` | `dict[str, tuple[str, str]]` | Style name -> (on, off) codes |
 | `icons` | `dict[str, dict[str, str]]` | Icon registry |
 
-## Typed literals
+## 🏷️ Typed literals
 
 | Type | Values |
 |---|---|

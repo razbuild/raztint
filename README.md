@@ -102,6 +102,8 @@ print(paint(f"Auth failed for token={token}", intent="error", redact=True))
 
 - **Semantic intents** `success`, `error`, `warning`, `debug`, and more. Use semantic names instead of choosing colors manually.
 
+- **State-aware output** `case()` maps application states to semantic intents, while `transient()` provides temporary terminal output for in-progress operations.
+
 - **Redaction** masks `key=value` pairs such as `password=`, `api_key=`, and `token=`. Patterns are configurable, see [Security and Redaction](docs/redaction.md).
 
 - **Icon helpers** `ok()`, `err()`, `warn()`, `info()`, `pending()`, `debug()`. Falls back from Nerd Font to Unicode to ASCII depending on the terminal.
