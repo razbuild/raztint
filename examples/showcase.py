@@ -18,7 +18,7 @@ Run:
     python examples/showcase.py
 """
 
-from raztint import paint, tint
+from raztint import case, intents, paint, tint
 
 # Foreground colors
 print("--- Foreground colors ---")
@@ -79,6 +79,23 @@ print("\n--- Intents ---")
 for intent in ("success", "error", "warning", "info", "pending", "debug"):
     print(paint(f"  {intent}: operation result", intent=intent))  # type: ignore[arg-type]
 
+print("\n  success config:")
+print(f"  {intents('success')}")
+
+# State-based rendering
+print("\n--- State-based rendering ---")
+for status in ("done", "pending", "failed"):
+    print(
+        case(
+            status,
+            {
+                "done": ("  Done", "success"),
+                "pending": ("  Pending", "warning"),
+                "failed": ("  Failed", "error"),
+            },
+        )
+    )
+
 # Intent overrides explicit arg always wins
 print("\n--- Intent overrides ---")
 print(paint("  success intent, cyan color", intent="success", color="cyan"))
@@ -96,7 +113,17 @@ print("\n--- Redaction via paint() ---")
 raw = "Connecting with password=hunter2 to https://user:secret@db.internal"
 print(paint(f"  {raw}", intent="debug", redact=True))
 
+# Transient output
+print("\n--- Transient output ---")
+with tint.transient("  Working..."):
+    ...
+print("  Done")
+
 # Runtime state
 print("\n--- Runtime state ---")
 print(f"  use_color : {tint.use_color}")
 print(f"  icon_mode : {tint.icon_mode}")
+
+# Runtime diagnostics
+print("\n--- Runtime diagnostics ---")
+print(tint.preview())
