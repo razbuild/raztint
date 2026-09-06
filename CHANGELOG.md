@@ -1,21 +1,25 @@
 # Changelog
 
-**## [0.10.0] - 2026-09-06**
-**### Added**
-- ****Intent inspection****: Added `intents()` for inspecting available intents and their color, icon, and style configuration.
-- ****Terminal preview****: Added `tint.preview()` for inspecting the current terminal environment and `RazTint` configuration.
-- ****Transient output****: Added `tint.transient()` for temporary terminal output with support for updating, erasing, and context-manager cleanup.
-- ****State-based rendering****: Added `case()` for mapping application states directly to text and semantic intents.
-**### Changed**
+## [0.10.0] - 2026-09-06
+
+### Added
+- **Intent inspection**: Added `intents()` for inspecting available intents and their color, icon, and style configuration.
+- **Terminal preview**: Added `tint.preview()` for inspecting the current terminal environment and `RazTint` configuration.
+- **Transient output**: Added `tint.transient()` for temporary terminal output with support for updating, erasing, and context-manager cleanup.
+- **State-based rendering**: Added `case()` for mapping application states directly to text and semantic intents.
+
+### Changed
 - Improved type hints for named colors and intent names to provide better IDE autocompletion.
 - Tightened validation for color and style-related values.
 - Improved consistency between runtime APIs and type stubs.
-**### Tests**
-- Added test coverage for intent inspection, terminal preview, transient output, and state-based rendering.
-**### Docs**
-- Added usage examples for the new intent, preview, transient, and case APIs.
-**---**
 
+### Tests
+- Added test coverage for intent inspection, terminal preview, transient output, and state-based rendering.
+
+### Docs
+- Added usage examples for the new intent, preview, transient, and case APIs.
+
+---
 
 ## [0.9.1] - 2026-08-12
 
