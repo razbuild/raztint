@@ -1,5 +1,5 @@
 from collections.abc import Callable, Hashable, Mapping
-from typing import TypeVar
+from typing import TypeVar, overload
 
 from ..data.types import (
     ColorValue,
@@ -40,10 +40,21 @@ class RazTint:
     def _resolve_icon(self, icon_name: str, mode: str | None = None) -> str: ...
     def transient(self, text: str) -> TransientLine: ...
     def preview(self) -> str: ...
+    @overload
     def intents(
         self,
-        name: IntentName | None = None,
+        name: None = None,
     ) -> dict[str, dict[str, object]]: ...
+    @overload
+    def intents(
+        self,
+        name: IntentName,
+    ) -> dict[str, object]: ...
+    @overload
+    def intents(
+        self,
+        name: str,
+    ) -> dict[str, object]: ...
     def case(
         self,
         value: T,

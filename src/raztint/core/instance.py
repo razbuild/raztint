@@ -1,7 +1,7 @@
 import os
 import sys
 from collections.abc import Hashable, Mapping
-from typing import TypeVar, cast
+from typing import TypeVar, cast, overload
 
 from ..core.protocols import FormatTarget, IconHost
 from ..data import BACKGROUND_COLORS, COLORS, STYLES
@@ -63,8 +63,14 @@ class RazTint:
     def set_color(self, enabled: bool) -> None:
         self.use_color = enabled
 
+    @overload
+    def intents(self, name: None = None) -> dict[str, dict[str, object]]: ...
+    @overload
+    def intents(self, name: IntentName) -> dict[str, object]: ...
+    @overload
+    def intents(self, name: str) -> dict[str, object]: ...
     def intents(
-        self, name: str | None = None
+        self, name: IntentName | str | None = None
     ) -> dict[str, object] | dict[str, dict[str, object]]:
         return _get_intents(name)
 

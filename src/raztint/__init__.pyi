@@ -1,5 +1,5 @@
 from collections.abc import Callable, Hashable, Mapping
-from typing import TypeVar
+from typing import TypeVar, overload
 
 from .core.instance import RazTint as RazTint
 from .core.transient import TransientLine as TransientLine
@@ -34,9 +34,18 @@ def case(
     value: T,
     cases: Mapping[T, tuple[str, IntentName]],
 ) -> str: ...
+@overload
 def intents(
-    name: IntentName | None = None,
+    name: None = None,
 ) -> dict[str, dict[str, object]]: ...
+@overload
+def intents(
+    name: IntentName,
+) -> dict[str, object]: ...
+@overload
+def intents(
+    name: str,
+) -> dict[str, object]: ...
 def redact(
     text: str,
     rules: tuple[MaskRule, ...] | list[MaskRule] | None = None,

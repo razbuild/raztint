@@ -1,6 +1,6 @@
-from typing import NamedTuple
+from typing import NamedTuple, overload
 
-from .types import ColorName, IconName, StyleName
+from .types import ColorName, IconName, IntentName, StyleName
 
 
 class IntentConfig(NamedTuple):
@@ -19,8 +19,14 @@ INTENTS: dict[str, IntentConfig] = {
 }
 
 
+@overload
+def _get_intents(name: None = None) -> dict[str, dict[str, object]]: ...
+@overload
+def _get_intents(name: IntentName) -> dict[str, object]: ...
+@overload
+def _get_intents(name: str) -> dict[str, object]: ...
 def _get_intents(
-    name: str | None = None,
+    name: IntentName | str | None = None,
 ) -> dict[str, object] | dict[str, dict[str, object]]:
     if name is not None:
         name = name.lower()
