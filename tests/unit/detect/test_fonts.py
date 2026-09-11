@@ -65,6 +65,7 @@ class TestCheckInstalledNerdFonts:
         ):
             assert check_installed_nerd_fonts() is False
 
+    @mock.patch("raztint.detect.fonts.os.name", "posix")
     @mock.patch("raztint.detect.fonts.sys.platform", "linux")
     def test_posix_detection_handles_fc_list_errors(self) -> None:
         with mock.patch(
@@ -73,6 +74,7 @@ class TestCheckInstalledNerdFonts:
         ):
             assert check_installed_nerd_fonts() is False
 
+    @mock.patch("raztint.detect.fonts.os.name", "posix")
     @mock.patch("raztint.detect.fonts.sys.platform", "darwin")
     def test_macos_detection_uses_system_profiler(self) -> None:
         # Explicitly clear CI so we exercise the non-CI (real scan) path.
@@ -86,6 +88,7 @@ class TestCheckInstalledNerdFonts:
                     assert check_installed_nerd_fonts() is True
                     assert run.call_args is not None
 
+    @mock.patch("raztint.detect.fonts.os.name", "posix")
     @mock.patch("raztint.detect.fonts.sys.platform", "darwin")
     def test_macos_skips_system_profiler_in_ci(self) -> None:
         # In CI, system_profiler is slow and pointless, so it should never
@@ -98,6 +101,7 @@ class TestCheckInstalledNerdFonts:
                     assert check_installed_nerd_fonts() is False
                     run.assert_not_called()
 
+    @mock.patch("raztint.detect.fonts.os.name", "posix")
     @mock.patch("raztint.detect.fonts.sys.platform", "darwin")
     def test_macos_detection_handles_system_profiler_errors(self) -> None:
         with mock.patch.dict(os.environ, {}, clear=True):
@@ -110,6 +114,7 @@ class TestCheckInstalledNerdFonts:
                 ):
                     assert check_installed_nerd_fonts() is False
 
+    @mock.patch("raztint.detect.fonts.os.name", "posix")
     @mock.patch("raztint.detect.fonts.sys.platform", "linux")
     def test_posix_detection_uses_fc_list(self) -> None:
         with mock.patch("raztint.detect.fonts.subprocess.run") as run:

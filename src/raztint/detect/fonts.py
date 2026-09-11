@@ -124,11 +124,11 @@ def _check_posix_fonts() -> bool:
 @lru_cache(maxsize=1)
 def check_installed_nerd_fonts() -> bool:
     """Check if nerd fonts are installed on the system."""
-    if sys.platform == "darwin":
-        return _check_mac_font_dirs() or _check_mac_system_profiler()
-
     if os.name == "nt":
         return _check_windows_fonts()
+
+    if sys.platform == "darwin":
+        return _check_mac_font_dirs() or _check_mac_system_profiler()
 
     return _check_posix_fonts()
 
